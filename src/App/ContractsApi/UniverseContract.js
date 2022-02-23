@@ -1,88 +1,113 @@
 import { ethers } from 'ethers';
-import { UniverseNode } from '../Models/UniverseNode.js';
+import Contract from './Contract';
 
-import { abi } from "./abi/universe.js";
+import abi from "./abi/universe.js";
 
-export class UniverseContract {
+class UniverseContract extends Contract {
   contractAddress = '0x89323f00a621D4eD6A56a93295C5f10f4df57FFa';
 
-  async compoundAll(signer) {
-    const contract = new ethers.Contract(this.contractAddress, abi, signer);
-    return contract.compoundAll();
+  constructor(provider, walletAddresses) {
+    super(provider, walletAddresses, 'Avalanche');
   }
 
-  async claimAll(signer) {
-    const contract = new ethers.Contract(this.contractAddress, abi, signer);
-    return contract.cashoutAll();
-  }
+  hasCompound() { return true; }
 
-  async compound(planetId, signer) {
-    const contract = new ethers.Contract(this.contractAddress, abi, signer);
-    return contract.compoundReward(planetId);
-  }
+  getName() { return 'Universe'; }
 
-  async getNodes(walletAddress, provider) {
-    let nodes = [];
-    const contract = new ethers.Contract(this.contractAddress, abi, provider);
+  getToken() { return 'UNIV'; }
 
-    try {
-      const planetIds = await contract.getPlanetIdsOf(walletAddress);
-
-      const rawPlanets = await contract.getPlanetsByIds(planetIds);
-
-      for (const rawPlanet of rawPlanets) {
-        const lastProcessingTime = new Date(rawPlanet['planet']['lastProcessingTimestamp'].toString() * 1000);
-        const nextProcessingTime = new Date(lastProcessingTime);
-        nextProcessingTime.setSeconds(parseInt(nextProcessingTime.getSeconds()) + parseInt(rawPlanet['compoundDelay']))
-
-        const node = new UniverseNode({
-          // Standard fields
-          name: rawPlanet['planet']['name'],
-          creationTime: new Date(rawPlanet['planet']['creationTime'].toString() * 1000),
-          lastProcessingTime,
-          nextProcessingTime,
-          amount: rawPlanet['planet']['planetValue'].toString() / 1e18,
-          rewards: rawPlanet['pendingRewards'].toString() / 1e18,
-          // Extra fields
-          id: rawPlanet['id'].toString(),
-          rewardMult: rawPlanet['planet']['rewardMult'].toString(),
-          totalClaimed: rawPlanet['planet']['totalClaimed'].toString() / 1e18,
-          rewardPerDay: rawPlanet['rewardPerDay'].toString() / 1e18,
-          compoundDelay: rawPlanet['compoundDelay'].toString(),
-        });
-
-        nodes.push(node);
-      }
-
-      return nodes;
-    } catch (e) {
-      console.log('ERR', e);
-    }
-
-    return null;
-  }
+  showDecimalPlaces() { return 2; }
 
   getTotalRewards(planets, compounding) {
     let rewards = 0;
     for (const planet of planets) {
         rewards += parseFloat(planet['rewards']);
     }
-
     if (compounding) {
         rewards = rewards + (rewards * 0.1);
     }
-
     return rewards;
   }
 
-  isClaimable(planets) {
-    for (const planet of planets) {
-      if (planet.nextProcessingTime < Date.now()) {
+  isClaimable(nodes) {
+    for (const node of nodes) {
+      if (node.nextProcessingTime < Date.now()) {
         return true;
       }
     }
-
     return false;
+  }
+
+  async compoundAll() {
+    if (!this.signer) {
+      console.error('Tried calling UniverseContract.compoundAll() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.contractAddress, abi, this.signer);
+    return contract.compoundAll();
+  }
+
+  async claimAll() {
+    if (!this.signer) {
+      console.error('Tried calling UniverseContract.claimAll() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.contractAddress, abi, this.signer);
+    return contract.cashoutAll();
+  }
+
+  async compound(planetId) {
+    if (!this.signer) {
+      console.error('Tried calling UniverseContract.compound() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.contractAddress, abi, this.signer);
+    return contract.compoundReward(planetId);
+  }
+
+  async getNodes() {
+    await this.web3AddressPromise;
+
+    const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
+
+    const nodes = [];
+    for (const address of this.walletAddresses) {
+      try {
+        const planetIds = await contract.getPlanetIdsOf(address);
+
+        const rawPlanets = await contract.getPlanetsByIds(planetIds);
+
+        for (const rawPlanet of rawPlanets) {
+          const lastProcessingTime = new Date(rawPlanet['planet']['lastProcessingTimestamp'].toString() * 1000);
+          const nextProcessingTime = new Date(lastProcessingTime);
+          nextProcessingTime.setSeconds(parseInt(nextProcessingTime.getSeconds()) + parseInt(rawPlanet['compoundDelay']))
+
+          const node = {
+            // Standard fields
+            name: rawPlanet['planet']['name'],
+            creationTime: new Date(rawPlanet['planet']['creationTime'].toString() * 1000),
+            lastProcessingTime,
+            nextProcessingTime,
+            amount: rawPlanet['planet']['planetValue'].toString() / 1e18,
+            rewards: rawPlanet['pendingRewards'].toString() / 1e18,
+            // Extra fields
+            id: rawPlanet['id'].toString(),
+            rewardMult: rawPlanet['planet']['rewardMult'].toString(),
+            totalClaimed: rawPlanet['planet']['totalClaimed'].toString() / 1e18,
+            rewardPerDay: rawPlanet['rewardPerDay'].toString() / 1e18,
+            compoundDelay: rawPlanet['compoundDelay'].toString(),
+          };
+
+          nodes.push(node);
+        }
+
+      } catch (e) {
+        console.log('ERR', e);
+      }
+    }
+
+    return nodes;
   }
 }
 
+export default UniverseContract;

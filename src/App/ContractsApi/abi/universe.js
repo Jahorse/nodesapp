@@ -1,4 +1,4 @@
-export const abi = [
+const abi = [
     {
         "anonymous": false,
         "inputs":
@@ -1341,3 +1341,5 @@ export const abi = [
         "type": "function"
     }
 ];
+
+export default abi;

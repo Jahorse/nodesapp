@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
 
-export class VaporContract {
+import Contract from './Contract';
+
+class VaporContract extends Contract {
   nodeControllerAddress = '0xa1ce9bb5563822e320e2f7832a5df17a13b951ae';
   nodeControllerAbi = [
     'function getAllNodesRewards(address _account) view returns (uint256)',
@@ -65,57 +67,17 @@ export class VaporContract {
     type: "function",
   }];
 
-  async compoundAll(signer) {
-    const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, signer);
-    return contract.compoundAll();
+  constructor(provider, walletAddresses) {
+    super(provider, walletAddresses, 'Avalanche');
   }
 
-  async claimAll(signer) {
-    const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, signer);
-    return contract.claimAll();
-  }
+  hasCompound() { return true; }
 
-  async getNodes(walletAddress, provider) {
-    const storageContract = new ethers.Contract(this.nodeStorageAddress, this.nodeStorageAbi, provider);
-    const controllerContract = new ethers.Contract(this.nodeControllerAddress, this.nodeControllerAbi, provider);
+  getName() { return 'Vapor'; }
 
-    try {
-      const rawNodes = await storageContract.getAllNodes(walletAddress);
+  getToken() { return 'VPND'; }
 
-      const nodes = [];
-      for (const rawNode of rawNodes) {
-        if (rawNode['deleted'] === true) {
-          continue;
-        }
-
-        const rewards = await controllerContract.getNodeRewards(walletAddress, rawNode['creationTime'].toNumber());
-        let lastProcessingTime;
-        if (rawNode['lastClaimTime'] > rawNode['lastCompoundTime']) {
-          lastProcessingTime = new Date(rawNode['lastClaimTime'].toString() * 1000);
-        } else {
-          lastProcessingTime = new Date(rawNode['lastCompoundTime'].toString() * 1000);
-        }
-        const nextProcessingTime = new Date(lastProcessingTime);
-        // nextProcessingTime.set
-        const node = {
-          // Standard fields
-          name: rawNode['name'],
-          creationTime: new Date(rawNode['creationTime'].toString() * 1000),
-          lastProcessingTime,
-          nextProcessingTime,
-          amount: parseInt(rawNode['amount'].toHexString(), 16) / 1e18,
-          rewards: parseInt(rewards.toHexString(), 16) / 1e18,
-        }
-        nodes.push(node);
-      }
-
-      return nodes;
-    } catch (e) {
-      console.log('ERR', e);
-    }
-
-      return null;
-  }
+  showDecimalPlaces() { return 2; }
 
   getTotalRewards(nodes, compounding) {
     let rewards = 0;
@@ -135,4 +97,70 @@ export class VaporContract {
 
     return false;
   }
+
+  async compoundAll() {
+    if (!this.signer) {
+      console.error('Tried calling VaporContract.compoundAll() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, this.signer);
+    return contract.compoundAll();
+  }
+
+  async claimAll(signr) {
+    if (!this.signer) {
+      console.error('Tried calling VaporContract.claimAll() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, this.signer);
+    return contract.claimAll();
+  }
+
+  async getNodes() {
+    await this.web3AddressPromise;
+
+    const storageContract = new ethers.Contract(this.nodeStorageAddress, this.nodeStorageAbi, this.jsonRpcProvider);
+    const controllerContract = new ethers.Contract(this.nodeControllerAddress, this.nodeControllerAbi, this.jsonRpcProvider);
+
+    const nodes = [];
+    for (const address of this.walletAddresses) {
+      try {
+        const rawNodes = await storageContract.getAllNodes(address);
+
+        for (const rawNode of rawNodes) {
+          if (rawNode['deleted'] === true) {
+            continue;
+          }
+
+          const rewards = await controllerContract.getNodeRewards(address, rawNode['creationTime'].toNumber());
+          let lastProcessingTime;
+          if (rawNode['lastClaimTime'] > rawNode['lastCompoundTime']) {
+            lastProcessingTime = new Date(rawNode['lastClaimTime'].toString() * 1000);
+          } else {
+            lastProcessingTime = new Date(rawNode['lastCompoundTime'].toString() * 1000);
+          }
+          const nextProcessingTime = new Date(lastProcessingTime);
+
+          const node = {
+            // Standard fields
+            name: rawNode['name'],
+            creationTime: new Date(rawNode['creationTime'].toString() * 1000),
+            lastProcessingTime,
+            nextProcessingTime,
+            amount: parseInt(rawNode['amount'].toHexString(), 16) / 1e18,
+            rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+          }
+          nodes.push(node);
+        }
+
+        return nodes;
+      } catch (e) {
+        console.log('ERR', e);
+      }
+    }
+
+      return null;
+  }
 }
+
+export default VaporContract;

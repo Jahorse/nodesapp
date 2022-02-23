@@ -4,102 +4,103 @@
  * SPDX-License-Identifier: Attribution-NonCommercial-NoDerivatives 4.0 International
  */
 
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Row,
 } from 'reactstrap';
+import {
+  withCookies,
+} from 'react-cookie';
 import {
   HashRouter
 } from 'react-router-dom';
 
-import { networkIdToNameMap, networkNameToIdMap, setNetwork } from './Networking';
+import { networkIdToNameMap } from './Networking';
 import '../scss/custom.scss';
 import { ethers } from 'ethers';
-import Avalanche from './Networks/Avalanche';
-import Fantom from './Networks/Fantom';
-import Polygon from './Networks/Polygon';
+import RouteView from './RouteView';
+import WalletAddressModal from './WalletAddressModal';
+import WalletConnect from './WalletConnect';
 
-class Main extends Component {
-  constructor(props){
-    super(props);
-    this.state = { dropdownOpen: false, network: null, provider: null };
-    this.toggleDropdown = this.toggleDropdown.bind(this);
-    this.setNetwork = this.setNetwork.bind(this);
-  }
+const Main = (props) => {
+  const [provider, setProvider] = useState();
 
-  toggleDropdown = () => {
-    this.setState({ dropdownOpen: !this.state.dropdownOpen });
-  }
+  useEffect(() => {
+    const getProvider = async () => {
+      let walletUnlocked = false;
 
-  setNetwork = (provider, networkName, evt) => {
-    evt.preventDefault();
-    setNetwork(provider, networkName);
-
-    this.setState({ networkName });
-  }
-
-  async componentDidMount () {
-    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-    await provider.send('eth_requestAccounts', []);
-    provider.on('network', (newNetwork, oldNetwork) => {
-      // When a Provider makes its initial connection, it emits a "network"
-      // event with a null oldNetwork along with the newNetwork. So, if the
-      // oldNetwork exists, it represents a changing network
-      if (oldNetwork) {
-        window.location.reload();
+      let ethersProvider;
+      try {
+        ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+      } catch {
+        ethersProvider = null;
       }
-    });
-    const network = await provider.getNetwork();
-    this.setState({
-      provider,
-      network: networkIdToNameMap[network.chainId],
-    });
-  }
 
-  render() {
-    const { dropdownOpen, network, provider } = this.state;
-    let networkComponent;
-    if (network === 'Avalanche') {
-      networkComponent = <Avalanche provider = {this.state.provider} />
-    } else if (network === 'Fantom') {
-      networkComponent = <Fantom provider = {this.state.provider} />
-    } else if (network === 'Polygon') {
-      networkComponent = <Polygon provider = {this.state.provider} />
+      const providerObj = {
+        ethers: {
+          web3: null,
+          signer: null,
+          avalanche: new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'),
+          fantom: new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/'),
+          polygon: new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/'),
+        },
+        networkName: null,
+      };
+
+      if (ethersProvider) {
+        await ethersProvider.getSigner().getAddress()
+          .then((_) => {
+            walletUnlocked = true;
+          }).catch((_) => {
+            walletUnlocked = false
+          });
+      }
+
+      if (walletUnlocked) {
+        await ethersProvider.send('eth_requestAccounts', []);
+        ethersProvider.on('network', (newNetwork, oldNetwork) => {
+          if (oldNetwork) {
+            window.location.reload();
+          }
+        });
+
+        providerObj.ethers.signer = ethersProvider.getSigner();
+        providerObj.ethers.web3 = ethersProvider;
+        providerObj.networkName = networkIdToNameMap[(await ethersProvider.getNetwork()).chainId];
+      }
+
+      setProvider(providerObj);
     }
+    getProvider();
+  }, []);
 
-    return (
-      <HashRouter>
-        <Container>
-          <Row>
-            <Col xs={8} lg={9}>
-              <div className="d-flex justify-content-left p-4">
-                <h1 className='text-dark'>Node Stuff</h1>
-              </div>
-            </Col>
-            <Col xs={1} lg={3}>
-              <div className="d-flex justify-content-center p-4">
-                <Dropdown isOpen={dropdownOpen} toggle={this.toggleDropdown}>
-                  <DropdownToggle caret color='secondary'>{network} Network</DropdownToggle>
-                  <DropdownMenu dark>
-                    <DropdownItem onClick={e => this.setNetwork(provider, 'Avalanche', e)}>Avalanche</DropdownItem>
-                    <DropdownItem onClick={e => this.setNetwork(provider, 'Fantom', e)}>Fantom</DropdownItem>
-                    <DropdownItem onClick={e => this.setNetwork(provider, 'Polygon', e)}>Polygon</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </div>
-            </Col>
-          </Row>
-          {networkComponent}
-        </Container>
-      </HashRouter>
-    );
-  }
-}
+  return (
+    <HashRouter>
+      <Container>
+        <Row>
+          <Col xs={6} lg={8}>
+            <div className="d-flex justify-content-left p-4">
+              <h1 className='text-dark'>Node Stuff</h1>
+            </div>
+          </Col>
+          <Col xs={3} lg={4}>
+            <div className="d-flex justify-content-center p-4">
+              <span className="p-1">
+                <WalletAddressModal provider={provider} />
+              </span>
+              <span className="p-1">
+                <WalletConnect provider={provider} />
+              </span>
+            </div>
+          </Col>
+        </Row>
+        {/* {networkComponent} */}
+        {provider ? <RouteView provider = {provider} /> : null}
+      </Container>
+    </HashRouter>
+  );
+};
 
-export default Main;
+export default withCookies(Main);

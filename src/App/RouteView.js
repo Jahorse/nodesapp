@@ -6,21 +6,19 @@
 import React, { Component } from 'react';
 import {
   Container,
-  Nav,
-  NavItem,
-  NavLink,
+  // Nav,
+  // NavItem,
+  // NavLink,
 } from 'reactstrap';
 import {
-  NavLink as RRNavLink,
+  // NavLink as RRNavLink,
   Route,
   Routes,
 } from 'react-router-dom';
 
-import AvalancheHome from './AvalancheHome';
-import Universe from '../Projects/Universe';
-import Vapor from '../Projects/Vapor';
+import Summary from './Summary';
 
-class Avalanche extends Component {
+class RouteView extends Component {
   render() {
     return (
         <Container>
@@ -33,9 +31,9 @@ class Avalanche extends Component {
           </div> */}
           <div className="d-flex justify-content-right p-5">
             <Routes>
-              <Route path="/" element={<AvalancheHome provider = {this.props.provider} />}/>
-              <Route path="/universe" element={<Universe provider = {this.props.provider} />}/>
-              <Route path="/vapor" element={<Vapor provider = {this.props.provider} />}/>
+              <Route path="/" element={<Summary provider = {this.props.provider} />}/>
+              {/* <Route path="/universe" element={<Universe provider = {this.props.provider} />}/>
+              <Route path="/vapor" element={<Vapor provider = {this.props.provider} />}/> */}
             </Routes>
         </div>
       </Container>
@@ -43,4 +41,4 @@ class Avalanche extends Component {
   }
 }
 
-export default Avalanche;
+export default RouteView;
