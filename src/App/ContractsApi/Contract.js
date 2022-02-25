@@ -20,6 +20,7 @@ class Contract {
         }
       });
     }
+    this.nodes = [];
   }
 
   hasCompound() { throw new Error('Calling an abstract method.'); }

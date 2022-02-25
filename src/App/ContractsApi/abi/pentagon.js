@@ -1,4 +1,6 @@
-const abi = [
+export const claimAbi = [ 'function cashoutAll()' ];
+
+export const nodeQueryAbi = [
   {
       "inputs":
       [],
@@ -1390,4 +1392,3 @@ const abi = [
   }
 ];
 
-export default abi;

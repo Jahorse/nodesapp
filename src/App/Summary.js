@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Button, Container, Table } from 'reactstrap';
+import LouvertureContract from './ContractsApi/Louverture';
 import PentagonContract from './ContractsApi/Pentagon';
 import PowerFlatversalContract from './ContractsApi/PowerFlatversalContract';
 import PowerHumanContract from './ContractsApi/PowerHumanContract';
@@ -92,6 +93,7 @@ const Summary = (props) => {
           </tr>
         </thead>
         <tbody>
+          <SummaryRowParent contract={new LouvertureContract(props.provider, cookies.walletAddresses.polygon)} provider= {props.provider} />
           <SummaryRowParent contract={new PentagonContract(props.provider, cookies.walletAddresses.polygon)} provider= {props.provider} />
           <SummaryRowParent contract={new PowerFlatversalContract(props.provider, cookies.walletAddresses.fantom)} provider= {props.provider} />
           <SummaryRowParent contract={new PowerMicroscopicContract(props.provider, cookies.walletAddresses.fantom)} provider= {props.provider} />
