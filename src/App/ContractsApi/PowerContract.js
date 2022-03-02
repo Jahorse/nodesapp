@@ -8,6 +8,8 @@ class PowerContract extends Contract {
     super(provider, walletAddresses, 'Fantom');
     this.contractAddress = contractAddress;
     this.contractName = contractName;
+
+    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
   hasCompound() { return false; }
@@ -46,7 +48,7 @@ class PowerContract extends Contract {
     return null;
   }
 
-  async getNodes() {
+  async fetchNodes() {
     await this.web3AddressPromise;
 
     const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);

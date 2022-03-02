@@ -1,5 +1,9 @@
 class Contract {
   constructor(provider, walletAddresses, networkName) {
+    if(this.constructor === Contract){
+      throw new Error("Instance of abstract Contract class cannot be instantiated");
+    }
+
     this.networkName = networkName;
 
     if (provider.networkName === networkName && provider.ethers.web3) {
@@ -60,7 +64,9 @@ class Contract {
   }
 
   async getNodes() {
-    throw new Error('Calling an abstract method.');
+    await this.fetchPromise;
+
+    return this.nodes;
   }
 }
 

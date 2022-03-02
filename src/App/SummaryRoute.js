@@ -6,8 +6,8 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Button, Container, Table } from 'reactstrap';
-import LouvertureContract from './ContractsApi/Louverture';
-import PentagonContract from './ContractsApi/Pentagon';
+import LouvertureContract from './ContractsApi/LouvertureContract';
+import PentagonContract from './ContractsApi/PentagonContract';
 import PowerFlatversalContract from './ContractsApi/PowerFlatversalContract';
 import PowerHumanContract from './ContractsApi/PowerHumanContract';
 import PowerMicroscopicContract from './ContractsApi/PowerMicroscopicContract';

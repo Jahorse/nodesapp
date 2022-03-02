@@ -1,26 +1,27 @@
 import * as ethers from 'ethers';
 
-import abi from './abi/louverture';
+import {
+  claimAbi,
+  nodeQueryAbi,
+} from './abi/pentagon';
 import Contract from './Contract';
 
 
-class LouvertureContract extends Contract {
-  contractAddress = '0x3Cf1Dff7CCE2b7291456Bc2089b4bCB2AB5f311A';
-  claimContractAddress = '0xff579d6259dedcc80488c9b89d2820bcb5609160';
-  claimContractAbi = [
-    'function addAllNodeValue()', // Compound
-    'function cashoutAll()', // Claim
-  ];
+class PentagonContract extends Contract {
+  nodeQueryContractAddress = '0x1aEa18307D5063d9c4533Ac3093352B1DffeE2Fd';
+  claimContractAddress = '0xF75BC031f362e55967Cf278586bBeB0954442D84';
 
   constructor(provider, walletAddresses) {
-    super(provider, walletAddresses, 'Avalanche');
+    super(provider, walletAddresses, 'Polygon');
+
+    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
-  hasCompound() { return true; }
+  hasCompound() { return false; }
 
-  getName() { return `Louverture`; }
+  getName() { return `Pentagon`; }
 
-  getToken() { return 'LVT'; }
+  getToken() { return 'PENT'; }
 
   showDecimalPlaces() { return 4; }
 
@@ -43,33 +44,30 @@ class LouvertureContract extends Contract {
   }
 
   async compoundAll() {
-    if (!this.signer) {
-      console.error('Tried calling Louverture.compoundAll() without a valid signer.');
-      return null;
-    }
-    const contract = new ethers.Contract(this.claimContractAddress, this.claimContractAbi, this.signer);
-    return contract.addAllNodeValue();
+    console.error('PentagonContract has no compoundAll().');
+    return null;
   }
 
   async claimAll() {
     if (!this.signer) {
-      console.error('Tried calling Louverture.claimAll() without a valid signer.');
+      console.error('Tried calling PentagonContract.claimAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.claimContractAddress, this.claimContractAbi, this.signer);
+    const contract = new ethers.Contract(this.claimContractAddress, claimAbi, this.signer);
     return contract.cashoutAll();
   }
 
-  async getNodes() {
+  async fetchNodes() {
     await this.web3AddressPromise;
 
-    const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
+    const contract = new ethers.Contract(this.nodeQueryContractAddress, nodeQueryAbi, this.jsonRpcProvider);
 
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const [nodeNames, lastClaims, creationTimes, rewards] = [
-          (await contract._getNodesNames(walletAddress)).split('#'),
+        const [nodeTypes, nodeNames, lastClaims, creationTimes, rewards] = [
+          (await contract._getNodesType(walletAddress)).split('#'),
+          (await contract._getNodesName(walletAddress)).split('#'),
           (await contract._getNodesLastClaimTime(walletAddress)).split('#'),
           (await contract._getNodesCreationTime(walletAddress)).split('#'),
           (await contract._getNodesRewardAvailable(walletAddress)).split('#'),
@@ -83,6 +81,7 @@ class LouvertureContract extends Contract {
             creationTime: new Date(parseInt(creationTimes[i]) * 1000),
             lastProcessingTime: lastClaims[i] ? new Date(parseInt(lastClaims[i]) * 1000) : 'Never',
             nextProcessingTime: Date.now(),
+            type: nodeTypes[i],
           };
 
           nodes.push(node);
@@ -96,4 +95,4 @@ class LouvertureContract extends Contract {
   }
 }
 
-export default LouvertureContract;
+export default PentagonContract;

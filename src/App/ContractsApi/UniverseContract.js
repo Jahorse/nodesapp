@@ -8,6 +8,8 @@ class UniverseContract extends Contract {
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
+
+    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
   hasCompound() { return true; }
@@ -65,7 +67,7 @@ class UniverseContract extends Contract {
     return contract.compoundReward(planetId);
   }
 
-  async getNodes() {
+  async fetchNodes() {
     await this.web3AddressPromise;
 
     const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);

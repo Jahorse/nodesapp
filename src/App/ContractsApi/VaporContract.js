@@ -69,6 +69,8 @@ class VaporContract extends Contract {
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
+
+    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
   hasCompound() { return true; }
@@ -116,7 +118,7 @@ class VaporContract extends Contract {
     return contract.claimAll();
   }
 
-  async getNodes() {
+  async fetchNodes() {
     await this.web3AddressPromise;
 
     const storageContract = new ethers.Contract(this.nodeStorageAddress, this.nodeStorageAbi, this.jsonRpcProvider);

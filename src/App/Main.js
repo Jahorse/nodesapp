@@ -11,14 +11,16 @@ import {
   Row,
 } from 'reactstrap';
 import {
+  useCookies,
   withCookies,
 } from 'react-cookie';
 import {
-  HashRouter
+  Navigate,
+  useMatch,
 } from 'react-router-dom';
 
 import { networkIdToNameMap } from './Networking';
-import '../scss/custom.scss';
+
 import { ethers } from 'ethers';
 import RouteView from './RouteView';
 import WalletAddressModal from './WalletAddressModal';
@@ -26,6 +28,50 @@ import WalletConnect from './WalletConnect';
 
 const Main = (props) => {
   const [provider, setProvider] = useState();
+  const [activeProfile, setActiveProfile] = useState();
+  const [cookies, setCookies] = useCookies(['activeProfileName', 'profiles', 'walletAddresses']);
+
+  /**
+   * activeProfileName = 'DJHorse';
+   * profiles = {
+   *   MetaMask: {
+   *     walletAddresses: null,
+   *     disabledProjects: {},
+   *     isWeb3: true,
+   *   },
+   *   DJHorse: {
+   *     walletAddresses: {
+   *       avalanche: [
+   *         '0x80123015',
+   *         '0x80c73f84',
+   *       ],
+   *       fantom: [
+   *         '0x80123015',
+   *       ],
+   *       polygon: [
+   *         '0x80123015',
+   *       ],
+   *     },
+   *     disabledProjects: {
+   *       avalanche: [
+   *         'thor',
+   *       ],
+   *       fantom: [
+   *         'power',
+   *       ],
+   *       polygon: [],
+   *     },
+   *     isWeb3: false,
+   *   },
+   * }
+   *
+   *  */
+
+  if (!cookies.activeProfileName && cookies.profiles && cookies.profiles.length > 0) {
+    const profileNames = Object.keys(cookies.profiles);
+    setCookies('activeProfileName', profileNames[0]);
+    setActiveProfile(cookies.profiles[cookies.activeProfileName]);
+  }
 
   useEffect(() => {
     const getProvider = async () => {
@@ -73,33 +119,18 @@ const Main = (props) => {
 
       setProvider(providerObj);
     }
-    getProvider();
+    // if (activeProfile) {
+      getProvider();
+    // }
   }, []);
 
+
+  const matchTest = useMatch("test");
   return (
-    <HashRouter>
-      <Container>
-        <Row>
-          <Col xs={6} lg={8}>
-            <div className="d-flex justify-content-left p-4">
-              <h1 className='text-dark'>Node Stuff</h1>
-            </div>
-          </Col>
-          <Col xs={3} lg={4}>
-            <div className="d-flex justify-content-center p-4">
-              <span className="p-1">
-                <WalletAddressModal provider={provider} />
-              </span>
-              <span className="p-1">
-                <WalletConnect provider={provider} />
-              </span>
-            </div>
-          </Col>
-        </Row>
-        {/* {networkComponent} */}
-        {provider ? <RouteView provider = {provider} /> : null}
-      </Container>
-    </HashRouter>
+    <Container>
+      {/* {!activeProfile && !matchTest ? <Navigate to="/manage-profiles" replace />: <RouteView provider = {provider} />} */}
+      {provider ? <RouteView provider = {provider} /> : null}
+    </Container>
   );
 };
 
