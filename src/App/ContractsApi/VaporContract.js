@@ -119,8 +119,6 @@ class VaporContract extends Contract {
   }
 
   async fetchNodes() {
-    await this.web3AddressPromise;
-
     const storageContract = new ethers.Contract(this.nodeStorageAddress, this.nodeStorageAbi, this.jsonRpcProvider);
     const controllerContract = new ethers.Contract(this.nodeControllerAddress, this.nodeControllerAbi, this.jsonRpcProvider);
 

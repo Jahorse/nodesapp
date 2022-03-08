@@ -1,59 +1,35 @@
 import { useState } from 'react';
-import { setCookies, useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 import {
   Button,
-  Container,
   Col,
-  Modal,
-  ModalBody,
-  ModalHeader,
   Form,
   FormGroup,
   Input,
   Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Row,
-  Table,
 } from 'reactstrap';
-
-const AddressRow = (props) => {
-  const [cookies, setCookie] = useCookies(['walletAddresses']);
-
-  const removeAddress = () => {
-    const networkName = props.network.toLowerCase();
-    const index = cookies.walletAddresses[networkName].indexOf(props.address);
-    if (index >= 0) {
-      cookies.walletAddresses[networkName].splice(index, 1);
-      setCookie('walletAddresses', cookies.walletAddresses);
-    }
-  }
-
-  return (
-    <tr>
-      <th scope="row">
-        {props.address}
-      </th>
-      <td>
-        {props.network}
-      </td>
-      <td>
-        <Button close color="white" className="btn-close-white" onClick={removeAddress}></Button>
-      </td>
-    </tr>
-  );
-}
+import * as $ from 'jquery';
 
 const WalletAddressModal = (props) => {
+  const cookies = props.cookies;
+  const setCookie = props.setCookie;
+  const profileName = props.profileName;
+  const profile = cookies.profiles[profileName];
   const [modalOpen, setToggleModal] = useState(false);
-  const [cookies, setCookie] = useCookies(['walletAddresses']);
   const [addressInput, setAddressInput] = useState('');
-  const [networkInput, setNetworkInput] = useState('Avalanche');
+  const [networkInput, setNetworkInput] = useState({
+    'Avalanche': false,
+    'Fantom': false,
+    'Polygon': false,
+  });
 
-  if (!cookies.walletAddresses) {
-    setCookie('walletAddresses', {
-      avalanche: [],
-      fantom: [],
-      polygon: [],
-    });
+  if (!cookies.profiles) {
+    setCookie('profiles', []);
   }
 
   const toggleModal = () => {
@@ -61,45 +37,66 @@ const WalletAddressModal = (props) => {
   }
 
   const addWalletAddress = () => {
-    const networkName = networkInput.toLowerCase();
-    if (!cookies.walletAddresses[networkName].includes(addressInput)) {
-      cookies.walletAddresses[networkName].push(addressInput);
-      setCookie('walletAddresses', cookies.walletAddresses);
+    if (!addressInput.startsWith('0x') && addressInput.length < 42) {
+      return;
     }
+    if (!Object.values(networkInput).some((n) => n === true)) {
+      return;
+    }
+
+    if (networkInput.Avalanche && !profile.walletAddresses.avalanche.includes(addressInput)) {
+      profile.walletAddresses.avalanche.push(addressInput);
+    }
+    if (networkInput.Fantom && !profile.walletAddresses.fantom.includes(addressInput)) {
+      profile.walletAddresses.fantom.push(addressInput);
+    }
+    if (networkInput.Polygon && !profile.walletAddresses.polygon.includes(addressInput)) {
+      profile.walletAddresses.polygon.push(addressInput);
+    }
+    cookies.profiles[profileName] = profile;
+    setCookie('profiles', cookies.profiles);
+    toggleModal();
   }
 
-  const addressRows = [];
-  for (const address of cookies.walletAddresses.avalanche) {
-    addressRows.push(<AddressRow key={`avalanche-${address}`} network='Avalanche' address = {address}/>);
-  }
-  for (const address of cookies.walletAddresses.fantom) {
-    addressRows.push(<AddressRow key={`fantom-${address}`} network='Fantom' address = {address}/>);
-  }
-  for (const address of cookies.walletAddresses.polygon) {
-    addressRows.push(<AddressRow key={`polygon-${address}`} network='Polygon' address = {address}/>);
-  }
+  const toggleAvalanche = () => {
+    setNetworkInput({
+      ...networkInput,
+      Avalanche: !networkInput.Avalanche,
+    });
+  };
+  const toggleFantom = () => {
+    setNetworkInput({
+      ...networkInput,
+      Fantom: !networkInput.Fantom,
+    });
+  };
+  const togglePolygon = () => {
+    setNetworkInput({
+      ...networkInput,
+      Polygon: !networkInput.Polygon,
+    });
+  };
+  const toggleAll = () => {
+    const isChecked =  $('#select-all-checkbox').prop('checked')
+    $('#avalanche-checkbox').prop('checked', isChecked);
+    $('#fantom-checkbox').prop('checked', isChecked);
+    $('#polygon-checkbox').prop('checked', isChecked);
+    setNetworkInput({
+      Avalanche: isChecked,
+      Fantom: isChecked,
+      Polygon: isChecked,
+    });
+  };
 
   return (
-    <div>
-      <Button onClick={toggleModal}>Manage Addresses</Button>
+    <>
+      <Button onClick={toggleModal}>Add Wallet Address</Button>
       <Modal isOpen={modalOpen} toggle={toggleModal} size="lg">
         <ModalHeader toggle={toggleModal}>
-          Manage Addresses
+          Add Address
         </ModalHeader>
         <ModalBody>
           <Form>
-            <FormGroup row>
-              <Label for="networkSelect" sm={2}>
-                Network
-              </Label>
-              <Col sm={10}>
-                <Input id="networkSelect" name="select" type="select" value={networkInput} onChange={e => setNetworkInput(e.target.value)}>
-                  <option value='avalanche'>Avalanche</option>
-                  <option value='fantom'>Fantom</option>
-                  <option value='polygon'>Polygon</option>
-                </Input>
-              </Col>
-            </FormGroup>
             <FormGroup row>
               <Label for="walletAddress" sm={2}>Address</Label>
               <Col sm={10}>
@@ -112,27 +109,38 @@ const WalletAddressModal = (props) => {
                 />
               </Col>
             </FormGroup>
-            <FormGroup check row>
-              <Col sm={{ offset: 2, size: 10 }}>
-                <Button onClick={addWalletAddress}>Add</Button>
+            <Row>
+              <Label sm={2}>
+                Networks
+              </Label>
+              <Col sm={10}>
+              <FormGroup check inline>
+                <Input id="avalanche-checkbox" type="checkbox" onClick={toggleAvalanche} />
+                <Label check>Avalanche</Label>
+              </FormGroup>
+              <FormGroup check inline>
+                <Input id="fantom-checkbox" type="checkbox" onClick={toggleFantom} />
+                <Label check>Fantom</Label>
+              </FormGroup>
+              <FormGroup check inline>
+                <Input id="polygon-checkbox" type="checkbox" onClick={togglePolygon} />
+                <Label check>Polygon</Label>
+              </FormGroup>
+              <FormGroup check inline>
+                <Input id="select-all-checkbox" type="checkbox" onClick={toggleAll} />
+                <Label check>All</Label>
+              </FormGroup>
               </Col>
-            </FormGroup>
+            </Row>
           </Form>
-          <Table borderless dark hover responsive striped>
-            <thead>
-              <tr>
-                <th>Address</th>
-                <th>Network</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {addressRows}
-            </tbody>
-          </Table>
         </ModalBody>
+        <ModalFooter>
+          <Button onClick={addWalletAddress}>Add</Button>
+          {' '}
+          <Button onClick={toggleModal}>Cancel</Button>
+        </ModalFooter>
       </Modal>
-    </div>
+    </>
   );
 }
 

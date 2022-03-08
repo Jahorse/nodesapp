@@ -1,17 +1,19 @@
-# Launch Blockers
-1. Move the fetching of nodes from contracts into the top level similar to the provider configuration.
-1. Move nodes into `Contract` so they are encapsulated and don't need to be passed around.
-1. Introduce the profile concepts.
-  - Attached to a wallet address or the connected wallet
-  - Can control which node projects load on it.
+# TASK LIST
+1. Add feature to top right corner to control the active profile.
+  - Should be a dropdown that selects the profile
+  - When MetaMask is selected, another dropdown that selects the network should appear
+
+# Launch Blocker Tasks
 1. Add ability to enable and disable node projects.
 1. The claim and compound buttons should only enable if the wallet address that is claimable is the address of the connected wallet.
   * This requires special treatment of the connected wallet address and the nodes that are attached to it. Should there be a separate table for the connected wallet?
 1. Add a column to the table for USD price.
 
-# TODO List
+# Future Tasks
 1. Figure out how to monitor transactions to show when they're complete
 1. Add detail views for every project that open when you click the row.
+1. Expand the add profile modal to be able to add addresses and projects right away.
+1. Add validation to profile name field, wallet address field: https://reactstrap.github.io/?path=/story/components-forms--form-feedback
 1. Request form for adding nodes https://docs.google.com/forms/d/e/1FAIpQLSe0tIojm2WPAT_i3lkiv5OVMJRyEC14hm5merqH2NrnaPWUOQ/viewform
 
 # Ideas

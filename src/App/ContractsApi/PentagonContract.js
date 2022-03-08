@@ -58,7 +58,6 @@ class PentagonContract extends Contract {
   }
 
   async fetchNodes() {
-    await this.web3AddressPromise;
 
     const contract = new ethers.Contract(this.nodeQueryContractAddress, nodeQueryAbi, this.jsonRpcProvider);
 

@@ -1,18 +1,20 @@
-@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
-$primary: #ff4136;
-$secondary: #ff4136;
-$danger: #ff4136;
-
-// Create your own map
-$custom-colors: (
-  "custom-color": #900
-);
-
-$theme-colors: (
-  "primary": $primary,
-  "danger": $danger
-);
-
-// Merge the maps
-$theme-colors: map-merge($theme-colors, $custom-colors);
+span.divider {
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+span.divider:before, span.divider:after{
+  content: "";
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: auto;
+}
+span.divider:before {
+  margin-right: 10px;
+}
+span.divider:after {
+  margin-left: 10px;
+}

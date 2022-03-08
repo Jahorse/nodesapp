@@ -5,8 +5,8 @@
 
 import React from 'react';
 import {
+  Button,
   Collapse,
-  Container,
   Nav,
   Navbar,
   NavbarBrand,
@@ -21,7 +21,8 @@ import {
 } from 'react-router-dom';
 
 import Summary from './SummaryRoute';
-import TestRoute from './ManageProfilesRoute';
+import ManageAddressesRoute from './ManageAddressesRoute';
+import ManageProfilesRoute from './ManageProfilesRoute';
 
 const RouteView = (props) => {
   let provider;
@@ -29,7 +30,7 @@ const RouteView = (props) => {
     provider = props.provider;
   }
   return (
-      <Container>
+      <>
         <div>
           <Navbar color="dark" dark expand="md">
             <NavbarBrand tag={RRNavLink} to="/">
@@ -37,20 +38,20 @@ const RouteView = (props) => {
             </NavbarBrand>
             <Collapse navbar>
               <Nav className="me-auto" navbar>
-                {/* <NavItem><NavLink tag={RRNavLink} to="/">Summary</NavLink></NavItem> */}
                 <NavItem><NavLink tag={RRNavLink} to="/manage-profiles">Manage Profiles</NavLink></NavItem>
               </Nav>
-              <NavbarText>Connected</NavbarText>
+              <NavbarText><Button>{props.profileName.replace('_', '')}</Button></NavbarText>
             </Collapse>
           </Navbar>
         </div>
         <div className="d-flex justify-content-center p-5">
           <Routes>
-            {provider ? <Route path="/" element={<Summary provider = {provider} />} /> : null}
-            <Route path="/manage-profiles" element={<TestRoute />} />
+            {provider ? <Route path="/" element={<Summary profile={props.profile} provider={provider} />} /> : null}
+            <Route path="/manage-profiles" element={<ManageProfilesRoute />} />
+            <Route path="/manage-profile/:profileName" element={<ManageAddressesRoute />} />
           </Routes>
       </div>
-    </Container>
+    </>
   );
 }
 

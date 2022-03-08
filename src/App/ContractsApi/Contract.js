@@ -16,14 +16,6 @@ class Contract {
     this.jsonRpcProvider = provider.ethers[networkName.toLowerCase()];
     this.walletAddresses = [...walletAddresses];
 
-    this.web3AddressPromise = null;
-    if (provider.ethers.signer) {
-      this.web3AddressPromise = provider.ethers.signer.getAddress().then(a => {
-        if (!this.walletAddresses.includes(a)) {
-          this.walletAddresses.push(a);
-        }
-      });
-    }
     this.nodes = [];
   }
 

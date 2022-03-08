@@ -7,8 +7,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Col,
-  Row,
 } from 'reactstrap';
 import {
   useCookies,
@@ -23,13 +21,8 @@ import { networkIdToNameMap } from './Networking';
 
 import { ethers } from 'ethers';
 import RouteView from './RouteView';
-import WalletAddressModal from './WalletAddressModal';
-import WalletConnect from './WalletConnect';
 
-const Main = (props) => {
-  const [provider, setProvider] = useState();
-  const [activeProfile, setActiveProfile] = useState();
-  const [cookies, setCookies] = useCookies(['activeProfileName', 'profiles', 'walletAddresses']);
+import '../scss/custom.scss';
 
   /**
    * activeProfileName = 'DJHorse';
@@ -67,69 +60,97 @@ const Main = (props) => {
    *
    *  */
 
-  if (!cookies.activeProfileName && cookies.profiles && cookies.profiles.length > 0) {
+const Main = (props) => {
+  const [cookies, setCookie] = useCookies(['activeProfileName', 'profiles']);
+  const [provider, setProvider] = useState();
+  const [activeProfile, setActiveProfile] = useState();
+  const [hasNoProfiles, setHasNoProfiles] = useState(false);
+
+  if (!cookies.profiles) {
+    setCookie('profiles', {});
+  }
+  const profileNames = Object.keys(cookies.profiles);
+
+  // If the active profile isn't set, or it is set to something that isn't in the profiles list,
+  // and we have profiles in the list, we will change the active profile to the next in the list.
+  if ((!cookies.activeProfileName || !profileNames.includes(cookies.activeProfileName))
+    && cookies.profiles
+    && Object.keys(cookies.profiles).length > 0
+  ) {
     const profileNames = Object.keys(cookies.profiles);
-    setCookies('activeProfileName', profileNames[0]);
-    setActiveProfile(cookies.profiles[cookies.activeProfileName]);
+    setCookie('activeProfileName', profileNames[0]);
   }
 
   useEffect(() => {
-    const getProvider = async () => {
-      let walletUnlocked = false;
+    if (cookies.activeProfileName && cookies.profiles[cookies.activeProfileName]) {
+      setActiveProfile(cookies.profiles[cookies.activeProfileName]);
+    } else {
+      setHasNoProfiles(true);
+    }
+  }, []);
 
-      let ethersProvider;
-      try {
-        ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-      } catch {
-        ethersProvider = null;
+  useEffect(() => {
+    const getProvider = async () => {
+      let profile;
+      if (cookies.activeProfileName) {
+        profile = cookies.profiles[cookies.activeProfileName];
       }
 
-      const providerObj = {
+      let providerObj = {
         ethers: {
           web3: null,
           signer: null,
-          avalanche: new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'),
-          fantom: new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/'),
-          polygon: new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/'),
+          avalanche: null,
+          fantom: null,
+          polygon: null,
         },
         networkName: null,
       };
-
-      if (ethersProvider) {
-        await ethersProvider.getSigner().getAddress()
-          .then((_) => {
-            walletUnlocked = true;
-          }).catch((_) => {
-            walletUnlocked = false
+      if (profile) {
+        if (profile.isWeb3) {
+          const ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+          const addresses = await ethersProvider.send('eth_requestAccounts', []);
+          ethersProvider.on('network', (newNetwork, oldNetwork) => {
+            if (oldNetwork) {
+              window.location.reload();
+            }
           });
-      }
 
-      if (walletUnlocked) {
-        await ethersProvider.send('eth_requestAccounts', []);
-        ethersProvider.on('network', (newNetwork, oldNetwork) => {
-          if (oldNetwork) {
-            window.location.reload();
+          providerObj.ethers.signer = ethersProvider.getSigner();
+          providerObj.ethers.web3 = ethersProvider;
+          providerObj.networkName = networkIdToNameMap[(await ethersProvider.getNetwork()).chainId];
+          providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
+          providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
+          providerObj.ethers.polygon = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
+
+        } else {
+          if (profile.walletAddresses.avalanche.length > 0) {
+            providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
           }
-        });
-
-        providerObj.ethers.signer = ethersProvider.getSigner();
-        providerObj.ethers.web3 = ethersProvider;
-        providerObj.networkName = networkIdToNameMap[(await ethersProvider.getNetwork()).chainId];
+          if (profile.walletAddresses.fantom.length > 0) {
+            providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
+          }
+          if (profile.walletAddresses.polygon.length > 0) {
+            providerObj.ethers.polygon = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
+          }
+        }
       }
 
       setProvider(providerObj);
     }
-    // if (activeProfile) {
+    if (activeProfile) {
       getProvider();
-    // }
-  }, []);
+    }
+  }, [activeProfile]);
 
 
-  const matchTest = useMatch("test");
+
+  const onManageProfilesPage = useMatch("manage-profiles");
+  const shouldRedirect = !onManageProfilesPage && hasNoProfiles;
   return (
     <Container>
-      {/* {!activeProfile && !matchTest ? <Navigate to="/manage-profiles" replace />: <RouteView provider = {provider} />} */}
-      {provider ? <RouteView provider = {provider} /> : null}
+      {shouldRedirect ? <Navigate to="/manage-profiles" replace /> : null}
+      {(provider || onManageProfilesPage) ? <RouteView profileName={cookies.activeProfileName} profile={activeProfile} provider={provider} /> : null}
     </Container>
   );
 };

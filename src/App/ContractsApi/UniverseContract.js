@@ -68,8 +68,6 @@ class UniverseContract extends Contract {
   }
 
   async fetchNodes() {
-    await this.web3AddressPromise;
-
     const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
 
     const nodes = [];

@@ -29,7 +29,7 @@ const WalletConnect = (props) => {
     }
   };
 
-  if (props. provider && props.provider.networkName) {
+  if (props.provider && props.provider.networkName) {
     return (
       <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle caret color='secondary'>{props.provider.networkName} Network</DropdownToggle>

@@ -1,14 +1,12 @@
 import * as ethers from 'ethers';
 
-import abi from './abi/louverture';
+import abi from './abi/nebula';
 import Contract from './Contract';
 
-
-class LouvertureContract extends Contract {
-  contractAddress = '0x3Cf1Dff7CCE2b7291456Bc2089b4bCB2AB5f311A';
-  claimContractAddress = '0xff579d6259dedcc80488c9b89d2820bcb5609160';
+class NebulaContract extends Contract {
+  contractAddress = '0xd311d77c8F4665bdA9e684Cd08f8991f364AbEF5';
+  claimContractAddress = '0x1aEa17a08EdE10D158baac969f809E6747cb2B22';
   claimContractAbi = [
-    'function addAllNodeValue()', // Compound
     'function cashoutAll()', // Claim
   ];
 
@@ -18,13 +16,13 @@ class LouvertureContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
-  hasCompound() { return true; }
+  hasCompound() { return false; }
 
-  getName() { return `Louverture`; }
+  getName() { return `Nebula`; }
 
-  getToken() { return 'LVT'; }
+  getToken() { return 'NEBU'; }
 
-  showDecimalPlaces() { return 4; }
+  showDecimalPlaces() { return 3; }
 
   getTotalRewards(nodes, compounding) {
     let rewards = 0;
@@ -45,17 +43,13 @@ class LouvertureContract extends Contract {
   }
 
   async compoundAll() {
-    if (!this.signer) {
-      console.error('Tried calling Louverture.compoundAll() without a valid signer.');
-      return null;
-    }
-    const contract = new ethers.Contract(this.claimContractAddress, this.claimContractAbi, this.signer);
-    return contract.addAllNodeValue();
+    console.error('Nebula.compoundAll() is not implemented.');
+    return;
   }
 
   async claimAll() {
     if (!this.signer) {
-      console.error('Tried calling Louverture.claimAll() without a valid signer.');
+      console.error('Tried calling Nebula.claimAll() without a valid signer.');
       return null;
     }
     const contract = new ethers.Contract(this.claimContractAddress, this.claimContractAbi, this.signer);
@@ -68,18 +62,18 @@ class LouvertureContract extends Contract {
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const [nodeNames, lastClaims, creationTimes, rewards] = [
-          (await contract._getNodesNames(walletAddress)).split('#'),
-          (await contract._getNodesLastClaimTime(walletAddress)).split('#'),
-          (await contract._getNodesCreationTime(walletAddress)).split('#'),
-          (await contract._getNodesRewardAvailable(walletAddress)).split('#'),
-        ]
+        const [nodeNames, lastClaims, creationTimes] = [
+          (await contract.getNodesNames(walletAddress)).split('#'),
+          (await contract.getNodesLastClaimTime(walletAddress)).split('#'),
+          (await contract.getNodesCreationTime(walletAddress)).split('#'),
+        ];
 
         for (const i in nodeNames) {
+          const rewards = await contract.getNodeReward(walletAddress, creationTimes[i]);
 
           const node = {
             name: nodeNames[i],
-            rewards: parseInt(rewards[i]) / 1e18,
+            rewards: parseInt(rewards.toHexString(), 16) / 1e18,
             creationTime: new Date(parseInt(creationTimes[i]) * 1000),
             lastProcessingTime: lastClaims[i] ? new Date(parseInt(lastClaims[i]) * 1000) : 'Never',
             nextProcessingTime: Date.now(),
@@ -96,4 +90,4 @@ class LouvertureContract extends Contract {
   }
 }
 
-export default LouvertureContract;
+export default NebulaContract;
