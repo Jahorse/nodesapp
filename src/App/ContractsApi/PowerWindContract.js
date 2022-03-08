@@ -1,14 +1,18 @@
 import PowerContract from './PowerContract';
 
-class PowerMicroscopicContract extends PowerContract {
+class PowerWindContract extends PowerContract {
   constructor(provider, walletAddresses) {
     super(
       provider,
       walletAddresses,
       '0xFb717Be387F0FAB42A55772ef5CC55B4c324DabD',
-      'Flatversal'
+      'Wind',
     );
+  }
+
+  async claimAll() {
+    PowerContract.prototype.claimAllTier.call(this, 'FLATVERSAL');
   }
 }
 
-export default PowerMicroscopicContract;
+export default PowerWindContract;

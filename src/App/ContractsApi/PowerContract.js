@@ -4,6 +4,12 @@ import abi from './abi/thor';
 import Contract from './Contract';
 
 class PowerContract extends Contract {
+  nodeManagerContractAddress = '0xa51b7f5071868d8bdc3619d9e5dddd5fb8c1ab90';
+  tiersContractAddress = '0xf9F64b2c62210E6aCC266169da7026F209CeCd52';
+  tiersContractAbi = [
+    'function cashoutAll(string tierName)', // Claim
+  ];
+
   constructor(provider, walletAddresses, contractAddress, contractName) {
     super(provider, walletAddresses, 'Fantom');
     this.contractAddress = contractAddress;
@@ -30,11 +36,11 @@ class PowerContract extends Contract {
   }
 
   isClaimable(nodes) {
-    // for (const node of nodes) {
-    //   if (node.nextProcessingTime < Date.now()) {
-    //     return true;
-    //   }
-    // }
+    for (const node of nodes) {
+      if (node.nextProcessingTime < Date.now()) {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -43,9 +49,13 @@ class PowerContract extends Contract {
     return null;
   }
 
-  async claimAll() {
-    console.error('PowerContract has no claimAll().');
-    return null;
+  async claimAllTier(tier) {
+    if (!this.signer) {
+      console.error('Tried calling Power.claimAll() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.tiersContractAddress, this.tiersContractAbi, this.signer);
+    return contract.cashoutAll(tier);
   }
 
   async fetchNodes() {

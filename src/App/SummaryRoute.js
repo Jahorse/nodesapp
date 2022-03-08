@@ -11,10 +11,10 @@ import SummaryRow from './SummaryRow';
 import LouvertureContract from './ContractsApi/LouvertureContract';
 import NebulaContract from './ContractsApi/NebulaContract';
 import PentagonContract from './ContractsApi/PentagonContract';
-import PowerFlatversalContract from './ContractsApi/PowerFlatversalContract';
-import PowerHumanContract from './ContractsApi/PowerHumanContract';
-import PowerMicroscopicContract from './ContractsApi/PowerMicroscopicContract';
-import PowerSuperhumanContract from './ContractsApi/PowerSuperhumanContract';
+import PowerSolarContract from './ContractsApi/PowerSolarContract';
+import PowerHydroContract from './ContractsApi/PowerHydroContract';
+import PowerWindContract from './ContractsApi/PowerWindContract';
+import PowerNuclearContract from './ContractsApi/PowerNuclearContract';
 import ThorFreyaContract from './ContractsApi/ThorFreyaContract';
 import ThorHeimdallContract from './ContractsApi/ThorHeimdallContract';
 import ThorOdinContract from './ContractsApi/ThorOdinContract';
@@ -54,10 +54,10 @@ const addFantom = (profile, provider) => {
   const addresses = profile.walletAddresses.fantom;
   return (
     <>
-      <SummaryRow contract={new PowerFlatversalContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new PowerMicroscopicContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new PowerHumanContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new PowerSuperhumanContract(provider, addresses)} provider= {provider} />
+      <SummaryRow contract={new PowerSolarContract(provider, addresses)} provider= {provider} />
+      <SummaryRow contract={new PowerWindContract(provider, addresses)} provider= {provider} />
+      <SummaryRow contract={new PowerHydroContract(provider, addresses)} provider= {provider} />
+      <SummaryRow contract={new PowerNuclearContract(provider, addresses)} provider= {provider} />
     </>
   );
 }
