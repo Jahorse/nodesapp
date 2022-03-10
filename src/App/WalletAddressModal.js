@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useCookies } from 'react-cookie';
 import {
   Button,
   Col,
@@ -13,7 +12,7 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 const WalletAddressModal = (props) => {
   const cookies = props.cookies;

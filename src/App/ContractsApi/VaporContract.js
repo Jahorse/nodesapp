@@ -73,6 +73,8 @@ class VaporContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
+  hasClaim() { return true; }
+
   hasCompound() { return true; }
 
   getName() { return 'Vapor'; }
@@ -88,16 +90,6 @@ class VaporContract extends Contract {
     }
 
     return rewards;
-  }
-
-  isClaimable(planets) {
-    for (const planet of planets) {
-      if (planet.nextProcessingTime < Date.now()) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   async compoundAll() {

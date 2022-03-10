@@ -1,8 +1,3 @@
-/**
- * Copyright David Horsman. All Rights Reserved.
- * SPDX-License-Identifier: Attribution-NonCommercial-NoDerivatives 4.0 International
- */
-
 import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import {

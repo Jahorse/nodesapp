@@ -1,8 +1,3 @@
-/**
- * Copyright David Horsman. All Rights Reserved.
- * SPDX-License-Identifier: Attribution-NonCommercial-NoDerivatives 4.0 International
- */
-
 import React from 'react';
 import {
   Button,
@@ -23,6 +18,7 @@ import {
 import Summary from './SummaryRoute';
 import ManageAddressesRoute from './ManageAddressesRoute';
 import ManageProfilesRoute from './ManageProfilesRoute';
+import PropfileMenu from './ProfileMenu';
 
 const RouteView = (props) => {
   let provider;
@@ -40,7 +36,9 @@ const RouteView = (props) => {
               <Nav className="me-auto" navbar>
                 <NavItem><NavLink tag={RRNavLink} to="/manage-profiles">Manage Profiles</NavLink></NavItem>
               </Nav>
-              <NavbarText><Button>{props.profileName.replace('_', '')}</Button></NavbarText>
+              <NavbarText>
+                <PropfileMenu />
+              </NavbarText>
             </Collapse>
           </Navbar>
         </div>

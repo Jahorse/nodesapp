@@ -16,6 +16,10 @@ class NebulaContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
+  swapLink() { return 'https://traderjoexyz.com/trade?outputCurrency=0x1aEa17a08EdE10D158baac969f809E6747cb2B22#/'; }
+
+  hasClaim() { return true; }
+
   hasCompound() { return false; }
 
   getName() { return `Nebula`; }
@@ -31,15 +35,6 @@ class NebulaContract extends Contract {
     }
 
     return rewards;
-  }
-
-  isClaimable(nodes) {
-    for (const node of nodes) {
-      if (node.nextProcessingTime <= Date.now()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   async compoundAll() {

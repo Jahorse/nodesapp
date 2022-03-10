@@ -17,6 +17,10 @@ class PentagonContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
+  swapLink() { return 'https://quickswap.exchange/#/swap?outputCurrency=0x283366bb42ef49a994913baf22263c6562e588a4'; }
+
+  hasClaim() { return true; }
+
   hasCompound() { return false; }
 
   getName() { return `Pentagon`; }
@@ -32,15 +36,6 @@ class PentagonContract extends Contract {
     }
 
     return rewards;
-  }
-
-  isClaimable(nodes) {
-    for (const node of nodes) {
-      if (node.nextProcessingTime <= Date.now()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   async compoundAll() {

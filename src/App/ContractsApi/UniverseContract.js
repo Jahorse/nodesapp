@@ -12,6 +12,8 @@ class UniverseContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
+  hasClaim() { return true; }
+
   hasCompound() { return true; }
 
   getName() { return 'Universe'; }
@@ -29,15 +31,6 @@ class UniverseContract extends Contract {
         rewards = rewards + (rewards * 0.1);
     }
     return rewards;
-  }
-
-  isClaimable(nodes) {
-    for (const node of nodes) {
-      if (node.nextProcessingTime < Date.now()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   async compoundAll() {

@@ -18,6 +18,8 @@ class LouvertureContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
+  hasClaim() { return true; }
+
   hasCompound() { return true; }
 
   getName() { return `Louverture`; }
@@ -33,15 +35,6 @@ class LouvertureContract extends Contract {
     }
 
     return rewards;
-  }
-
-  isClaimable(nodes) {
-    for (const node of nodes) {
-      if (node.nextProcessingTime <= Date.now()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   async compoundAll() {

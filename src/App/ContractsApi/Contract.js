@@ -19,6 +19,7 @@ class Contract {
     this.nodes = [];
   }
 
+  hasClaim() { throw new Error('Calling an abstract method.'); }
   hasCompound() { throw new Error('Calling an abstract method.'); }
 
   getNetworkName() { return this.networkName; }
@@ -38,13 +39,21 @@ class Contract {
     return rewards;
   }
 
-  isClaimable(nodes) {
-    for (const node of nodes) {
-      if (node.nextProcessingTime < Date.now()) {
-        return true;
+  timeUntilClaim() {
+    const now = Date.now();
+
+    let shortestTimeDiff = Number.MAX_SAFE_INTEGER;
+    for (const node of this.nodes) {
+      const timeDiff = node.nextProcessingTime - now;
+      if (timeDiff < shortestTimeDiff) {
+        shortestTimeDiff = timeDiff;
       }
     }
-    return false;
+
+    if (shortestTimeDiff/100 <= 20) {
+      return 0;
+    }
+    return shortestTimeDiff;
   }
 
   async compoundAll() {

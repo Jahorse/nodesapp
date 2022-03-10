@@ -1,5 +1,3 @@
-
-
 export const networkIdToNameMap = {
   1: "Ethereum",
   137: "Polygon",

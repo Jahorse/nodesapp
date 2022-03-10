@@ -12,6 +12,8 @@ class ThorContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
+  hasClaim() { return false; }
+
   hasCompound() { return false; }
 
   getName() { return `Thor ${this.contractName}`; }
@@ -27,15 +29,6 @@ class ThorContract extends Contract {
     }
 
     return rewards;
-  }
-
-  isClaimable(nodes) {
-    // for (const node of nodes) {
-    //   if (node.nextProcessingTime < Date.now()) {
-    //     return true;
-    //   }
-    // }
-    return false;
   }
 
   async compoundAll() {

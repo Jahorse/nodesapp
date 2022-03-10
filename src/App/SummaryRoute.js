@@ -1,10 +1,4 @@
-/**
- * Copyright David Horsman. All Rights Reserved.
- * SPDX-License-Identifier: Attribution-NonCommercial-NoDerivatives 4.0 International
- */
-
 import React from 'react';
-import { useCookies } from 'react-cookie';
 import { Container, Table } from 'reactstrap';
 
 import SummaryRow from './SummaryRow';
@@ -72,8 +66,6 @@ const addPolygon = (profile, provider) => {
 }
 
 const Summary = (props) => {
-  const [cookies] = useCookies(['walletAddresses']);
-
   const networks = selectNetworks(props.provider.ethers);
 
   return (
