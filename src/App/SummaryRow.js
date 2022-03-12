@@ -21,75 +21,48 @@ function dhm(t){
 
 const SummaryRowChild = (props) => {
   const contract = props.contract;
-  const contractNetworkName = contract.getNetworkName();
 
-  let claimAll;
-  let compoundAll;
-  // // We will assume that the node project has some kind of claim feature
+  const columns = [
+    (<th scope="row">{contract.getName()}</th>),
+    (<td>{parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces())} {contract.getToken()}</td>),
+  ];
 
-  // // Check if we're connected to the correct network to claim
-  // if (props.provider && props.provider.networkName !== contractNetworkName) {
-  //   claimAll = <Button disabled>Connect to {contractNetworkName}</Button>;
-  //   compoundAll = <Button disabled>Connect to {contractNetworkName}</Button>;
+  if (props.isWeb3) {
+    const contractNetworkName = contract.getNetworkName();
+    let claimAll;
+    let compoundAll;
 
-  // // If we're connected to the correct network, check if the rewards are claimable yet (show a countdown?)
-  // } else if (contract.isClaimable(props.nodeInfo)) {
-  //   claimAll = <Button onClick={() => contract.claimAll(props.signer)}>Claim All</Button>;
-
-  //   // If we're connected, check if the contract has a compound feature so we can enable the button
-  //   if (contract.hasCompound()) {
-  //     compoundAll = <Button onClick={() => contract.compoundAll(props.signer)}>Compound All</Button>
-  //   } else {
-  //     compoundAll = <Button disabled>Compound All</Button>;
-  //   }
-
-  // // If we're connected but rewards aren't claimable, disable the buttons
-  // } else {
-  //   claimAll = <Button disabled>Claim All</Button>;
-  //   compoundAll = <Button disabled>Compound All</Button>;
-  // }
-
-  // NEW LOGIC
-  const timeUntilClaim = contract.timeUntilClaim();
-  if (contract.hasClaim()) {
-    if (timeUntilClaim === 0) {
-      if (props.provider && props.provider.networkName === contractNetworkName) {
-        claimAll = <Button onClick={() => contract.claimAll(props.signer)}>Claim All</Button>;
-      } else {
-        claimAll = <Button disabled>Connect to {contractNetworkName}</Button>;
+    // NEW LOGIC
+    const timeUntilClaim = contract.timeUntilClaim();
+    if (contract.hasClaim()) {
+      if (timeUntilClaim === 0) {
+        if (props.provider && props.provider.networkName === contractNetworkName) {
+          claimAll = <Button onClick={() => contract.claimAll(props.signer)}>Claim All</Button>;
+        } else {
+          claimAll = <Button disabled>Connect to {contractNetworkName}</Button>;
+        }
+      }  else {
+        claimAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
       }
-    }  else {
-      claimAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
     }
-  }
-  if (contract.hasCompound()) {
-    if (timeUntilClaim === 0) {
-      if (props.provider && props.provider.networkName === contractNetworkName) {
-        compoundAll = <Button onClick={() => contract.compoundAll(props.signer)}>Compound All</Button>;
-      } else {
-        compoundAll = <Button disabled>Connect to {contractNetworkName}</Button>;
+    if (contract.hasCompound()) {
+      if (timeUntilClaim === 0) {
+        if (props.provider && props.provider.networkName === contractNetworkName) {
+          compoundAll = <Button onClick={() => contract.compoundAll(props.signer)}>Compound All</Button>;
+        } else {
+          compoundAll = <Button disabled>Connect to {contractNetworkName}</Button>;
+        }
+      }  else {
+        compoundAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
       }
-    }  else {
-      compoundAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
     }
+    columns.push(
+      (<td>{claimAll}</td>),
+      (<td>{compoundAll}</td>),
+    );
   }
 
-  return (
-    <tr>
-      <th scope="row">
-        {contract.getName()}
-      </th>
-      <td>
-        {parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces())} {contract.getToken()}
-      </td>
-      <td>
-        {claimAll}
-      </td>
-      <td>
-        {compoundAll}
-      </td>
-    </tr>
-  );
+  return (<tr>{columns}</tr>);
 }
 
 const SummaryRow = (props) => {
@@ -100,7 +73,9 @@ const SummaryRow = (props) => {
     }
     getNodeData();
   }, [props.contract]);
-  return (nodeInfo && nodeInfo.length > 0) ? <SummaryRowChild provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} /> : null;
+  return (nodeInfo && nodeInfo.length > 0)
+    ? <SummaryRowChild provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
+    : null;
 }
 
 export default SummaryRow;

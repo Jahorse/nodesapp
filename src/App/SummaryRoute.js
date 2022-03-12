@@ -28,39 +28,39 @@ const selectNetworks = (providers) => {
   return networks;
 };
 
-const addAvalanche = (profile, provider) => {
+const addAvalanche = (profile, provider, isWeb3) => {
   const addresses = profile.walletAddresses.avalanche;
   return (
     <>
-      <SummaryRow contract={new LouvertureContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new NebulaContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new ThorHeimdallContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new ThorFreyaContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new ThorThorContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new ThorOdinContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new UniverseContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new VaporContract(provider, addresses)} provider= {provider} />
+      <SummaryRow contract={new LouvertureContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new NebulaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new ThorHeimdallContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new ThorFreyaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new ThorThorContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new ThorOdinContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new UniverseContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new VaporContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
     </>
   );
 }
 
-const addFantom = (profile, provider) => {
+const addFantom = (profile, provider, isWeb3) => {
   const addresses = profile.walletAddresses.fantom;
   return (
     <>
-      <SummaryRow contract={new PowerSolarContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new PowerWindContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new PowerHydroContract(provider, addresses)} provider= {provider} />
-      <SummaryRow contract={new PowerNuclearContract(provider, addresses)} provider= {provider} />
+      <SummaryRow contract={new PowerSolarContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new PowerWindContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new PowerHydroContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new PowerNuclearContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
     </>
   );
 }
 
-const addPolygon = (profile, provider) => {
+const addPolygon = (profile, provider, isWeb3) => {
   const addresses = profile.walletAddresses.polygon;
   return (
     <>
-      <SummaryRow contract={new PentagonContract(provider, addresses)} provider= {provider} />
+      <SummaryRow contract={new PentagonContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
     </>
   );
 }
@@ -68,21 +68,25 @@ const addPolygon = (profile, provider) => {
 const Summary = (props) => {
   const networks = selectNetworks(props.provider.ethers);
 
+  const isWeb3 = props.provider.ethers.web3 ? true : false;
+
+  const tableHeaders = [(<th>Project</th>), (<th>Rewards</th>)];
+  if (isWeb3) {
+    tableHeaders.push((<th>Claim</th>), (<th>Compound</th>));
+  }
+
   return (
     <Container fluid>
       <Table borderless dark hover responsive striped>
         <thead>
           <tr>
-            <th>Project</th>
-            <th>Rewards</th>
-            <th>Claim</th>
-            <th>Compound</th>
+            {tableHeaders}
           </tr>
         </thead>
         <tbody>
-          {networks.includes('avalanche') ? addAvalanche(props.profile, props.provider) : null}
-          {networks.includes('fantom') ? addFantom(props.profile, props.provider) : null}
-          {networks.includes('polygon') ? addPolygon(props.profile, props.provider) : null}
+          {networks.includes('avalanche') ? addAvalanche(props.profile, props.provider, isWeb3) : null}
+          {networks.includes('fantom') ? addFantom(props.profile, props.provider, isWeb3) : null}
+          {networks.includes('polygon') ? addPolygon(props.profile, props.provider, isWeb3) : null}
         </tbody>
       </Table>
     </Container>

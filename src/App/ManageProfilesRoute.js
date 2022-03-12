@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import {
   Button,
@@ -46,10 +46,9 @@ const ProfileRow = (props) => {
 }
 
 const ManageProfilesRoute = (props) => {
-  const [cookies, setCookies] = useCookies(['activeProfileName', 'profiles']);
+  const [cookies] = useCookies(['activeProfileName', 'profiles']);
 
   const profiles = cookies.profiles ? cookies.profiles : {};
-  const activeProfileName = cookies.activeProfileName ?? cookies.activeProfileName;
 
   const profileRows = [];
   for (const profileName of Object.keys(profiles)) {

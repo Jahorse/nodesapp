@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   useCookies,
 } from 'react-cookie';
@@ -37,14 +37,23 @@ const PropfileMenu = (props) => {
     }
   }
 
+  let menuText;
+  if (cookies.activeProfileName) {
+    if (cookies.activeProfileName === '_MetaMask') {
+      menuText = props.networkName;
+    } else {
+      menuText = cookies.activeProfileName;
+    }
+  } else {
+    menuText = "Not Connected";
+  }
+
   return (
     <ButtonDropdown isOpen={menuOpen} toggle={toggleMenu}>
       <DropdownToggle caret>
-        {cookies.activeProfileName.replace('_', '')}
+        {menuText}
       </DropdownToggle>
-      <DropdownMenu>
-        {dropdownItems}
-      </DropdownMenu>
+      {dropdownItems.length > 0 ? <DropdownMenu>{dropdownItems}</DropdownMenu> : null}
     </ButtonDropdown>
   );
 };

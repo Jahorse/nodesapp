@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Collapse,
   Nav,
   Navbar,
@@ -37,7 +36,7 @@ const RouteView = (props) => {
                 <NavItem><NavLink tag={RRNavLink} to="/manage-profiles">Manage Profiles</NavLink></NavItem>
               </Nav>
               <NavbarText>
-                <PropfileMenu />
+                <PropfileMenu networkName={provider?.networkName} />
               </NavbarText>
             </Collapse>
           </Navbar>

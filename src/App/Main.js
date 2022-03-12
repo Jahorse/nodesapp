@@ -81,7 +81,7 @@ const Main = (props) => {
     } else {
       setHasNoProfiles(true);
     }
-  }, []);
+  }, [cookies.activeProfileName, cookies.profiles]);
 
   useEffect(() => {
     const getProvider = async () => {
@@ -103,7 +103,7 @@ const Main = (props) => {
       if (profile) {
         if (profile.isWeb3) {
           const ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-          const addresses = await ethersProvider.send('eth_requestAccounts', []);
+          await ethersProvider.send('eth_requestAccounts', []);
           ethersProvider.on('network', (newNetwork, oldNetwork) => {
             if (oldNetwork) {
               window.location.reload();
@@ -135,7 +135,7 @@ const Main = (props) => {
     if (activeProfile) {
       getProvider();
     }
-  }, [activeProfile]);
+  }, [activeProfile, cookies.activeProfileName, cookies.profiles]);
 
 
 
