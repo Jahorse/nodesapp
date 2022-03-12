@@ -1,5 +1,5 @@
 import Contract from './Contract';
-import { getPriceDs } from '../Utils';
+import { getPriceCg, getPriceDs } from '../Utils';
 import abi from './abi/ascend-helper';
 
 class AscendContract extends Contract {
@@ -35,7 +35,7 @@ class AscendContract extends Contract {
   showDecimalPlaces() { return 0; }
 
   async getPriceUsd() {
-    return await getPriceDs('avalanche', '0x785a7356731dac36747cb46f4a98a80202aabb23');
+    return await getPriceCg('ascend-node-club');
   }
 
   getTotalRewards(nodes, compounding) {

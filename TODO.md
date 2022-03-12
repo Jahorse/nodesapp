@@ -18,6 +18,7 @@
 1. Expand the add profile modal to be able to add addresses and projects right away.
 1. Add validation to profile name field, wallet address field: https://reactstrap.github.io/?path=/story/components-forms--form-feedback
 1. Request form for adding nodes https://docs.google.com/forms/d/e/1FAIpQLSe0tIojm2WPAT_i3lkiv5OVMJRyEC14hm5merqH2NrnaPWUOQ/viewform
+1. Update countdown timers to actually count down
 
 # Ideas
 1. Should Pentagon tiers be split out? This would be nice visually, but the claim feature would be difficult to use. Maybe only split them out in a detail view.

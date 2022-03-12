@@ -80,8 +80,9 @@ const Summary = (props) => {
 
   const tableHeaders = [
     (<th key='header-project'>Project</th>),
+    (<th key='header-project'>Token Price</th>),
     (<th key='header-rewards'>Rewards</th>),
-    // (<th key='header-usd'>USD</th>),
+    (<th key='header-usd'>Rewards USD</th>),
   ];
   if (isWeb3) {
     tableHeaders.push(

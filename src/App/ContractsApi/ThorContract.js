@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 import abi from './abi/thor';
 import Contract from './Contract';
-import { getPriceDs } from '../Utils';
+import { getPriceCg } from '../Utils';
 
 class ThorContract extends Contract {
   constructor(provider, walletAddresses, contractAddress, contractName) {
@@ -24,7 +24,7 @@ class ThorContract extends Contract {
   showDecimalPlaces() { return 4; }
 
   async getPriceUsd() {
-    return await getPriceDs('avalanche', '0x95189f25b4609120f72783e883640216e92732da');
+    return await getPriceCg('thor');
   }
 
   getTotalRewards(nodes, compounding) {

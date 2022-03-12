@@ -2,7 +2,7 @@ import * as ethers from 'ethers';
 
 import abi from './abi/louverture';
 import Contract from './Contract';
-
+import { getPriceCg } from '../Utils';
 
 class LouvertureContract extends Contract {
   contractAddress = '0x3Cf1Dff7CCE2b7291456Bc2089b4bCB2AB5f311A';
@@ -18,15 +18,19 @@ class LouvertureContract extends Contract {
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
-  hasClaim() { return true; }
+  hasClaim() { return false; } // TODO: Update when they finish migrating
 
-  hasCompound() { return true; }
+  hasCompound() { return false; }
 
   getName() { return `Louverture`; }
 
   getToken() { return 'LVT'; }
 
   showDecimalPlaces() { return 4; }
+
+  async getPriceUsd() {
+    return await getPriceCg('louverture');
+  }
 
   getTotalRewards(nodes, compounding) {
     let rewards = 0;

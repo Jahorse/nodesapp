@@ -1,8 +1,38 @@
 export async function getPriceCg(symbol) {
   try {
-    const dataUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${symbol}a&vs_currencies=usd`;
-    const response = await fetch(dataUrl);
-    const data = JSON.parse(response.getContentText());
+    const dataUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`;
+    const response = await fetch(dataUrl)
+      .then(response => response.body)
+      .then(rb => {
+        const reader = rb.getReader();
+
+        return new ReadableStream({
+          start(controller) {
+            // The following function handles each data chunk
+            function push() {
+              // "done" is a Boolean and value a "Uint8Array"
+              reader.read().then( ({done, value}) => {
+                // If there is no more data to read
+                if (done) {
+                  console.log('done', done);
+                  controller.close();
+                  return;
+                }
+                // Get the data and send it to the browser via the controller
+                controller.enqueue(value);
+                push();
+              })
+            }
+
+            push();
+          }
+        });
+      })
+      .then(stream => {
+        // Respond with our stream
+        return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+      });
+    const data = JSON.parse(response);
 
     return data[symbol]['usd'];
   } catch (e) {

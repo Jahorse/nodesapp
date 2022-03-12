@@ -20,23 +20,28 @@ function dhm(t){
 }
 
 const SummaryRowChild = (props) => {
-  // const [price, setPrice] = useState();
+  const [price, setPrice] = useState();
   const contract = props.contract;
   const contractName = props.contract.getName();
 
-  // useEffect(() => {
-  //   const getPrice = async () => {
-  //     setPrice(await contract.getPriceUsd());
-  //   };
-  //   getPrice();
-  // }, []);
+  useEffect(() => {
+    const getPrice = async () => {
+      setPrice(await contract.getPriceUsd());
+    };
+    getPrice();
+  }, []);
+
+  const rewards = parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces());
 
   const columns = [
     (<th key={`${contractName}-name`} scope="row">{contract.getName()}</th>),
+    (<td key={`${contractName}-price`}>{price ? `$${price}` : null}</td>),
     (<td key={`${contractName}-rewards`}>
-      {parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces())} {contract.getToken()}
+      {rewards} {contract.getToken()}
     </td>),
-    // (<td>{price}</td>)
+    (<td key={`${contractName}-value`}>
+      {price ? `$${parseFloat(price * parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces())).toFixed(2)}` : null}
+    </td>),
   ];
 
   if (props.isWeb3) {
@@ -44,7 +49,6 @@ const SummaryRowChild = (props) => {
     let claimAll;
     let compoundAll;
 
-    // NEW LOGIC
     const timeUntilClaim = contract.timeUntilClaim();
     if (contract.hasClaim()) {
       if (timeUntilClaim === 0) {

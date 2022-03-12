@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
 import Contract from './Contract';
-import { getPriceDs } from '../Utils';
+import { getPriceCg } from '../Utils';
 
 class VaporContract extends Contract {
   nodeControllerAddress = '0xa1ce9bb5563822e320e2f7832a5df17a13b951ae';
@@ -85,7 +85,7 @@ class VaporContract extends Contract {
   showDecimalPlaces() { return 2; }
 
   async getPriceUsd() {
-    return await getPriceDs('avalanche', '0x4cd20f3e2894ed1a0f4668d953a98e689c647bfe');
+    return await getPriceCg('vapornodes');
   }
 
   getTotalRewards(nodes, compounding) {
