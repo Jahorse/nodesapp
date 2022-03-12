@@ -20,11 +20,23 @@ function dhm(t){
 }
 
 const SummaryRowChild = (props) => {
+  // const [price, setPrice] = useState();
   const contract = props.contract;
+  const contractName = props.contract.getName();
+
+  // useEffect(() => {
+  //   const getPrice = async () => {
+  //     setPrice(await contract.getPriceUsd());
+  //   };
+  //   getPrice();
+  // }, []);
 
   const columns = [
-    (<th scope="row">{contract.getName()}</th>),
-    (<td>{parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces())} {contract.getToken()}</td>),
+    (<th key={`${contractName}-name`} scope="row">{contract.getName()}</th>),
+    (<td key={`${contractName}-rewards`}>
+      {parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces())} {contract.getToken()}
+    </td>),
+    // (<td>{price}</td>)
   ];
 
   if (props.isWeb3) {
@@ -57,12 +69,12 @@ const SummaryRowChild = (props) => {
       }
     }
     columns.push(
-      (<td>{claimAll}</td>),
-      (<td>{compoundAll}</td>),
+      (<td key={`${contractName}-claimAll`}>{claimAll}</td>),
+      (<td key={`${contractName}-compoundAll`}>{compoundAll}</td>),
     );
   }
 
-  return (<tr>{columns}</tr>);
+  return (<tr key={contractName}>{columns}</tr>);
 }
 
 const SummaryRow = (props) => {
@@ -74,7 +86,7 @@ const SummaryRow = (props) => {
     getNodeData();
   }, [props.contract]);
   return (nodeInfo && nodeInfo.length > 0)
-    ? <SummaryRowChild provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
+    ? <SummaryRowChild key={props.contract.getName()} provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
     : null;
 }
 

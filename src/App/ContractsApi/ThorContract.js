@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 
 import abi from './abi/thor';
 import Contract from './Contract';
+import { getPriceDs } from '../Utils';
 
 class ThorContract extends Contract {
   constructor(provider, walletAddresses, contractAddress, contractName) {
@@ -21,6 +22,10 @@ class ThorContract extends Contract {
   getToken() { return 'THOR'; }
 
   showDecimalPlaces() { return 4; }
+
+  async getPriceUsd() {
+    return await getPriceDs('avalanche', '0x95189f25b4609120f72783e883640216e92732da');
+  }
 
   getTotalRewards(nodes, compounding) {
     let rewards = 0;
@@ -68,7 +73,9 @@ class ThorContract extends Contract {
           nodes.push(node);
         }
       } catch (e) {
-        console.log('ERR', e);
+        if (!e.reason.includes('NO NODE OWNER')) {
+          console.log('ERR', e);
+        }
       }
     }
 

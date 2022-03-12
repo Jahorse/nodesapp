@@ -5,7 +5,7 @@ import {
   nodeQueryAbi,
 } from './abi/pentagon';
 import Contract from './Contract';
-
+import { getPriceDs } from '../Utils';
 
 class PentagonContract extends Contract {
   nodeQueryContractAddress = '0x1aEa18307D5063d9c4533Ac3093352B1DffeE2Fd';
@@ -28,6 +28,10 @@ class PentagonContract extends Contract {
   getToken() { return 'PENT'; }
 
   showDecimalPlaces() { return 4; }
+
+  async getPriceUsd() {
+    return await getPriceDs('pentagon', '0x01b758b406fb0f4e36c95dfbc909763d7080e5b4');
+  }
 
   getTotalRewards(nodes, compounding) {
     let rewards = 0;

@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import Contract from './Contract';
 
 import abi from "./abi/universe.js";
+import { getPriceDs } from '../Utils';
 
 class UniverseContract extends Contract {
   contractAddress = '0x89323f00a621D4eD6A56a93295C5f10f4df57FFa';
@@ -21,6 +22,10 @@ class UniverseContract extends Contract {
   getToken() { return 'UNIV'; }
 
   showDecimalPlaces() { return 2; }
+
+  async getPriceUsd() {
+    return await getPriceDs('avalanche', '0x938e8b130e87d92d873fcca26ba144a32ba12b93');
+  }
 
   getTotalRewards(planets, compounding) {
     let rewards = 0;

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Container, Table } from 'reactstrap';
 
-import SummaryRow from './SummaryRow';
+import AscendAmsContract from './ContractsApi/AscendAmsContract';
+import AscendPlatinumContract from './ContractsApi/AscendPlatinumContract';
+import AscendInfiniteContract from './ContractsApi/AscendInfiniteContract';
+import AscendMetaContract from './ContractsApi/AscendMetaContract';
 import LouvertureContract from './ContractsApi/LouvertureContract';
 import NebulaContract from './ContractsApi/NebulaContract';
 import PentagonContract from './ContractsApi/PentagonContract';
@@ -15,6 +18,7 @@ import ThorOdinContract from './ContractsApi/ThorOdinContract';
 import ThorThorContract from './ContractsApi/ThorThorContract';
 import UniverseContract from './ContractsApi/UniverseContract';
 import VaporContract from './ContractsApi/VaporContract';
+import SummaryRow from './SummaryRow';
 
 const selectNetworks = (providers) => {
   if (providers.web3) {
@@ -32,6 +36,10 @@ const addAvalanche = (profile, provider, isWeb3) => {
   const addresses = profile.walletAddresses.avalanche;
   return (
     <>
+      <SummaryRow contract={new AscendAmsContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new AscendPlatinumContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new AscendInfiniteContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+      <SummaryRow contract={new AscendMetaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
       <SummaryRow contract={new LouvertureContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
       <SummaryRow contract={new NebulaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
       <SummaryRow contract={new ThorHeimdallContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
@@ -70,16 +78,23 @@ const Summary = (props) => {
 
   const isWeb3 = props.provider.ethers.web3 ? true : false;
 
-  const tableHeaders = [(<th>Project</th>), (<th>Rewards</th>)];
+  const tableHeaders = [
+    (<th key='header-project'>Project</th>),
+    (<th key='header-rewards'>Rewards</th>),
+    // (<th key='header-usd'>USD</th>),
+  ];
   if (isWeb3) {
-    tableHeaders.push((<th>Claim</th>), (<th>Compound</th>));
+    tableHeaders.push(
+      (<th key='header-claim'>Claim</th>),
+      (<th key='header-compound'>Compound</th>)
+    );
   }
 
   return (
     <Container fluid>
       <Table borderless dark hover responsive striped>
         <thead>
-          <tr>
+          <tr key='summary-headers'>
             {tableHeaders}
           </tr>
         </thead>

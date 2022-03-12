@@ -2,6 +2,7 @@ import * as ethers from 'ethers';
 
 import abi from './abi/nebula';
 import Contract from './Contract';
+import { getPriceDs } from '../Utils';
 
 class NebulaContract extends Contract {
   contractAddress = '0xd311d77c8F4665bdA9e684Cd08f8991f364AbEF5';
@@ -27,6 +28,10 @@ class NebulaContract extends Contract {
   getToken() { return 'NEBU'; }
 
   showDecimalPlaces() { return 3; }
+
+  async getPriceUsd() {
+    return await getPriceDs('avalanche', '0x36c1d7d2eb0cf928ab05dfe8c339f5b5c7c818a4');
+  }
 
   getTotalRewards(nodes, compounding) {
     let rewards = 0;

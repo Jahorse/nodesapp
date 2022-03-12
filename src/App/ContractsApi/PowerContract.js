@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 
 import abi from './abi/thor';
 import Contract from './Contract';
+import { getPriceDs } from '../Utils';
 
 class PowerContract extends Contract {
   nodeManagerContractAddress = '0xa51b7f5071868d8bdc3619d9e5dddd5fb8c1ab90';
@@ -27,6 +28,10 @@ class PowerContract extends Contract {
   getToken() { return 'POWER'; }
 
   showDecimalPlaces() { return 4; }
+
+  async getPriceUsd() {
+    return await getPriceDs('fantom', '0x8eae6aac525e6ec6a686f77e4751d3e8f96f6a83');
+  }
 
   getTotalRewards(nodes, compounding) {
     let rewards = 0;
@@ -79,7 +84,9 @@ class PowerContract extends Contract {
           nodes.push(node);
         }
       } catch (e) {
-        console.log('ERR', e);
+        if (!e.reason.includes('NO NODE OWNER')) {
+          console.log('ERR', e);
+        }
       }
     }
 

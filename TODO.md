@@ -10,6 +10,9 @@
 1. Add a column to the table for USD price.
 
 # Future Tasks
+1. Add an "adjusted rewards" column that applies bonuses and taxes
+  - Universe currently applies compound bonus to rewards
+  - Ascend has high taxes that aren't applied to rewards
 1. Figure out how to monitor transactions to show when they're complete
 1. Add detail views for every project that open when you click the row.
 1. Expand the add profile modal to be able to add addresses and projects right away.
