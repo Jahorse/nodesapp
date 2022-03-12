@@ -65,23 +65,28 @@ const Main = (props) => {
   }
   const profileNames = Object.keys(cookies.profiles);
 
-  // If the active profile isn't set, or it is set to something that isn't in the profiles list,
-  // and we have profiles in the list, we will change the active profile to the next in the list.
-  if ((!cookies.activeProfileName || !profileNames.includes(cookies.activeProfileName))
-    && cookies.profiles
-    && Object.keys(cookies.profiles).length > 0
-  ) {
-    const profileNames = Object.keys(cookies.profiles);
-    setCookie('activeProfileName', profileNames[0]);
-  }
-
   useEffect(() => {
-    if (cookies.activeProfileName && cookies.profiles[cookies.activeProfileName]) {
-      setActiveProfile(cookies.profiles[cookies.activeProfileName]);
+    // If the active profile isn't set, or it is set to something that isn't in the profiles list,
+    // and we have profiles in the list, we will change the active profile to the next in the list.
+    if ((!cookies.activeProfileName || !profileNames.includes(cookies.activeProfileName))
+      && cookies.profiles
+      && Object.keys(cookies.profiles).length > 0
+    ) {
+      const profileNames = Object.keys(cookies.profiles);
+      setCookie('activeProfileName', profileNames[0]);
+      setActiveProfile(profileNames[0]);
+      setHasNoProfiles(false);
+
     } else {
-      setHasNoProfiles(true);
+      if (cookies.activeProfileName && cookies.profiles[cookies.activeProfileName]) {
+        setActiveProfile(cookies.profiles[cookies.activeProfileName]);
+        setHasNoProfiles(false);
+      } else {
+        setHasNoProfiles(true);
+      }
     }
-  }, [cookies.activeProfileName, cookies.profiles]);
+
+  });
 
   useEffect(() => {
     const getProvider = async () => {
@@ -136,7 +141,6 @@ const Main = (props) => {
       getProvider();
     }
   }, [activeProfile, cookies.activeProfileName, cookies.profiles]);
-
 
 
   const onManageProfilesPage = useMatch("manage-profiles");
