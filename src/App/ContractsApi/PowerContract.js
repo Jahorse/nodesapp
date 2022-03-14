@@ -5,6 +5,16 @@ import Contract from './Contract';
 import { getPriceCg } from '../Utils';
 
 class PowerContract extends Contract {
+  metadata = {
+    name: 'Power',
+    symbol: 'POWER',
+    networkName: 'Fantom',
+    decimals: 4,
+    hasClaim: true,
+    hasCompound: false,
+    chartLink: 'https://dexscreener.com/fantom/0x8eae6aac525e6ec6a686f77e4751d3e8f96f6a83',
+    swapLink: 'https://spookyswap.finance/swap?outputCurrency=0x131c7afb4e5f5c94a27611f7210dfec2215e85ae',
+  };
   nodeManagerContractAddress = '0xa51b7f5071868d8bdc3619d9e5dddd5fb8c1ab90';
   tiersContractAddress = '0xf9F64b2c62210E6aCC266169da7026F209CeCd52';
   tiersContractAbi = [
@@ -15,19 +25,10 @@ class PowerContract extends Contract {
     super(provider, walletAddresses, 'Fantom');
     this.contractAddress = contractAddress;
     this.contractName = contractName;
+    this.metadata.name = `Power ${contractName}`;
 
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
-
-  hasClaim() { return true; }
-
-  hasCompound() { return false; }
-
-  getName() { return `Power ${this.contractName}`; }
-
-  getToken() { return 'POWER'; }
-
-  showDecimalPlaces() { return 4; }
 
   async getPriceUsd() {
     return await getPriceCg('power-nodes');

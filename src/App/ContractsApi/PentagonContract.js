@@ -8,6 +8,16 @@ import Contract from './Contract';
 import { getPriceCg } from '../Utils';
 
 class PentagonContract extends Contract {
+  metadata = {
+    name: 'Pentagon',
+    symbol: 'PENT',
+    networkName: 'Polygon',
+    decimals: 4,
+    hasClaim: true,
+    hasCompound: false,
+    chartLink: 'https://dexscreener.com/polygon/0x01b758b406fb0f4e36c95dfbc909763d7080e5b4',
+    swapLink: 'https://quickswap.exchange/#/swap?outputCurrency=0x283366bb42ef49a994913baf22263c6562e588a4',
+  };
   nodeQueryContractAddress = '0x1aEa18307D5063d9c4533Ac3093352B1DffeE2Fd';
   claimContractAddress = '0xF75BC031f362e55967Cf278586bBeB0954442D84';
 
@@ -16,18 +26,6 @@ class PentagonContract extends Contract {
 
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
-
-  swapLink() { return 'https://quickswap.exchange/#/swap?outputCurrency=0x283366bb42ef49a994913baf22263c6562e588a4'; }
-
-  hasClaim() { return true; }
-
-  hasCompound() { return false; }
-
-  getName() { return `Pentagon`; }
-
-  getToken() { return 'PENT'; }
-
-  showDecimalPlaces() { return 4; }
 
   async getPriceUsd() {
     return await getPriceCg('pentagon-finance');
@@ -85,7 +83,9 @@ class PentagonContract extends Contract {
           nodes.push(node);
         }
       } catch (e) {
-        console.log('ERR', e);
+        if (!e.reason.includes('NO NODE OWNER')) {
+          console.log('ERR', e);
+        }
       }
     }
 

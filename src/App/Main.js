@@ -17,6 +17,7 @@ import { ethers } from 'ethers';
 import RouteView from './RouteView';
 
 import '../scss/custom.scss';
+import Footer from './Footer';
 
   /**
    * activeProfileName = 'DJHorse';
@@ -86,7 +87,7 @@ const Main = (props) => {
       }
     }
 
-  });
+  }, [cookies.activeProfileName, cookies.profiles, profileNames, setCookie]);
 
   useEffect(() => {
     const getProvider = async () => {
@@ -149,6 +150,7 @@ const Main = (props) => {
     <Container>
       {shouldRedirect ? <Navigate to="/manage-profiles" replace /> : null}
       {(provider || onManageProfilesPage) ? <RouteView profileName={cookies.activeProfileName} profile={activeProfile} provider={provider} /> : null}
+      <Footer />
     </Container>
   );
 };

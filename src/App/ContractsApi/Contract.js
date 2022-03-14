@@ -4,8 +4,6 @@ class Contract {
       throw new Error("Instance of abstract Contract class cannot be instantiated");
     }
 
-    this.networkName = networkName;
-
     if (provider.networkName === networkName && provider.ethers.web3) {
       this.web3Provider = provider.ethers.web3;
     }
@@ -18,15 +16,6 @@ class Contract {
 
     this.nodes = [];
   }
-
-  hasClaim() { throw new Error('Calling an abstract method.'); }
-  hasCompound() { throw new Error('Calling an abstract method.'); }
-
-  getNetworkName() { return this.networkName; }
-
-  getName() { throw new Error('Calling an abstract method.'); }
-
-  getToken() { throw new Error('Calling an abstract method.'); }
 
   getTotalRewards(planets, compounding) {
     let rewards = 0;

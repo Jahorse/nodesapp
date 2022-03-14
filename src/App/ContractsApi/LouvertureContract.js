@@ -5,6 +5,16 @@ import Contract from './Contract';
 import { getPriceCg } from '../Utils';
 
 class LouvertureContract extends Contract {
+  metadata = {
+    name: 'Louverture v1',
+    symbol: 'LVT',
+    networkName: 'Avalanche',
+    decimals: 4,
+    hasClaim: false, // TODO: Update to v2
+    hasCompound: false,
+    chartLink: 'https://dexscreener.com/avalanche/0x482b272af360fdfbf2d6f9b688ce949ae6adc117',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0xff579d6259dedcc80488c9b89d2820bcb5609160#/',
+  };
   contractAddress = '0x3Cf1Dff7CCE2b7291456Bc2089b4bCB2AB5f311A';
   claimContractAddress = '0xff579d6259dedcc80488c9b89d2820bcb5609160';
   claimContractAbi = [
@@ -17,16 +27,6 @@ class LouvertureContract extends Contract {
 
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
-
-  hasClaim() { return false; } // TODO: Update when they finish migrating
-
-  hasCompound() { return false; }
-
-  getName() { return `Louverture`; }
-
-  getToken() { return 'LVT'; }
-
-  showDecimalPlaces() { return 4; }
 
   async getPriceUsd() {
     return await getPriceCg('louverture');

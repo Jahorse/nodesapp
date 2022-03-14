@@ -1,5 +1,11 @@
 import React from 'react';
-import { Container, Table } from 'reactstrap';
+import {
+  Button,
+  Col,
+  Container,
+  Row,
+  Table,
+} from 'reactstrap';
 
 import AscendAmsContract from './ContractsApi/AscendAmsContract';
 import AscendPlatinumContract from './ContractsApi/AscendPlatinumContract';
@@ -12,6 +18,8 @@ import PowerSolarContract from './ContractsApi/PowerSolarContract';
 import PowerHydroContract from './ContractsApi/PowerHydroContract';
 import PowerWindContract from './ContractsApi/PowerWindContract';
 import PowerNuclearContract from './ContractsApi/PowerNuclearContract';
+import RndDistrictsContract from './ContractsApi/RndDistrictsContract';
+import RndMansionsContract from './ContractsApi/RndMansionsContract';
 import ThorFreyaContract from './ContractsApi/ThorFreyaContract';
 import ThorHeimdallContract from './ContractsApi/ThorHeimdallContract';
 import ThorOdinContract from './ContractsApi/ThorOdinContract';
@@ -32,44 +40,91 @@ const selectNetworks = (providers) => {
   return networks;
 };
 
-const addAvalanche = (profile, provider, isWeb3) => {
+const TableHeader = (props) => {
+  return (
+    <Container className='bg-secondary rounded-top'>
+      <Row>
+        <Col xs='8' lg='10' key='network-avalanche' className='text-light p-2 px-3'>
+          <h3>{props.networkName}</h3>
+        </Col>
+        <Col xs='2' lg='2' key='connect-avalanche' className='p-2 px-3 d-flex justify-content-end'>
+          <Button className='bg-dark'>Connect</Button>
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+const addAvalanche = (profile, provider, isWeb3, tableHeaders) => {
   const addresses = profile.walletAddresses.avalanche;
   return (
-    <>
-      <SummaryRow contract={new AscendAmsContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new AscendPlatinumContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new AscendInfiniteContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new AscendMetaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new LouvertureContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new NebulaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new ThorHeimdallContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new ThorFreyaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new ThorThorContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new ThorOdinContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new UniverseContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new VaporContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-    </>
+    <Container>
+      <TableHeader networkName='Avalanche' />
+      <Table borderless dark hover responsive striped>
+        <thead>
+          <tr key='summary-headers'>
+            {tableHeaders}
+          </tr>
+        </thead>
+        <tbody>
+        <SummaryRow contract={new AscendAmsContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new AscendPlatinumContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new AscendInfiniteContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new AscendMetaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new LouvertureContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new NebulaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new RndMansionsContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new RndDistrictsContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new ThorHeimdallContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new ThorFreyaContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new ThorThorContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new ThorOdinContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new UniverseContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new VaporContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        </tbody>
+      </Table>
+    </Container>
   );
 }
 
-const addFantom = (profile, provider, isWeb3) => {
+const addFantom = (profile, provider, isWeb3, tableHeaders) => {
   const addresses = profile.walletAddresses.fantom;
   return (
-    <>
-      <SummaryRow contract={new PowerSolarContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new PowerWindContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new PowerHydroContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-      <SummaryRow contract={new PowerNuclearContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-    </>
+    <Container>
+      <TableHeader networkName='Fantom' />
+      <Table borderless dark hover responsive striped>
+        <thead>
+          <tr key='summary-headers'>
+            {tableHeaders}
+          </tr>
+        </thead>
+        <tbody>
+        <SummaryRow contract={new PowerSolarContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new PowerWindContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new PowerHydroContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        <SummaryRow contract={new PowerNuclearContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        </tbody>
+      </Table>
+    </Container>
   );
 }
 
-const addPolygon = (profile, provider, isWeb3) => {
+const addPolygon = (profile, provider, isWeb3, tableHeaders) => {
   const addresses = profile.walletAddresses.polygon;
   return (
-    <>
-      <SummaryRow contract={new PentagonContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
-    </>
+    <Container>
+      <TableHeader networkName='Polygon' />
+      <Table borderless dark hover responsive striped>
+        <thead>
+          <tr key='summary-headers'>
+            {tableHeaders}
+          </tr>
+        </thead>
+        <tbody>
+        <SummaryRow contract={new PentagonContract(provider, addresses)} provider={provider} isWeb3={isWeb3} />
+        </tbody>
+      </Table>
+    </Container>
   );
 }
 
@@ -80,7 +135,7 @@ const Summary = (props) => {
 
   const tableHeaders = [
     (<th key='header-project'>Project</th>),
-    (<th key='header-project'>Token Price</th>),
+    (<th key='header-price'>Token Price</th>),
     (<th key='header-rewards'>Rewards</th>),
     (<th key='header-usd'>Rewards USD</th>),
   ];
@@ -93,18 +148,18 @@ const Summary = (props) => {
 
   return (
     <Container fluid>
-      <Table borderless dark hover responsive striped>
-        <thead>
-          <tr key='summary-headers'>
-            {tableHeaders}
-          </tr>
-        </thead>
-        <tbody>
-          {networks.includes('avalanche') ? addAvalanche(props.profile, props.provider, isWeb3) : null}
-          {networks.includes('fantom') ? addFantom(props.profile, props.provider, isWeb3) : null}
-          {networks.includes('polygon') ? addPolygon(props.profile, props.provider, isWeb3) : null}
-        </tbody>
-      </Table>
+      {networks.includes('avalanche')
+        ? addAvalanche(props.profile, props.provider, isWeb3, tableHeaders)
+        : null
+      }
+      {networks.includes('fantom')
+        ? addFantom(props.profile, props.provider, isWeb3, tableHeaders)
+        : null
+      }
+      {networks.includes('polygon')
+        ? addPolygon(props.profile, props.provider, isWeb3, tableHeaders)
+        : null
+      }
     </Container>
   );
 }

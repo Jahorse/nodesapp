@@ -1,8 +1,18 @@
 import Contract from './Contract';
-import { getPriceCg, getPriceDs } from '../Utils';
+import { getPriceCg } from '../Utils';
 import abi from './abi/ascend-helper';
 
 class AscendContract extends Contract {
+  metadata = {
+    name: 'Ascend',
+    symbol: 'ASND',
+    networkName: 'Avalanche',
+    decimals: 0,
+    hasClaim: true,
+    hasCompound: false,
+    chartLink: 'hhttps://dexscreener.com/avalanche/0x785a7356731dac36747cb46f4a98a80202aabb23',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0xfd0c58f03c83d6960bb9dbfd45076d78df2f095d#/',
+  };
   rewardsContractAddress = '0xc1362C2141554B937C2b7585be44cDE4064704D7';
   rewardsAbi = [
     'function calculateRewardsInfinite(address from) external view returns (uint256)',
@@ -23,16 +33,6 @@ class AscendContract extends Contract {
 
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
-
-  hasClaim() { return true; }
-
-  hasCompound() { return false; }
-
-  getName() { return `Ascend ${this.contractName}`; }
-
-  getToken() { return 'ASND'; }
-
-  showDecimalPlaces() { return 0; }
 
   async getPriceUsd() {
     return await getPriceCg('ascend-node-club');

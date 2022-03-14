@@ -5,23 +5,27 @@ import Contract from './Contract';
 import { getPriceCg } from '../Utils';
 
 class ThorContract extends Contract {
+  metadata = {
+    name: 'Thor',
+    symbol: 'THOR',
+    networkName: 'Avalanche',
+    decimals: 4,
+    hasClaim: false,
+    hasCompound: false,
+    chartLink: 'https://dexscreener.com/avalanche/0x95189f25b4609120f72783e883640216e92732da',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79#/',
+  };
+
   constructor(provider, walletAddresses, contractAddress, contractName) {
     super(provider, walletAddresses, 'Avalanche');
+
+    this.metadata.name = `Thor ${contractName}`;
+
     this.contractAddress = contractAddress;
     this.contractName = contractName;
 
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
-
-  hasClaim() { return false; }
-
-  hasCompound() { return false; }
-
-  getName() { return `Thor ${this.contractName}`; }
-
-  getToken() { return 'THOR'; }
-
-  showDecimalPlaces() { return 4; }
 
   async getPriceUsd() {
     return await getPriceCg('thor');

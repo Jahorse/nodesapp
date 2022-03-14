@@ -1,9 +1,18 @@
 # TASK LIST
-1. Add feature to top right corner to control the active profile.
-  - Should be a dropdown that selects the profile
-  - When MetaMask is selected, another dropdown that selects the network should appear
+1. Split networks into separate tables and put a connect button at the top of the table if there is a web3 provider but on the wrong network
 
 # Launch Blocker Tasks
+1. Projects to add:
+  1. LVT v2
+  1. RND
+  1. Starz
+  1. Kingdoms
+  1. Oxy
+  1. PXT
+  1. Atlas
+  1. Project X?
+  1. Fire
+  1. Division
 1. Add ability to enable and disable node projects.
 1. The claim and compound buttons should only enable if the wallet address that is claimable is the address of the connected wallet.
   * This requires special treatment of the connected wallet address and the nodes that are attached to it. Should there be a separate table for the connected wallet?
@@ -14,6 +23,7 @@
   - Universe currently applies compound bonus to rewards
   - Ascend has high taxes that aren't applied to rewards
 1. Figure out how to monitor transactions to show when they're complete
+1. Figure out the NavBar expand and how to add a burger menu to mobile
 1. Add detail views for every project that open when you click the row.
 1. Expand the add profile modal to be able to add addresses and projects right away.
 1. Add validation to profile name field, wallet address field: https://reactstrap.github.io/?path=/story/components-forms--form-feedback

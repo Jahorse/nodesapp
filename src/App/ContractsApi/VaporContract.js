@@ -4,6 +4,16 @@ import Contract from './Contract';
 import { getPriceCg } from '../Utils';
 
 class VaporContract extends Contract {
+  metadata = {
+    name: 'Vapor',
+    symbol: 'VPND',
+    networkName: 'Avalanche',
+    decimals: 2,
+    hasClaim: true,
+    hasCompound: true,
+    chartLink: 'https://dexscreener.com/avalanche/0x4cd20f3e2894ed1a0f4668d953a98e689c647bfe',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x83a283641c6b4df383bcddf807193284c84c5342#/',
+  };
   nodeControllerAddress = '0xa1ce9bb5563822e320e2f7832a5df17a13b951ae';
   nodeControllerAbi = [
     'function getAllNodesRewards(address _account) view returns (uint256)',
@@ -73,16 +83,6 @@ class VaporContract extends Contract {
 
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
-
-  hasClaim() { return true; }
-
-  hasCompound() { return true; }
-
-  getName() { return 'Vapor'; }
-
-  getToken() { return 'VPND'; }
-
-  showDecimalPlaces() { return 2; }
 
   async getPriceUsd() {
     return await getPriceCg('vapornodes');

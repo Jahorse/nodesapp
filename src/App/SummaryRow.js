@@ -22,35 +22,35 @@ function dhm(t){
 const SummaryRowChild = (props) => {
   const [price, setPrice] = useState();
   const contract = props.contract;
-  const contractName = props.contract.getName();
+  const contractName = props.contract.metadata.name;
 
   useEffect(() => {
     const getPrice = async () => {
       setPrice(await contract.getPriceUsd());
     };
     getPrice();
-  }, []);
+  }, [contract]);
 
-  const rewards = parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces());
+  const rewards = parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.metadata.decimals);
 
   const columns = [
-    (<th key={`${contractName}-name`} scope="row">{contract.getName()}</th>),
+    (<th key={`${contractName}-name`} scope="row">{contractName}</th>),
     (<td key={`${contractName}-price`}>{price ? `$${price}` : null}</td>),
     (<td key={`${contractName}-rewards`}>
-      {rewards} {contract.getToken()}
+      {rewards} {contract.metadata.symbol}
     </td>),
     (<td key={`${contractName}-value`}>
-      {price ? `$${parseFloat(price * parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.showDecimalPlaces())).toFixed(2)}` : null}
+      {price ? `$${parseFloat(price * parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.metadata.decimals)).toFixed(2)}` : null}
     </td>),
   ];
 
   if (props.isWeb3) {
-    const contractNetworkName = contract.getNetworkName();
+    const contractNetworkName = contract.metadata.networkName;
     let claimAll;
     let compoundAll;
 
     const timeUntilClaim = contract.timeUntilClaim();
-    if (contract.hasClaim()) {
+    if (contract.metadata.hasClaim) {
       if (timeUntilClaim === 0) {
         if (props.provider && props.provider.networkName === contractNetworkName) {
           claimAll = <Button onClick={() => contract.claimAll(props.signer)}>Claim All</Button>;
@@ -61,7 +61,7 @@ const SummaryRowChild = (props) => {
         claimAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
       }
     }
-    if (contract.hasCompound()) {
+    if (contract.metadata.hasCompound) {
       if (timeUntilClaim === 0) {
         if (props.provider && props.provider.networkName === contractNetworkName) {
           compoundAll = <Button onClick={() => contract.compoundAll(props.signer)}>Compound All</Button>;
@@ -90,7 +90,7 @@ const SummaryRow = (props) => {
     getNodeData();
   }, [props.contract]);
   return (nodeInfo && nodeInfo.length > 0)
-    ? <SummaryRowChild key={props.contract.getName()} provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
+    ? <SummaryRowChild key={props.contract.metadata.name} provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
     : null;
 }
 

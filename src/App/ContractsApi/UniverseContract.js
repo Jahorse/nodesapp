@@ -5,6 +5,16 @@ import abi from "./abi/universe.js";
 import { getPriceCg } from '../Utils';
 
 class UniverseContract extends Contract {
+  metadata = {
+    name: 'Universe',
+    symbol: 'UNIV',
+    networkName: 'Avalanche',
+    decimals: 2,
+    hasClaim: true,
+    hasCompound: true,
+    chartLink: 'https://dexscreener.com/avalanche/0x938e8b130e87d92d873fcca26ba144a32ba12b93',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x959b88966fc5b261df8359961357d34f4ee27b4a#/',
+  };
   contractAddress = '0x89323f00a621D4eD6A56a93295C5f10f4df57FFa';
 
   constructor(provider, walletAddresses) {
@@ -12,16 +22,6 @@ class UniverseContract extends Contract {
 
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
-
-  hasClaim() { return true; }
-
-  hasCompound() { return true; }
-
-  getName() { return 'Universe'; }
-
-  getToken() { return 'UNIV'; }
-
-  showDecimalPlaces() { return 2; }
 
   async getPriceUsd() {
     return await getPriceCg('universe-2');

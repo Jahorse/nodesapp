@@ -14,7 +14,6 @@ export async function getPriceCg(symbol) {
               reader.read().then( ({done, value}) => {
                 // If there is no more data to read
                 if (done) {
-                  console.log('done', done);
                   controller.close();
                   return;
                 }
