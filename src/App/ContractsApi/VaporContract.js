@@ -19,10 +19,10 @@ class VaporContract extends Contract {
     'function getAllNodesRewards(address _account) view returns (uint256)',
     'function getNodeRewards(address _account, uint256 _creationTime) view returns (uint256)',
   ];
-  nodeManagerAddress = '0x327edeD9E49E4e82d686b0d69e4CC4A8F80aAfBb';
+  nodeManagerAddress = '0x9d71D8B79dff5929eA21caBfbc1Ae5F964f3cAe3';
   nodeManagerAbi = [
-    'function compoundAll()',
-    'function claimAll()',
+    'function compound(uint256[])',
+    'function claim(uint256[])',
   ];
   nodeStorageAddress = '0x14F65b7e04eB0a11FD1D0a3bdB08311299ab6048';
   nodeStorageAbi = [{
@@ -103,7 +103,8 @@ class VaporContract extends Contract {
       return null;
     }
     const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, this.signer);
-    return contract.compoundAll();
+    const creationTimes = this.nodes.map(n => parseInt(n.creationTime));
+    return contract.compound(creationTimes);
   }
 
   async claimAll(signr) {
@@ -112,7 +113,8 @@ class VaporContract extends Contract {
       return null;
     }
     const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, this.signer);
-    return contract.claimAll();
+    const creationTimes = this.nodes.map(n => parseInt(n.creationTime));
+    return contract.claim(creationTimes);
   }
 
   async fetchNodes() {
@@ -141,7 +143,7 @@ class VaporContract extends Contract {
           const node = {
             // Standard fields
             name: rawNode['name'],
-            creationTime: new Date(rawNode['creationTime'].toString() * 1000),
+            creationTime: rawNode['creationTime'].toString(),
             lastProcessingTime,
             nextProcessingTime,
             amount: parseInt(rawNode['amount'].toHexString(), 16) / 1e18,
