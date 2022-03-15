@@ -29,6 +29,7 @@ const AboutRoute = (props) => {
             <li><a href='https://dapp.ascendnodeclub.money/' className='link-light'>Ascend</a></li>
             <li><a href='https://app.nebulanodes.finance/'  className='link-light'>Nebula</a></li>
             <li><a href='https://redlightnodes.app/'  className='link-light'>Redlight Nodes District</a></li>
+            <li><a href='https://app.strongblock.com/'  className='link-light'>StrongBlock</a></li>
             <li><a href='https://app.thor.financial/'  className='link-light'>Thor</a></li>
             <li><a href='https://univ.money/observatory'  className='link-light'>Universe</a></li>
             <li><a href='https://app.vapornodes.finance/'  className='link-light'>Vapor</a></li>

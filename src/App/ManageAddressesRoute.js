@@ -62,6 +62,16 @@ const ManageAddressesRoute = (props) => {
       setCookie={setCookie}
     />);
   })
+  profile.walletAddresses.ethereum.forEach((a) => {
+    addressRows.push(<AddressRow
+      key={`ethereum-${a}`}
+      address={a}
+      networkName='ethereum'
+      profileName={params.profileName}
+      cookies={cookies}
+      setCookie={setCookie}
+    />);
+  })
   profile.walletAddresses.fantom.forEach((a) => {
     addressRows.push(<AddressRow
       key={`fantom-${a}`}

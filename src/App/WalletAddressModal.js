@@ -23,6 +23,7 @@ const WalletAddressModal = (props) => {
   const [addressInput, setAddressInput] = useState('');
   const [networkInput, setNetworkInput] = useState({
     'Avalanche': false,
+    'Ethereum': false,
     'Fantom': false,
     'Polygon': false,
   });
@@ -33,6 +34,7 @@ const WalletAddressModal = (props) => {
 
   const toggleModal = () => {
     setToggleModal(!modalOpen);
+    setAddressInput('');
   }
 
   const addWalletAddress = () => {
@@ -45,6 +47,9 @@ const WalletAddressModal = (props) => {
 
     if (networkInput.Avalanche && !profile.walletAddresses.avalanche.includes(addressInput)) {
       profile.walletAddresses.avalanche.push(addressInput);
+    }
+    if (networkInput.Ethereum && !profile.walletAddresses.ethereum.includes(addressInput)) {
+      profile.walletAddresses.ethereum.push(addressInput);
     }
     if (networkInput.Fantom && !profile.walletAddresses.fantom.includes(addressInput)) {
       profile.walletAddresses.fantom.push(addressInput);
@@ -63,6 +68,12 @@ const WalletAddressModal = (props) => {
       Avalanche: !networkInput.Avalanche,
     });
   };
+  const toggleEthereum = () => {
+    setNetworkInput({
+      ...networkInput,
+      Ethereum: !networkInput.Ethereum,
+    });
+  };
   const toggleFantom = () => {
     setNetworkInput({
       ...networkInput,
@@ -78,10 +89,12 @@ const WalletAddressModal = (props) => {
   const toggleAll = () => {
     const isChecked =  $('#select-all-checkbox').prop('checked')
     $('#avalanche-checkbox').prop('checked', isChecked);
+    $('#ethereum-checkbox').prop('checked', isChecked);
     $('#fantom-checkbox').prop('checked', isChecked);
     $('#polygon-checkbox').prop('checked', isChecked);
     setNetworkInput({
       Avalanche: isChecked,
+      Ethereum: isChecked,
       Fantom: isChecked,
       Polygon: isChecked,
     });
@@ -116,6 +129,10 @@ const WalletAddressModal = (props) => {
               <FormGroup check inline>
                 <Input id="avalanche-checkbox" type="checkbox" onClick={toggleAvalanche} />
                 <Label check>Avalanche</Label>
+              </FormGroup>
+              <FormGroup check inline>
+                <Input id="ethereum-checkbox" type="checkbox" onClick={toggleEthereum} />
+                <Label check>Ethereum</Label>
               </FormGroup>
               <FormGroup check inline>
                 <Input id="fantom-checkbox" type="checkbox" onClick={toggleFantom} />

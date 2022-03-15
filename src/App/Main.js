@@ -33,6 +33,9 @@ import Footer from './Footer';
    *         '0x80123015',
    *         '0x80c73f84',
    *       ],
+   *       ethereum: [
+   *         '0x80123015',
+   *       ],
    *       fantom: [
    *         '0x80123015',
    *       ],
@@ -44,6 +47,7 @@ import Footer from './Footer';
    *       avalanche: [
    *         'thor',
    *       ],
+   *       ethereum: [],
    *       fantom: [
    *         'power',
    *       ],
@@ -101,6 +105,7 @@ const Main = (props) => {
           web3: null,
           signer: null,
           avalanche: null,
+          ethereum: null,
           fantom: null,
           polygon: null,
         },
@@ -120,12 +125,16 @@ const Main = (props) => {
           providerObj.ethers.web3 = ethersProvider;
           providerObj.networkName = networkIdToNameMap[(await ethersProvider.getNetwork()).chainId];
           providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
+          providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://api.mycryptoapi.com/eth');
           providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
           providerObj.ethers.polygon = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
 
         } else {
           if (profile.walletAddresses.avalanche.length > 0) {
             providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
+          }
+          if (profile.walletAddresses.ethereum.length > 0) {
+            providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://api.mycryptoapi.com/eth');
           }
           if (profile.walletAddresses.fantom.length > 0) {
             providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');

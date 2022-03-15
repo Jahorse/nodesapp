@@ -37,6 +37,7 @@ const ConnectWallet = (props) => {
     // Send the request to the user to connect their wallet
     const walletAddresses = {
       avalanche: [],
+      ethereum: [],
       fantom: [],
       polygon: [],
     };
@@ -48,6 +49,7 @@ const ConnectWallet = (props) => {
         if (accountRequest && accountRequest.length > 0) {
           connectedSuccessfully = true;
           walletAddresses.avalanche = accountRequest;
+          walletAddresses.ethereum = accountRequest;
           walletAddresses.fantom = accountRequest;
           walletAddresses.polygon = accountRequest;
         }
@@ -66,6 +68,7 @@ const ConnectWallet = (props) => {
         walletAddresses,
         disabledProjects: {
           avalanche: [],
+          ethreum: [],
           fantom: [],
           polygon: [],
         },
@@ -114,11 +117,13 @@ const AddProfileModal = (props) => {
       isWeb3: false,
       walletAddresses: {
        avalanche: [],
+       ethereum: [],
        fantom: [],
        polygon: [],
       },
       disabledProjects: {
        avalanche: [],
+       ethereum: [],
        fantom: [],
        polygon: [],
      },
