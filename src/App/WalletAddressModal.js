@@ -33,8 +33,8 @@ const WalletAddressModal = (props) => {
   }
 
   const toggleModal = () => {
-    setToggleModal(!modalOpen);
     setAddressInput('');
+    setToggleModal(!modalOpen);
   }
 
   const addWalletAddress = () => {

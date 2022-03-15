@@ -66,9 +66,14 @@ const Main = (props) => {
   const [hasNoProfiles, setHasNoProfiles] = useState(false);
 
   if (!cookies.profiles) {
-    setCookie('profiles', {});
+    cookies.profiles = {};
+    setCookie('profiles', cookies.profiles);
   }
-  const profileNames = Object.keys(cookies.profiles);
+
+  let profileNames = [];
+  if (cookies.profiles) {
+    profileNames = Object.keys(cookies.profiles);
+  }
 
   useEffect(() => {
     // If the active profile isn't set, or it is set to something that isn't in the profiles list,
