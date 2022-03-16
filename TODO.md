@@ -1,9 +1,10 @@
 # TASK LIST
-
+1. Add tool tip
+1. Add Comb
+1. Enable/disable node projects
 
 # Launch Blocker Tasks
 1. Projects to add:
-  1. Comb
   1. Kingdoms
     - Token: https://ftmscan.com/address/0xd3b8037853785463D06957Fefa0f06Af53B9e504
     - Couldn't find rewards
@@ -15,21 +16,17 @@
   1. PXT
   1. Project X?
   1. Division
-1. Add ability to enable and disable node projects.
-1. The claim and compound buttons should only enable if the wallet address that is claimable is the address of the connected wallet.
-  * This requires special treatment of the connected wallet address and the nodes that are attached to it. Should there be a separate table for the connected wallet?
-1. Add a column to the table for USD price.
 
 # Future Tasks
 1. Add an "adjusted rewards" column that applies bonuses and taxes
   - Universe currently applies compound bonus to rewards
   - Ascend has high taxes that aren't applied to rewards
-1. Figure out how to monitor transactions to show when they're complete
 1. Mobile enhancements:
   - Figure out the NavBar expand and how to add a burger menu to mobile
   - Services switches overlap on mobile
-1. Add detail views for every project that open when you click the row.
 1. Expand the add profile modal to be able to add addresses and projects right away.
+1. Figure out how to monitor transactions to show when they're complete
+1. Add detail views for every project that open when you click the row.
 1. Add validation to profile name field, wallet address field: https://reactstrap.github.io/?path=/story/components-forms--form-feedback
 1. Request form for adding nodes https://docs.google.com/forms/d/e/1FAIpQLSe0tIojm2WPAT_i3lkiv5OVMJRyEC14hm5merqH2NrnaPWUOQ/viewform
 1. Update countdown timers to actually count down

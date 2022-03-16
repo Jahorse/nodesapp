@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { FaQuestionCircle } from 'react-icons/fa';
 import {
   Button,
   Container,
@@ -12,6 +13,7 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
+  Tooltip,
 } from 'reactstrap';
 
 function isValidProfileName(name) {
@@ -92,12 +94,17 @@ const ConnectWallet = (props) => {
 
 const AddProfileModal = (props) => {
   const [modalOpen, setToggleModal] = useState(false);
+  const [tooltipOpen, setToggleTooltip] = useState(false);
   const [cookies, setCookie] = useCookies(['profiles']);
   const [profileNameInput, setProfileNameInput] = useState('');
 
   const toggleModal = () => {
     setProfileNameInput('');
     setToggleModal(!modalOpen);
+  }
+
+  const toggleTooltip = () => {
+    setToggleTooltip(!tooltipOpen);
   }
 
   const addProfile = () => {
@@ -146,8 +153,13 @@ const AddProfileModal = (props) => {
         <ModalBody>
           <Form>
             <FormGroup row>
-              <Label for="profileName" sm={2}>Profile Name</Label>
-              <Col sm={10}>
+              <Label for="profileName" sm={3}>
+                Profile Name <span href='#' id='ProfileTooltip'><FaQuestionCircle /></span>
+                <Tooltip placement='bottom' target='ProfileTooltip' isOpen={tooltipOpen} toggle={toggleTooltip}>
+                  After adding a named profile, you will be able to edit it to add wallet addresses.
+                </Tooltip>
+                </Label>
+              <Col sm={9}>
                 <Input
                   id="profileName"
                   name="profileName"
