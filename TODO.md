@@ -1,5 +1,4 @@
 # TASK LIST
-1. Add tool tip
 1. Add Comb
 1. Enable/disable node projects
 

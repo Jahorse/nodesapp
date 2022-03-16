@@ -1,0 +1,4 @@
+export const claimAbi = ['function cashoutAll()'];
+
+export const nodeQueryAbi = ["function getNodesRewardsTax(address account, uint256 amount) public view returns (uint256)", "function regressiveTax() public view returns (uint256, uint256, uint256, uint256)", "function rewardPerNode() public view returns (uint256)", "function nextDistribution() public view returns (uint256) ", "function nodePrice() public view returns (uint256)", "function getNodeNames(address account) public view returns (string memory) ", "function getNodesCreationTime(address addy) public view returns (string memory)", "function getNodesMultipliers(address addy) public view returns (string memory)", "function getNodesMetadata(address addy) public view returns (string memory)", "function getNodeNumberOf(address account) public view returns (uint256)", "function getRewardAmountOf(address account) public view returns (uint256)", "function totalNodesCreated() public view returns (uint256)"];
+

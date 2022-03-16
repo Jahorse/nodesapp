@@ -30,6 +30,7 @@ import UniverseContract from './ContractsApi/UniverseContract';
 import VaporContract from './ContractsApi/VaporContract';
 import { setNetwork } from './Utils/Networking';
 import NetworkTableRow from './NetworkTableRow';
+import CombContract from './ContractsApi/CombContract';
 
 const AvalancheContracts = (props) => {
   const provider = props.provider;
@@ -76,6 +77,7 @@ const FantomContracts = (props) => {
 
   return (
     <>
+      <NetworkTableRow contract={new CombContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
       <NetworkTableRow contract={new PowerSolarContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
       <NetworkTableRow contract={new PowerWindContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
       <NetworkTableRow contract={new PowerHydroContract(provider, addresses)} provider={provider} isWeb3={isConnected} />

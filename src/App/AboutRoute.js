@@ -42,6 +42,7 @@ const AboutRoute = (props) => {
           </ol>
           <h4 className='ps-3'>Fantom</h4>
           <ol className='ps-5'>
+            <li><a href='https://app.comb.financial/dashboard' className='link-light'>Comb</a></li>
             <li><a href='https://app.powernode.io/#'  className='link-light'>Power</a></li>
           </ol>
           <h4 className='ps-3'>Polygon</h4>
