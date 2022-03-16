@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import Contract from './Contract';
 
 import abi from "./abi/universe.js";
-import { getPriceCg } from '../Utils';
+import { getPriceCg } from '../Utils/Pricing';
 
 class UniverseContract extends Contract {
   metadata = {

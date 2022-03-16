@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
 import Contract from './Contract';
-import { getPriceCg } from '../Utils';
+import { getPriceCg } from '../Utils/Pricing';
 
 class VaporContract extends Contract {
   metadata = {

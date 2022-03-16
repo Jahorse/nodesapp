@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 import abi from './abi/thor';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils';
+import { getPriceCg } from '../Utils/Pricing';
 
 class PowerContract extends Contract {
   metadata = {

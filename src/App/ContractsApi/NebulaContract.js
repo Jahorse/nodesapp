@@ -2,6 +2,7 @@ import * as ethers from 'ethers';
 
 import abi from './abi/nebula';
 import Contract from './Contract';
+import { getPriceDg } from '../Utils/Pricing';
 
 class NebulaContract extends Contract {
   metadata = {
@@ -17,7 +18,7 @@ class NebulaContract extends Contract {
   contractAddress = '0xd311d77c8F4665bdA9e684Cd08f8991f364AbEF5';
   claimContractAddress = '0x1aEa17a08EdE10D158baac969f809E6747cb2B22';
   claimContractAbi = [
-    'function cashoutAll()', // Claim
+    'function cashoutAll()',
   ];
 
   constructor(provider, walletAddresses) {
@@ -27,7 +28,7 @@ class NebulaContract extends Contract {
   }
 
   async getPriceUsd() {
-    return;
+    return await getPriceDg('Avalanche', '0x1aea17a08ede10d158baac969f809e6747cb2b22');
   }
 
   getTotalRewards(nodes, compounding) {

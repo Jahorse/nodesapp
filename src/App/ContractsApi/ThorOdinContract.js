@@ -6,7 +6,8 @@ class ThorOdinContract extends ThorContract {
       provider,
       walletAddresses,
       '0x9c0200f3e9673bcfe6d80076aa976f446d74758a',
-      'Odin'
+      'Odin',
+      77,
     );
   }
 }

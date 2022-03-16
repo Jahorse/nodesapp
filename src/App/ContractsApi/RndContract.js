@@ -1,5 +1,5 @@
 import Contract from './Contract';
-import { getPriceCg } from '../Utils';
+import { getPriceCg } from '../Utils/Pricing';
 
 class RndContract extends Contract {
   metadata = {

@@ -11,7 +11,7 @@ import {
   useMatch,
 } from 'react-router-dom';
 
-import { networkIdToNameMap } from './Networking';
+import { networkIdToNameMap } from './Utils/Networking';
 
 import { ethers } from 'ethers';
 import RouteView from './RouteView';

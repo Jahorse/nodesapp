@@ -29,7 +29,6 @@ const Summary = (props) => {
             networkName='Avalanche'
             walletAddresses={props.profile.walletAddresses.avalanche}
           />
-        // ? addAvalanche(props.profile, props.provider)
         : null
       }
       {networks.includes('ethereum')
@@ -39,7 +38,6 @@ const Summary = (props) => {
           networkName='Ethereum'
           walletAddresses={props.profile.walletAddresses.ethereum}
         />
-        // ? addFantom(props.profile, props.provider)
         : null
       }
       {networks.includes('fantom')
@@ -49,7 +47,6 @@ const Summary = (props) => {
           networkName='Fantom'
           walletAddresses={props.profile.walletAddresses.fantom}
         />
-        // ? addFantom(props.profile, props.provider)
         : null
       }
       {networks.includes('polygon')
@@ -59,7 +56,6 @@ const Summary = (props) => {
           networkName='Polygon'
           walletAddresses={props.profile.walletAddresses.polygon}
         />
-        // ? addPolygon(props.profile, props.provider)
         : null
       }
     </Container>

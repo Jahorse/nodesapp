@@ -19,6 +19,9 @@ const AboutRoute = (props) => {
             <li>
               If you connect your wallet, all transactions are sent directly from your wallet's browser extension to the blockchain network to be executed in the node project's smart contract that you're trying to interact with.
             </li>
+            <li>
+              We don't collect any information about your nodes. All node information is fetched directly from the blockchain by your browser.
+            </li>
           </ul>
           <p className='pt-2 ps-3'>You should never be asked to approve any contracts by the NodeApp. If you are asked to approve anything, you should go to that node project's dApp and confirm there that they have a contract that needs your approval.</p>
         </span>

@@ -9,7 +9,7 @@ import {
   DropdownToggle,
 } from 'reactstrap';
 
-const PropfileMenu = (props) => {
+const PropfileDropdown = (props) => {
   const [cookies, setCookie] = useCookies(['activeProfileName', 'profiles']);
   const [menuOpen, setToggleMenu] = useState(false);
 
@@ -58,4 +58,4 @@ const PropfileMenu = (props) => {
   );
 };
 
-export default PropfileMenu;
+export default PropfileDropdown;

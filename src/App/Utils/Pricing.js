@@ -1,39 +1,58 @@
+import { networkNameToIdMap } from "./Networking";
+
+async function decodeStream(stream) {
+  const reader = stream.getReader();
+
+  const readableStream = new ReadableStream({
+    start(controller) {
+      // The following function handles each data chunk
+      function push() {
+        // "done" is a Boolean and value a "Uint8Array"
+        reader.read().then( ({done, value}) => {
+          // If there is no more data to read
+          if (done) {
+            controller.close();
+            return;
+          }
+          // Get the data and send it to the browser via the controller
+          controller.enqueue(value);
+          push();
+        })
+      }
+
+      push();
+    }
+  });
+
+  return new Response(readableStream, { headers: { "Content-Type": "text/html" } }).text();
+}
+
+function round(number) {
+  return Math.round((number + Number.EPSILON) * 100000) / 100000;
+}
+
 export async function getPriceCg(symbol) {
   try {
     const dataUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`;
     const response = await fetch(dataUrl)
-      .then(response => response.body)
-      .then(rb => {
-        const reader = rb.getReader();
-
-        return new ReadableStream({
-          start(controller) {
-            // The following function handles each data chunk
-            function push() {
-              // "done" is a Boolean and value a "Uint8Array"
-              reader.read().then( ({done, value}) => {
-                // If there is no more data to read
-                if (done) {
-                  controller.close();
-                  return;
-                }
-                // Get the data and send it to the browser via the controller
-                controller.enqueue(value);
-                push();
-              })
-            }
-
-            push();
-          }
-        });
-      })
-      .then(stream => {
-        // Respond with our stream
-        return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
-      });
+      .then(r => decodeStream(r.body));
     const data = JSON.parse(response);
 
-    return data[symbol]['usd'];
+    return round(data[symbol]['usd']);
+  } catch (e) {
+    return e;
+  }
+}
+
+export async function getPriceDg(network, hash) {
+  const chainId = networkNameToIdMap[network];
+  const dataUrl = `https://api.dev.dex.guru/v1/chain/${chainId}/tokens/${hash}/market`;
+  try {
+    const response = await fetch(dataUrl, {headers: {'api-key':'WBUhTGV5Y8CRtuOL0bDikZ-Wld_FzC43F0vvjTe_TD4'}})
+    .then(r => decodeStream(r.body));;
+
+    const data = JSON.parse(response);
+    return round(data.price_usd);
   } catch (e) {
     return e;
   }

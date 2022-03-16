@@ -5,7 +5,7 @@ import {
   nodeQueryAbi,
 } from './abi/pentagon';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils';
+import { getPriceCg } from '../Utils/Pricing';
 
 class PentagonContract extends Contract {
   metadata = {

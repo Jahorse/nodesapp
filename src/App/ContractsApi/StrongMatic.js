@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import Contract from './Contract';
 
 import abi from "./abi/strong-matic.js";
-import { getPriceCg } from '../Utils';
+import { getPriceCg } from '../Utils/Pricing';
 
 class StrongMaticContract extends Contract {
   metadata = {
@@ -52,6 +52,11 @@ class StrongMaticContract extends Contract {
     for (const walletAddress of this.walletAddresses) {
       try {
         const count = await contract.entityNodeCount(walletAddress);
+
+        if (count < 1) {
+          continue;
+        }
+
         let rewards = 0;
         for (let i=1; i<=count; i++) {
           const reward = await contract.getNodeReward(walletAddress, i);

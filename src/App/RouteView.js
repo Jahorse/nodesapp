@@ -15,9 +15,9 @@ import {
 } from 'react-router-dom';
 
 import Summary from './SummaryRoute';
-import ManageAddressesRoute from './ManageAddressesRoute';
-import ManageProfilesRoute from './ManageProfilesRoute';
-import PropfileMenu from './ProfileMenu';
+import EditProfileRoute from './Profiles/EditProfileRoute';
+import ManageProfilesRoute from './Profiles/ManageProfilesRoute';
+import PropfileDropdown from './ProfileDropdown';
 import AboutRoute from './AboutRoute';
 
 const RouteView = (props) => {
@@ -38,7 +38,7 @@ const RouteView = (props) => {
                 <NavItem><NavLink tag={RRNavLink} to="/about">About</NavLink></NavItem>
               </Nav>
               <NavbarText>
-                <PropfileMenu networkName={provider?.networkName} />
+                <PropfileDropdown networkName={provider?.networkName} />
               </NavbarText>
             </Collapse>
           </Navbar>
@@ -48,7 +48,7 @@ const RouteView = (props) => {
             {provider ? <Route path="/" element={<Summary profile={props.profile} provider={provider} />} /> : null}
             <Route path="/about" element={<AboutRoute />} />
             <Route path="/manage-profiles" element={<ManageProfilesRoute />} />
-            <Route path="/manage-profile/:profileName" element={<ManageAddressesRoute />} />
+            <Route path="/manage-profile/:profileName" element={<EditProfileRoute />} />
           </Routes>
       </div>
     </>

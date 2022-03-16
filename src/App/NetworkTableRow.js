@@ -19,7 +19,7 @@ function dhm(t){
   return [d, pad(h), pad(m)].join(':');
 }
 
-const SummaryRowChild = (props) => {
+const NetworkTableRowChild = (props) => {
   const [price, setPrice] = useState();
   const contract = props.contract;
   const contractName = props.contract.metadata.name;
@@ -81,7 +81,7 @@ const SummaryRowChild = (props) => {
   return (<tr key={contractName}>{columns}</tr>);
 }
 
-const SummaryRow = (props) => {
+const NetworkTableRow = (props) => {
   const [nodeInfo, updateNodeInfo] = useState();
   useEffect(() => {
     const getNodeData = async () => {
@@ -90,8 +90,8 @@ const SummaryRow = (props) => {
     getNodeData();
   }, [props.contract]);
   return (nodeInfo && nodeInfo.length > 0)
-    ? <SummaryRowChild key={props.contract.metadata.name} provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
+    ? <NetworkTableRowChild key={props.contract.metadata.name} provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
     : null;
 }
 
-export default SummaryRow;
+export default NetworkTableRow;

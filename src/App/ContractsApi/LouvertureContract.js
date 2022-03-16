@@ -2,7 +2,7 @@ import * as ethers from 'ethers';
 
 import abi from './abi/louverture';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils';
+import { getPriceCg } from '../Utils/Pricing';
 
 class LouvertureContract extends Contract {
   metadata = {
