@@ -7,8 +7,9 @@ class RndContract extends Contract {
     symbol: 'PLAYMATES',
     networkName: 'Avalanche',
     decimals: 2,
-    hasClaim: false,
+    claimSupport: false,
     hasCompound: false,
+    appLink: 'https://redlightnodes.app/',
     chartLink: 'https://dexscreener.com/avalanche/0xfd17c7a2e1eee2ee2a308e43bdfbac4df135c5cd',
     swapLink: 'https://redlightnodes.app/swap',
   };

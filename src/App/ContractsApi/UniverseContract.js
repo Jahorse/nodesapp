@@ -10,8 +10,9 @@ class UniverseContract extends Contract {
     symbol: 'UNIV',
     networkName: 'Avalanche',
     decimals: 2,
-    hasClaim: true,
+    claimSupport: true,
     hasCompound: true,
+    appLink: 'https://univ.money/observatory',
     chartLink: 'https://dexscreener.com/avalanche/0x938e8b130e87d92d873fcca26ba144a32ba12b93',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x959b88966fc5b261df8359961357d34f4ee27b4a#/',
   };

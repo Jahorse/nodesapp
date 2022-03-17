@@ -13,8 +13,9 @@ class PentagonContract extends Contract {
     symbol: 'PENT',
     networkName: 'Polygon',
     decimals: 4,
-    hasClaim: true,
+    claimSupport: true,
     hasCompound: false,
+    appLink: 'https://app.pentagon.financial/node',
     chartLink: 'https://dexscreener.com/polygon/0x01b758b406fb0f4e36c95dfbc909763d7080e5b4',
     swapLink: 'https://quickswap.exchange/#/swap?outputCurrency=0x283366bb42ef49a994913baf22263c6562e588a4',
   };

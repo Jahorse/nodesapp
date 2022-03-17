@@ -13,8 +13,9 @@ class CombContract extends Contract {
     symbol: 'COMB',
     networkName: 'Fantom',
     decimals: 2,
-    hasClaim: false,
+    claimSupport: false,
     hasCompound: false,
+    appLink: 'https://app.comb.financial/dashboard',
     chartLink: 'https://dexscreener.com/fantom/0x95297492b1faa6047d1d8ce982a0f5cdeb0e9482',
     swapLink: 'https://swap.spiritswap.finance/#/swap?outputCurrency=0xae45a827625116d6c0c40b5d7359ecf68f8e9afd',
   };

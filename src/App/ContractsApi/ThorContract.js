@@ -10,8 +10,9 @@ class ThorContract extends Contract {
     symbol: 'THOR',
     networkName: 'Avalanche',
     decimals: 4,
-    hasClaim: true,
+    claimSupport: true,
     hasCompound: false,
+    appLink: 'https://app.thor.financial/',
     chartLink: 'https://dexscreener.com/avalanche/0x95189f25b4609120f72783e883640216e92732da',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79#/',
   };

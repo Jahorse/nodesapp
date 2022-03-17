@@ -10,8 +10,9 @@ class LouvertureContract extends Contract {
     symbol: 'LVT',
     networkName: 'Avalanche',
     decimals: 4,
-    hasClaim: false, // TODO: Update to v2
-    hasCompound: false,
+    claimSupport: false, // TODO: Update to v2
+    hasCompound: true,
+    appLink: 'https://www.louverture.finance/blackhole',
     chartLink: 'https://dexscreener.com/avalanche/0x482b272af360fdfbf2d6f9b688ce949ae6adc117',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0xff579d6259dedcc80488c9b89d2820bcb5609160#/',
   };

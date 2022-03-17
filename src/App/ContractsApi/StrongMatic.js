@@ -10,8 +10,9 @@ class StrongMaticContract extends Contract {
     symbol: 'STRONG',
     networkName: 'Ethereum',
     decimals: 2,
-    hasClaim: false,
+    claimSupport: false,
     hasCompound: false,
+    appLink: 'https://app.strongblock.com/',
     chartLink: 'https://dexscreener.com/ethereum/0xc0bf97bffa94a50502265c579a3b7086d081664b',
     swapLink: 'https://app.uniswap.org/#/swap?outputCurrency=0x990f341946a3fdb507ae7e52d17851b87168017c&chain=mainnet',
   };

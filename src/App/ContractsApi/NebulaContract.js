@@ -10,8 +10,9 @@ class NebulaContract extends Contract {
     symbol: 'NeBu',
     networkName: 'Avalanche',
     decimals: 3,
-    hasClaim: true,
+    claimSupport: true,
     hasCompound: false,
+    appLink: 'https://app.nebulanodes.finance/',
     chartLink: 'https://dexscreener.com/avalanche/0x36c1d7d2eb0cf928ab05dfe8c339f5b5c7c818a4',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x1aea17a08ede10d158baac969f809e6747cb2b22#/',
   };

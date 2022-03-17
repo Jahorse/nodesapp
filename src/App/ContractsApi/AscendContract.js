@@ -8,9 +8,10 @@ class AscendContract extends Contract {
     symbol: 'ASND',
     networkName: 'Avalanche',
     decimals: 0,
-    hasClaim: true,
+    claimSupport: true,
     hasCompound: false,
-    chartLink: 'hhttps://dexscreener.com/avalanche/0x785a7356731dac36747cb46f4a98a80202aabb23',
+    appLink: 'https://dapp.ascendnodeclub.money/',
+    chartLink: 'https://dexscreener.com/avalanche/0x785a7356731dac36747cb46f4a98a80202aabb23',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0xfd0c58f03c83d6960bb9dbfd45076d78df2f095d#/',
   };
   rewardsContractAddress = '0xc1362C2141554B937C2b7585be44cDE4064704D7';

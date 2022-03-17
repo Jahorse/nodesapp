@@ -44,38 +44,30 @@ const NetworkTableRowChild = (props) => {
     </td>),
   ];
 
-  if (props.isWeb3) {
-    const contractNetworkName = contract.metadata.networkName;
-    let claimAll;
-    let compoundAll;
+  const timeUntilClaim = contract.timeUntilClaim();
 
-    const timeUntilClaim = contract.timeUntilClaim();
-    if (contract.metadata.hasClaim) {
-      if (timeUntilClaim === 0) {
-        if (props.provider && props.provider.networkName === contractNetworkName) {
-          claimAll = <Button onClick={() => contract.claimAll(props.signer)}>Claim All</Button>;
-        } else {
-          claimAll = <Button disabled>Connect to {contractNetworkName}</Button>;
-        }
-      }  else {
-        claimAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
-      }
-    }
+  let claimAll;
+  if (timeUntilClaim > 0) {
+    claimAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
+  } else if (contract.metadata.claimSupport && props.isConnected) {
+    claimAll = <Button onClick={() => contract.claimAll(props.signer)}>Claim All</Button>;
+  } else {
+    claimAll = <a href={contract.metadata.appLink}><Button>Go to App</Button></a>;
+  }
+  columns.push((<td key={`${contractName}-claimAll`}>{claimAll}</td>));
+
+  if (props.isConnected) {
+    let compoundAll;
     if (contract.metadata.hasCompound) {
-      if (timeUntilClaim === 0) {
-        if (props.provider && props.provider.networkName === contractNetworkName) {
-          compoundAll = <Button onClick={() => contract.compoundAll(props.signer)}>Compound All</Button>;
-        } else {
-          compoundAll = <Button disabled>Connect to {contractNetworkName}</Button>;
-        }
-      }  else {
+      if (timeUntilClaim > 0) {
         compoundAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
+      } else if (contract.metadata.claimSupport) {
+        compoundAll = <Button onClick={() => contract.compoundAll(props.signer)}>Compound All</Button>;
+      } else {
+        compoundAll = <a href={contract.metadata.appLink}><Button>Go to App</Button></a>;
       }
     }
-    columns.push(
-      (<td key={`${contractName}-claimAll`}>{claimAll}</td>),
-      (<td key={`${contractName}-compoundAll`}>{compoundAll}</td>),
-    );
+    columns.push((<td key={`${contractName}-compoundAll`}>{compoundAll}</td>));
   }
 
   return (<tr key={contractName}>{columns}</tr>);
@@ -90,7 +82,13 @@ const NetworkTableRow = (props) => {
     getNodeData();
   }, [props.contract]);
   return (nodeInfo && nodeInfo.length > 0)
-    ? <NetworkTableRowChild key={props.contract.metadata.name} provider={props.provider} nodeInfo={nodeInfo} contract={props.contract} isWeb3={props.isWeb3} />
+    ? <NetworkTableRowChild
+      key={props.contract.metadata.name}
+      provider={props.provider}
+      nodeInfo={nodeInfo}
+      contract={props.contract}
+      isConnected={props.isConnected}
+    />
     : null;
 }
 

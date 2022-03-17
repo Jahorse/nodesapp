@@ -39,20 +39,20 @@ const AvalancheContracts = (props) => {
 
   return (
     <>
-      <NetworkTableRow contract={new AscendAmsContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new AscendPlatinumContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new AscendInfiniteContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new AscendMetaContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new LouvertureContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new NebulaContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new RndMansionsContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new RndDistrictsContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new ThorHeimdallContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new ThorFreyaContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new ThorThorContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new ThorOdinContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new UniverseContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new VaporContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
+      <NetworkTableRow contract={new AscendAmsContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new AscendPlatinumContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new AscendInfiniteContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new AscendMetaContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new LouvertureContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new NebulaContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new RndMansionsContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new RndDistrictsContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new ThorHeimdallContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new ThorFreyaContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new ThorThorContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new ThorOdinContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new UniverseContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new VaporContract(provider, addresses)} provider={provider} isConnected={isConnected} />
     </>
   );
 };
@@ -64,8 +64,8 @@ const EthereumContracts = (props) => {
 
   return (
     <>
-      <NetworkTableRow contract={new StrongEthContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new StrongMaticContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
+      <NetworkTableRow contract={new StrongEthContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new StrongMaticContract(provider, addresses)} provider={provider} isConnected={isConnected} />
     </>
   );
 }
@@ -77,11 +77,11 @@ const FantomContracts = (props) => {
 
   return (
     <>
-      <NetworkTableRow contract={new CombContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new PowerSolarContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new PowerWindContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new PowerHydroContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
-      <NetworkTableRow contract={new PowerNuclearContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
+      <NetworkTableRow contract={new CombContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new PowerSolarContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new PowerWindContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new PowerHydroContract(provider, addresses)} provider={provider} isConnected={isConnected} />
+      <NetworkTableRow contract={new PowerNuclearContract(provider, addresses)} provider={provider} isConnected={isConnected} />
     </>
   );
 }
@@ -93,7 +93,7 @@ const PolygonContracts = (props) => {
 
   return (
     <>
-      <NetworkTableRow contract={new PentagonContract(provider, addresses)} provider={provider} isWeb3={isConnected} />
+      <NetworkTableRow contract={new PentagonContract(provider, addresses)} provider={provider} isConnected={isConnected} />
     </>
   );
 }
@@ -160,8 +160,12 @@ const NetworkTable = (props) => {
     tableHeaders.push(
       (<th key='header-claim'>Claim</th>),
       (<th key='header-compound'>Compound</th>)
-      );
-    }
+    );
+  } else {
+    tableHeaders.push(
+      (<th key='header-claim'>Claim/Compound</th>),
+    );
+  }
   const addresses = props.walletAddresses;
   const contracts = <Contracts networkName={networkName} addresses={addresses} isConnected={isConnected} provider={provider}/>
   return (

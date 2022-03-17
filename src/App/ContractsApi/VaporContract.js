@@ -9,8 +9,9 @@ class VaporContract extends Contract {
     symbol: 'VPND',
     networkName: 'Avalanche',
     decimals: 2,
-    hasClaim: true,
+    claimSupport: true,
     hasCompound: true,
+    appLink: 'https://app.vapornodes.finance/',
     chartLink: 'https://dexscreener.com/avalanche/0x4cd20f3e2894ed1a0f4668d953a98e689c647bfe',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x83a283641c6b4df383bcddf807193284c84c5342#/',
   };

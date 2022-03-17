@@ -10,8 +10,9 @@ class PowerContract extends Contract {
     symbol: 'POWER',
     networkName: 'Fantom',
     decimals: 4,
-    hasClaim: true,
+    claimSupport: true,
     hasCompound: false,
+    appLink: 'https://app.powernode.io/#',
     chartLink: 'https://dexscreener.com/fantom/0x8eae6aac525e6ec6a686f77e4751d3e8f96f6a83',
     swapLink: 'https://spookyswap.finance/swap?outputCurrency=0x131c7afb4e5f5c94a27611f7210dfec2215e85ae',
   };
