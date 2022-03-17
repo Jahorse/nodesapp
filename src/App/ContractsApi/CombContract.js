@@ -61,9 +61,9 @@ class CombContract extends Contract {
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const [ nodeNames, metadata, creationTimes ] = [
+        const [ nodeNames, creationTimes ] = [
           (await contract.getNodeNames(walletAddress)).split('#'),
-          (await contract.getNodesMetadata(walletAddress)).split('#'),
+          // (await contract.getNodesMetadata(walletAddress)).split('#'),
           (await contract.getNodesCreationTime(walletAddress)).split('#'),
         ];
         const rewards = await contract.getRewardAmountOf(walletAddress);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Container,
 } from 'reactstrap';
@@ -20,37 +20,24 @@ import '../scss/custom.scss';
 import Footer from './Footer';
 
   /**
-   * activeProfileName = 'DJHorse';
+   * activeProfileName = 'Example';
    * profiles = {
    *   MetaMask: {
    *     walletAddresses: null,
    *     disabledProjects: {},
    *     isWeb3: true,
    *   },
-   *   DJHorse: {
+   *   Example: {
    *     walletAddresses: {
-   *       avalanche: [
-   *         '0x80123015',
-   *         '0x80c73f84',
-   *       ],
-   *       ethereum: [
-   *         '0x80123015',
-   *       ],
-   *       fantom: [
-   *         '0x80123015',
-   *       ],
-   *       polygon: [
-   *         '0x80123015',
-   *       ],
+   *       avalanche: [],
+   *       ethereum: [],
+   *       fantom: [],
+   *       polygon: [],
    *     },
    *     disabledProjects: {
-   *       avalanche: [
-   *         'thor',
-   *       ],
+   *       avalanche: [],
    *       ethereum: [],
-   *       fantom: [
-   *         'power',
-   *       ],
+   *       fantom: [],
    *       polygon: [],
    *     },
    *     isWeb3: false,
@@ -70,10 +57,7 @@ const Main = (props) => {
     setCookie('profiles', cookies.profiles);
   }
 
-  let profileNames = [];
-  if (cookies.profiles) {
-    profileNames = Object.keys(cookies.profiles);
-  }
+  const profileNames = useMemo(() => Object.keys(cookies.profiles), [cookies.profiles]);
 
   useEffect(() => {
     // If the active profile isn't set, or it is set to something that isn't in the profiles list,
@@ -82,7 +66,6 @@ const Main = (props) => {
       && cookies.profiles
       && Object.keys(cookies.profiles).length > 0
     ) {
-      const profileNames = Object.keys(cookies.profiles);
       setCookie('activeProfileName', profileNames[0]);
       setActiveProfile(profileNames[0]);
       setHasNoProfiles(false);
@@ -159,11 +142,16 @@ const Main = (props) => {
 
 
   const onManageProfilesPage = useMatch("manage-profiles");
-  const shouldRedirect = !onManageProfilesPage && hasNoProfiles;
+  const onAboutPage = useMatch("about");
+  const shouldRedirect = !onManageProfilesPage && !onAboutPage && hasNoProfiles;
   return (
     <Container>
       {shouldRedirect ? <Navigate to="/manage-profiles" replace /> : null}
-      {(provider || onManageProfilesPage) ? <RouteView profileName={cookies.activeProfileName} profile={activeProfile} provider={provider} /> : null}
+      {
+        (provider || onManageProfilesPage || onAboutPage)
+          ? <RouteView profileName={cookies.activeProfileName} profile={activeProfile} provider={provider} />
+          : null
+      }
       <Footer />
     </Container>
   );

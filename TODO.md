@@ -1,5 +1,4 @@
 # TASK LIST
-1. Add Comb
 1. Enable/disable node projects
 
 # Launch Blocker Tasks
@@ -17,6 +16,7 @@
   1. Division
 
 # Future Tasks
+1. Add the total of the rewards in USD somewhere
 1. Add an "adjusted rewards" column that applies bonuses and taxes
   - Universe currently applies compound bonus to rewards
   - Ascend has high taxes that aren't applied to rewards
