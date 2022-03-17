@@ -150,22 +150,19 @@ const NetworkTable = (props) => {
   const networkName = props.networkName;
   const isWeb3 = provider.ethers.web3 ? true : false;
   const isConnected = isWeb3 && provider.networkName === networkName;
+
+  const claimHeaders = isConnected
+    ? [(<th key='header-claim'>Claim</th>), (<th key='header-compound'>Compound</th>)]
+    : [(<th key='header-claim'>Claim/Compound</th>),];
+
   const tableHeaders = [
     (<th key='header-project'>Project</th>),
     (<th key='header-price'>Token Price</th>),
     (<th key='header-rewards'>Rewards</th>),
     (<th key='header-usd'>Rewards USD</th>),
+    ...claimHeaders,
+    (<th key='header-swap'>Swap</th>),
   ];
-  if (isConnected) {
-    tableHeaders.push(
-      (<th key='header-claim'>Claim</th>),
-      (<th key='header-compound'>Compound</th>)
-    );
-  } else {
-    tableHeaders.push(
-      (<th key='header-claim'>Claim/Compound</th>),
-    );
-  }
   const addresses = props.walletAddresses;
   const contracts = <Contracts networkName={networkName} addresses={addresses} isConnected={isConnected} provider={provider}/>
   return (

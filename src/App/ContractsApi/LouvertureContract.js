@@ -13,8 +13,8 @@ class LouvertureContract extends Contract {
     claimSupport: false, // TODO: Update to v2
     hasCompound: true,
     appLink: 'https://www.louverture.finance/blackhole',
-    chartLink: 'https://dexscreener.com/avalanche/0x482b272af360fdfbf2d6f9b688ce949ae6adc117',
-    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0xff579d6259dedcc80488c9b89d2820bcb5609160#/',
+    chartLink: 'https://dexscreener.com/avalanche/0xb16471a1c2e24c325151eaceb5543747787cd811',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0xd641e62525e830e98cb9d7d033a538a1f092ff34#/',
   };
   contractAddress = '0x3Cf1Dff7CCE2b7291456Bc2089b4bCB2AB5f311A';
   claimContractAddress = '0xff579d6259dedcc80488c9b89d2820bcb5609160';

@@ -70,6 +70,8 @@ const NetworkTableRowChild = (props) => {
     columns.push((<td key={`${contractName}-compoundAll`}>{compoundAll}</td>));
   }
 
+  columns.push((<td key={`${contractName}-swap`}><a href={contract.metadata.swapLink}><Button>Swap</Button></a></td>));
+
   return (<tr key={contractName}>{columns}</tr>);
 }
 
