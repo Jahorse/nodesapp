@@ -1,4 +1,6 @@
-import { networkNameToIdMap } from "./Networking";
+function round(number) {
+  return Math.round((number + Number.EPSILON) * 100000) / 100000;
+}
 
 async function decodeStream(stream) {
   const reader = stream.getReader();
@@ -27,10 +29,6 @@ async function decodeStream(stream) {
   return new Response(readableStream, { headers: { "Content-Type": "text/html" } }).text();
 }
 
-function round(number) {
-  return Math.round((number + Number.EPSILON) * 100000) / 100000;
-}
-
 export async function getPriceCg(symbol) {
   try {
     const dataUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`;
@@ -40,22 +38,23 @@ export async function getPriceCg(symbol) {
 
     return round(data[symbol]['usd']);
   } catch (e) {
-    return e;
+    console.error(e);
   }
+  return;
 }
 
-export async function getPriceDg(network, hash) {
-  const chainId = networkNameToIdMap[network];
-  const dataUrl = `https://api.dev.dex.guru/v1/chain/${chainId}/tokens/${hash}/market`;
+export async function getPriceDg(chainId, hash) {
   try {
-    const response = await fetch(dataUrl, {headers: {'api-key':'WBUhTGV5Y8CRtuOL0bDikZ-Wld_FzC43F0vvjTe_TD4'}})
-    .then(r => decodeStream(r.body));;
+    const dataUrl = `/price?chainId=${chainId}&tokenAddress=${hash}`;
+    const data = await fetch(dataUrl)
+      .then(r => r.json())
+      .then(o => JSON.parse(o));
 
-    const data = JSON.parse(response);
     return round(data.price_usd);
   } catch (e) {
-    return e;
+    console.error(e);
   }
+  return;
 }
 
 export async function getPriceDs(network, hash, baseTokenSymbol = false, values = ["priceUsd"], headers = false) {
@@ -100,6 +99,7 @@ export async function getPriceDs(network, hash, baseTokenSymbol = false, values 
 
     return [output];
   } catch (e) {
-    return e;
+    console.error(e);
   }
+  return;
 }

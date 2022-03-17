@@ -30,7 +30,7 @@ const RouteView = (props) => {
         <div>
           <Navbar color="dark" dark expand="md" className='rounded-bottom'>
             <NavbarBrand tag={RRNavLink} to="/">
-              NodeApp
+              NodesApp
             </NavbarBrand>
             <Collapse navbar>
               <Nav className="me-auto" navbar>

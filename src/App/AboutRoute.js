@@ -8,10 +8,10 @@ const AboutRoute = (props) => {
   return (
     <Container>
       <Row className='bg-dark rounded m-5 px-2 py-4 text-light'>
-        <h1>About NodeApp</h1>
+        <h1>About NodesApp</h1>
         <span>
           <h2>Security</h2>
-          <p className='pt-2 ps-3'>NodeApp works 100% client side, none of your data touches our servers:</p>
+          <p className='pt-2 ps-3'>NodesApp works 100% client side, none of your data touches our servers:</p>
           <ul className='ps-5'>
             <li>
               Your profiles and wallet addresses are stored client-side in a cookie in your browser.
@@ -23,7 +23,7 @@ const AboutRoute = (props) => {
               We don't collect any information about your nodes. All node information is fetched directly from the blockchain by your browser.
             </li>
           </ul>
-          <p className='pt-2 ps-3'>You should never be asked to approve any contracts by the NodeApp. If you are asked to approve anything, you should go to that node project's dApp and confirm there that they have a contract that needs your approval.</p>
+          <p className='pt-2 ps-3'>You should never be asked to approve any contracts by the NodesApp. If you are asked to approve anything, you should go to that node project's dApp and confirm there that they have a contract that needs your approval.</p>
         </span>
         <span>
           <h2>Supported Projects</h2>
