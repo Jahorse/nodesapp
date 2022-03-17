@@ -32,6 +32,8 @@ class AscendContract extends Contract {
     this.contractAddress = contractAddress;
     this.contractName = contractName;
 
+    this.metadata.name = `Ascend ${contractName}`;
+
     this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
   }
 
