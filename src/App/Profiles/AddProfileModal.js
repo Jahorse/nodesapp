@@ -154,7 +154,10 @@ const AddProfileModal = (props) => {
           <Form>
             <FormGroup row>
               <Label for="profileName" sm={3}>
-                Profile Name <span href='#' id='ProfileTooltip'><FaQuestionCircle /></span>
+                Profile Name&nbsp;
+                <span href='#' id='ProfileTooltip'>
+                  <FaQuestionCircle />
+                </span>
                 <Tooltip placement='bottom' target='ProfileTooltip' isOpen={tooltipOpen} toggle={toggleTooltip}>
                   After adding a named profile, you will be able to edit it to add wallet addresses.
                 </Tooltip>

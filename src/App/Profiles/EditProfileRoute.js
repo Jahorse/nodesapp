@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { FaQuestionCircle } from 'react-icons/fa';
+import { IconContext } from "react-icons";
 import { useParams } from "react-router-dom";
 import {
   Button,
@@ -13,6 +14,7 @@ import {
   Tooltip,
 } from 'reactstrap';
 import WalletAddressModal from './WalletAddressModal';
+import { useViewport } from '../Utils/Hooks';
 
 
 const AddressRow = (props) => {
@@ -44,6 +46,7 @@ const EditProfileRoute = (props) => {
   let params = useParams();
   const [cookies, setCookie] = useCookies(['profiles']);
   const [tooltipOpen, setToggleTooltip] = useState(false);
+  const { width } = useViewport();
 
   if (!cookies.profiles) {
     console.error('No profiles are set.');
@@ -60,11 +63,13 @@ const EditProfileRoute = (props) => {
 
   const profile = cookies.profiles[params.profileName];
 
+  const longAddresses = width > 620 ? true : false;
+
   const addressRows = [];
   profile.walletAddresses.avalanche.forEach((a) => {
     addressRows.push(<AddressRow
       key={`avalanche-${a}`}
-      address={a}
+      address={longAddresses ? a : `${a.substring(0,8)}...`}
       networkName='avalanche'
       profileName={params.profileName}
       cookies={cookies}
@@ -74,7 +79,7 @@ const EditProfileRoute = (props) => {
   profile.walletAddresses.ethereum.forEach((a) => {
     addressRows.push(<AddressRow
       key={`ethereum-${a}`}
-      address={a}
+      address={longAddresses ? a : `${a.substring(0,8)}...`}
       networkName='ethereum'
       profileName={params.profileName}
       cookies={cookies}
@@ -84,7 +89,7 @@ const EditProfileRoute = (props) => {
   profile.walletAddresses.fantom.forEach((a) => {
     addressRows.push(<AddressRow
       key={`fantom-${a}`}
-      address={a}
+      address={longAddresses ? a : `${a.substring(0,8)}...`}
       networkName='fantom'
       profileName={params.profileName}
       cookies={cookies}
@@ -94,7 +99,7 @@ const EditProfileRoute = (props) => {
   profile.walletAddresses.polygon.forEach((a) => {
     addressRows.push(<AddressRow
       key={`polygon-${a}`}
-      address={a}
+      address={longAddresses ? a : `${a.substring(0,8)}...`}
       networkName='polygon'
       profileName={params.profileName}
       cookies={cookies}
@@ -132,15 +137,18 @@ const EditProfileRoute = (props) => {
           </tr>
         </tbody>
       </Table>
+
       {/* <Container className='bg-secondary rounded-top'>
         <Row>
           <Col className='text-light p-2'>
             <h4>
               Enable/Disable Services&nbsp;&nbsp;
               <span style={{ fontSize: '18px'}}>
-                <span href='#' id='EnableDisableService' className='link-light'>
-                  <FaQuestionCircle />
-                </span>
+                <IconContext.Provider value={{ style: { verticalAlign: 'middle' } }}>
+                  <span href='#' id='EnableDisableService' className='link-light'>
+                    <FaQuestionCircle />
+                  </span>
+                </IconContext.Provider>
               </span>
             </h4>
             <Tooltip placement='right' target='EnableDisableService' isOpen={tooltipOpen} toggle={toggleTooltip}>

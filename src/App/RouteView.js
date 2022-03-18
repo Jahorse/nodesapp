@@ -1,24 +1,14 @@
 import React from 'react';
 import {
-  Collapse,
-  Nav,
-  Navbar,
-  NavbarBrand,
-  NavbarText,
-  NavItem,
-  NavLink,
-} from 'reactstrap';
-import {
-  NavLink as RRNavLink,
   Route,
   Routes,
 } from 'react-router-dom';
 
-import Summary from './SummaryRoute';
+import AboutRoute from './AboutRoute';
+import HeaderMenu from './HeaderMenu';
 import EditProfileRoute from './Profiles/EditProfileRoute';
 import ManageProfilesRoute from './Profiles/ManageProfilesRoute';
-import PropfileDropdown from './ProfileDropdown';
-import AboutRoute from './AboutRoute';
+import Summary from './SummaryRoute';
 
 const RouteView = (props) => {
   let provider;
@@ -28,20 +18,7 @@ const RouteView = (props) => {
   return (
       <>
         <div>
-          <Navbar color="dark" dark expand="md" className='rounded-bottom'>
-            <NavbarBrand tag={RRNavLink} to="/">
-              NodesApp
-            </NavbarBrand>
-            <Collapse navbar>
-              <Nav className="me-auto" navbar>
-                <NavItem><NavLink tag={RRNavLink} to="/manage-profiles">Manage Profiles</NavLink></NavItem>
-                <NavItem><NavLink tag={RRNavLink} to="/about">About</NavLink></NavItem>
-              </Nav>
-              <NavbarText>
-                <PropfileDropdown networkName={provider?.networkName} />
-              </NavbarText>
-            </Collapse>
-          </Navbar>
+          <HeaderMenu provider={provider}  />
         </div>
         <div className="d-flex justify-content-center pt-1">
           <Routes>

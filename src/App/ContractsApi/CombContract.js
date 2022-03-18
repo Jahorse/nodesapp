@@ -76,7 +76,9 @@ class CombContract extends Contract {
           nextProcessingTime: Date.now(),
         });
       } catch (e) {
-        console.log('ERR', e);
+        if (!e.reason.includes('No nodes')) {
+          console.log('ERR', e);
+        }
       }
     }
 

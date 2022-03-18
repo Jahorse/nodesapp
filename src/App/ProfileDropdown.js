@@ -45,17 +45,28 @@ const PropfileDropdown = (props) => {
       menuText = cookies.activeProfileName;
     }
   } else {
-    menuText = "Not Connected";
+    menuText = "No Profile";
   }
 
-  return (
-    <ButtonDropdown isOpen={menuOpen} toggle={toggleMenu}>
-      <DropdownToggle caret>
-        {menuText}
-      </DropdownToggle>
-      {dropdownItems.length > 0 ? <DropdownMenu>{dropdownItems}</DropdownMenu> : null}
-    </ButtonDropdown>
-  );
+  if (dropdownItems.length > 0) {
+    return (
+      <ButtonDropdown isOpen={menuOpen} toggle={toggleMenu}>
+        <DropdownToggle caret>
+          {menuText}
+        </DropdownToggle>
+        <DropdownMenu>{dropdownItems}</DropdownMenu>
+      </ButtonDropdown>
+    );
+  } else {
+    return (
+      <ButtonDropdown isOpen={menuOpen} toggle={toggleMenu}>
+        <DropdownToggle>
+          {menuText}
+        </DropdownToggle>
+      </ButtonDropdown>
+    );
+  }
+
 };
 
 export default PropfileDropdown;

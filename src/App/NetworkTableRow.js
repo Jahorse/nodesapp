@@ -34,8 +34,12 @@ const NetworkTableRowChild = (props) => {
   const rewards = parseFloat(contract.getTotalRewards(props.nodeInfo, true)).toFixed(contract.metadata.decimals);
 
   const columns = [
-    (<th key={`${contractName}-name`} scope="row">{contractName}</th>),
-    (<td key={`${contractName}-price`}>{price ? `$${price}` : null}</td>),
+    (<th key={`${contractName}-name`} scope="row">
+      {contractName}
+    </th>),
+    (<td key={`${contractName}-price`}>
+      <a class="link-light text-decoration-none" href={contract.metadata.chartLink}>{price ? `$${price}` : 'View'}</a>
+    </td>),
     (<td key={`${contractName}-rewards`}>
       {rewards} {contract.metadata.symbol}
     </td>),
