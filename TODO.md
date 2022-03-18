@@ -22,6 +22,7 @@
   1. Division
 1. Make it pretty
   - Custom colour scheme and logo
+1. Move the contract creation up the stack so that a network table only gets created when it has at least one row
 1. Add cache to dex.guru call
 1. Add the total of the rewards in USD somewhere
 1. Add an "adjusted rewards" column that applies bonuses and taxes

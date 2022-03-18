@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from 'reactstrap';
 import WalletAddressModal from './WalletAddressModal';
-import { useViewport } from '../Utils/Hooks';
+import { breakpoint, useViewport } from '../Utils/Hooks';
 
 
 const AddressRow = (props) => {
@@ -63,7 +63,7 @@ const EditProfileRoute = (props) => {
 
   const profile = cookies.profiles[params.profileName];
 
-  const longAddresses = width > 620 ? true : false;
+  const longAddresses = width > breakpoint ? true : false;
 
   const addressRows = [];
   profile.walletAddresses.avalanche.forEach((a) => {

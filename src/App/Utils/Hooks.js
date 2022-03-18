@@ -26,6 +26,8 @@ const ViewportProvider = ({ children }) => {
   );
 };
 
+export const breakpoint = 620;
+
 export const useViewport = () => {
   const { width } = useContext(viewportContext);
   return { width };

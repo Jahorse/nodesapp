@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Container,
 } from 'reactstrap';
-import NetworkTable from './NetworkTable';
+import NetworkTable from './NetworkTables/NetworkTable';
 
 const selectNetworks = (providers) => {
   if (providers.web3) {

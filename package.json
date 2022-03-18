@@ -5,11 +5,10 @@
   "license": "Attribution-NonCommercial-NoDerivatives 4.0 International",
   "main": "app.js",
   "scripts": {
-    "dstart": "PORT=3001 react-scripts start",
     "build": "npm run clean && GENERATE_SOURCEMAP=false react-scripts build  && compress-cra",
+    "dbuild": "npm run clean && react-scripts build  && compress-cra",
     "serve": "node app.js",
     "start": "react-scripts start",
-    "dbuild": "react-scripts build  && compress-cra",
     "clean": "rm -rf ./build/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
