@@ -79,7 +79,7 @@ const ConnectWallet = (props) => {
       props.setCookie('profiles', props.profiles);
 
       // Reload the page
-      window.location.reload();
+      window.location.replace('/');
     }
     console.warn('Failed to connect to wallet');
   };
