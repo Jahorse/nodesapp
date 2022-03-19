@@ -31,7 +31,7 @@ const ProfileRow = (props) => {
 
   const editButton = props.isWeb3 ? null : (
     <Link tag={NavLink} to={`/manage-profile/${props.profileName}`}>
-      <FaPencilAlt color="white" alt="Edit" />
+      <FaPencilAlt color='grey' alt='Edit' />
     </Link>
   );
   return (
@@ -39,7 +39,7 @@ const ProfileRow = (props) => {
       <td>{props.profileName.replace('_', '')}</td>
       <td>{editButton}</td>
       <td>
-        <Button close color="white" className="btn-close-white" alt="Delete" onClick={_ => deleteProfile(props.profileName)}></Button>
+        <Button close color='grey' alt='Delete' onClick={_ => deleteProfile(props.profileName)}></Button>
       </td>
     </tr>
   );
@@ -57,7 +57,7 @@ const ManageProfilesRoute = (props) => {
 
   return (
     <Container>
-      <Table borderless dark hover responsive striped>
+      <Table borderless hover responsive striped className='bg-info rounded my-2'>
         <thead>
           <tr>
             <th>Profile Name</th>

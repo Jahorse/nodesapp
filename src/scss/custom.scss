@@ -1,4 +1,19 @@
-@import "../../node_modules/bootstrap/scss/bootstrap";
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+$body-bg: #83C5BE;
+
+$primary: #112D32;
+$secondary: #006D77;
+$info: #bcefef;
+$success: #503b1c;
+$link-color: $primary;
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/root";
 
 span.divider {
   display: flex;
@@ -17,4 +32,31 @@ span.divider:before {
 }
 span.divider:after {
   margin-left: 10px;
+}
+
+$button:#E29578;
+.btn-primary {
+  @include button-variant($button, darken($button, 7.5%), darken($button, 40%), lighten($button,5%), lighten($button, 10%), lighten($button, 20%));
+}
+
+$button2:#E29578;
+.btn-secondary {
+    @include button-variant($button2, darken($button2, 7.5%), lighten($button2, 40%), lighten($button2,5%), lighten($button2, 10%), lighten($button2, 20%));
+}
+
+$button3:#70331a;
+.btn-thirdary {
+    @include button-variant($button3, darken($button3, 7.5%), lighten($button3, 40%), lighten($button3,5%), lighten($button3, 10%), lighten($button3, 20%));
+}
+
+$navtext: #FFDDD2;
+.navbar .navbar-nav .nav-link, .navbar .navbar-brand {
+    color: $navtext;
+}
+.navbar .navbar-nav .nav-link .active, .navbar .navbar-brand .active {
+  color: darken($navtext, 30%);
+}
+
+.modal-content {
+  background-color: $info;
 }

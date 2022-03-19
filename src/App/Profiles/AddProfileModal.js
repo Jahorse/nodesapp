@@ -146,7 +146,7 @@ const AddProfileModal = (props) => {
   return (
     <>
       <Button onClick={toggleModal}>Add Profile</Button>
-      <Modal isOpen={modalOpen} toggle={toggleModal} size="lg">
+      <Modal className='bg-info' isOpen={modalOpen} toggle={toggleModal} size="lg">
         <ModalHeader toggle={toggleModal}>
           Add Profile
         </ModalHeader>

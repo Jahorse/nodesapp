@@ -28,11 +28,11 @@ const claimAll = (props) => {
 
   let claimAll;
   if (timeUntilClaim > 0) {
-    claimAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
+    claimAll = <Button color='primary' disabled>{dhm(timeUntilClaim)}</Button>;
   } else if (contract.metadata.claimSupport && isConnected) {
-    claimAll = <Button onClick={() => contract.claimAll(signer)}>Claim All</Button>;
+    claimAll = <Button color='primary' onClick={() => contract.claimAll(signer)}>Claim All</Button>;
   } else {
-    claimAll = <a href={contract.metadata.appLink}><Button>Go to App</Button></a>;
+    claimAll = <a href={contract.metadata.appLink}><Button color='primary'>Go to App</Button></a>;
   }
   return (<td key={`${contractName}-claimAll`}>{claimAll}</td>);
 }
@@ -48,11 +48,11 @@ const compoundAll = (props) => {
     let compoundAll;
     if (contract.metadata.hasCompound) {
       if (timeUntilClaim > 0) {
-        compoundAll = <Button disabled>{dhm(timeUntilClaim)}</Button>;
+        compoundAll = <Button color='primary' disabled>{dhm(timeUntilClaim)}</Button>;
       } else if (contract.metadata.claimSupport) {
-        compoundAll = <Button onClick={() => contract.compoundAll(signer)}>Compound All</Button>;
+        compoundAll = <Button color='primary' onClick={() => contract.compoundAll(signer)}>Compound All</Button>;
       } else {
-        compoundAll = <a href={contract.metadata.appLink}><Button>Go to App</Button></a>;
+        compoundAll = <a href={contract.metadata.appLink}><Button color='primary'>Go to App</Button></a>;
       }
     }
     return (<td key={`${contractName}-compoundAll`}>{compoundAll}</td>);
@@ -64,12 +64,12 @@ const tableColumnToContentMap = {
   compound: (props) => compoundAll(props),
   claimCompound: (n, l) => (
     <td key={`${n}-claim-compound`}>
-      <a href={l}><Button>Go to App</Button></a>
+      <a href={l}><Button color='primary'>Go to App</Button></a>
     </td>
   ),
   tokenPrice: (n, l, p) => (
     <td key={`${n}-price`}>
-      <a className="link-light text-decoration-none" href={l}>{p ? `$${p}` : 'View'}</a>
+      <a className="link-dark text-decoration-none" href={l}>{p ? `$${p}` : 'View'}</a>
     </td>
   ),
   rewardsToken: (n, r, s) => (
@@ -84,12 +84,12 @@ const tableColumnToContentMap = {
   ),
   serviceName: (n, l) => (
     <th key={`${n}-name`} scope="row">
-      <a href={l} className='link-light' style={{textDecoration: 'none'}}>{n}</a>
+      <a href={l} className='link-dark' style={{textDecoration: 'none'}}>{n}</a>
     </th>
   ),
   swap: (n, l) => (
     <td key={`${n}-swap`}>
-      <a href={l}><Button>Swap</Button></a>
+      <a href={l}><Button color='primary'>Swap</Button></a>
     </td>
   ),
 };

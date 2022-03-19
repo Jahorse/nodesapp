@@ -31,12 +31,16 @@ const AddressRow = (props) => {
       setCookie('profiles', cookies.profiles);
     }
   }
+
+  const longAddresses = props.width > breakpoint ? true : false;
+
+
   return (
     <tr>
-      <td>{props.address}</td>
+      <td>{longAddresses ? props.address : `${props.address.substring(0,8)}...`}</td>
       <td>{props.networkName}</td>
       <td>
-        <Button close color="white" className="btn-close-white" alt="Delete" onClick={_ => deleteAddress(props.address, props.networkName)}></Button>
+        <Button close color='grey' alt="Delete" onClick={_ => deleteAddress(props.address, props.networkName)}></Button>
       </td>
     </tr>
   );
@@ -63,23 +67,22 @@ const EditProfileRoute = (props) => {
 
   const profile = cookies.profiles[params.profileName];
 
-  const longAddresses = width > breakpoint ? true : false;
-
   const addressRows = [];
   profile.walletAddresses.avalanche.forEach((a) => {
     addressRows.push(<AddressRow
       key={`avalanche-${a}`}
-      address={longAddresses ? a : `${a.substring(0,8)}...`}
+      address={a}
       networkName='avalanche'
       profileName={params.profileName}
       cookies={cookies}
       setCookie={setCookie}
+      with={width}
     />);
   })
   profile.walletAddresses.ethereum.forEach((a) => {
     addressRows.push(<AddressRow
       key={`ethereum-${a}`}
-      address={longAddresses ? a : `${a.substring(0,8)}...`}
+      address={a}
       networkName='ethereum'
       profileName={params.profileName}
       cookies={cookies}
@@ -89,7 +92,7 @@ const EditProfileRoute = (props) => {
   profile.walletAddresses.fantom.forEach((a) => {
     addressRows.push(<AddressRow
       key={`fantom-${a}`}
-      address={longAddresses ? a : `${a.substring(0,8)}...`}
+      address={a}
       networkName='fantom'
       profileName={params.profileName}
       cookies={cookies}
@@ -99,7 +102,7 @@ const EditProfileRoute = (props) => {
   profile.walletAddresses.polygon.forEach((a) => {
     addressRows.push(<AddressRow
       key={`polygon-${a}`}
-      address={longAddresses ? a : `${a.substring(0,8)}...`}
+      address={a}
       networkName='polygon'
       profileName={params.profileName}
       cookies={cookies}
@@ -113,30 +116,28 @@ const EditProfileRoute = (props) => {
 
   return (
     <Container>
-      <Container className='bg-secondary rounded-top'>
-        <Row>
-          <Col className='text-light p-2'>
-            <h4>Edit Addresses</h4>
-          </Col>
+      <Container className='bg-secondary rounded bg-info p-2 my-2'>
+        <Row className='my-1'>
+          <h4>Edit Addresses</h4>
         </Row>
+        <Table borderless hover responsive striped className='bg-info rounded'>
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Network</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {addressRows}
+            <tr key='add-address'>
+              <td colSpan="5" style={{ textAlign: 'center' }}>
+                <WalletAddressModal profileName ={params.profileName} cookies={cookies} setCookie={setCookie} />
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </Container>
-      <Table borderless dark hover responsive striped>
-        <thead>
-          <tr>
-            <th>Address</th>
-            <th>Network</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {addressRows}
-          <tr key='add-address'>
-            <td colSpan="5" style={{ textAlign: 'center' }}>
-              <WalletAddressModal profileName ={params.profileName} cookies={cookies} setCookie={setCookie} />
-            </td>
-          </tr>
-        </tbody>
-      </Table>
 
       {/* <Container className='bg-secondary rounded-top'>
         <Row>

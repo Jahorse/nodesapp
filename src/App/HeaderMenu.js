@@ -24,14 +24,14 @@ const HeaderMenu = (props) => {
   };
 
   return (
-    <Navbar color="dark" dark expand="md" className='rounded-bottom'>
+    <Navbar expand="md" className='bg-secondary rounded-bottom'>
     <NavbarBrand tag={RRNavLink} to="/">
       <IconContext.Provider value={{ style: { fontSize: '1.5em', verticalAlign: 'middle' } }}>
         <AiOutlineNodeIndex />
       </IconContext.Provider>
       &nbsp;NodesApp
     </NavbarBrand>
-    <NavbarToggler onClick={toggleMenu} />
+    <NavbarToggler onClick={toggleMenu} className='navbar-dark' />
     <Collapse navbar isOpen={menuOpen}>
       <Nav className="me-auto" navbar>
         <NavItem><NavLink tag={RRNavLink} to="/manage-profiles">Manage Profiles</NavLink></NavItem>

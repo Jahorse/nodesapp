@@ -17,7 +17,7 @@ const ConnectNetworkButton = (props) => {
   }
   return (
     <>
-      <Button onClick={() => setNetwork(props.provider.ethers.web3, props.networkName)} className='bg-dark'>Connect</Button>
+      <Button color='secondary' className='m-2' onClick={() => setNetwork(props.provider.ethers.web3, props.networkName)} >Connect</Button>
     </>
   );
 };
@@ -26,15 +26,15 @@ const TableTitle = (props) => {
   let connectButton;
   if (props.isWeb3) {
     connectButton = (
-      <Col xs='2' lg='2' key={`connect-${props.networkName}`} className='p-2 px-3 d-flex justify-content-end'>
+      <Col xs='2' lg='2' key={`connect-${props.networkName}`} className='d-flex justify-content-end'>
         <ConnectNetworkButton {...props} />
       </Col>
     );
   }
   return (
-    <Container className='bg-secondary rounded-top'>
+    <Container>
       <Row>
-        <Col xs='8' lg='10' key={`networkName-${props.networkName}`} className='text-light p-2 px-3'>
+        <Col xs='8' lg='10' key={`networkName-${props.networkName}`} className='p-2'>
           <h3>{props.networkName}</h3>
         </Col>
         {connectButton}
@@ -89,9 +89,9 @@ const NetworkTable = (props) => {
 
   const addresses = props.walletAddresses;
   return (
-    <Container>
+    <Container className='my-2 bg-info rounded'>
       <TableTitle networkName={networkName} isWeb3={isWeb3} provider={provider} />
-      <Table borderless dark hover responsive striped>
+      <Table borderless hover responsive striped>
         <thead>
           <tr key='summary-headers'>
             <TableHeaders columns={columns} />

@@ -7,7 +7,7 @@ import {
 const AboutRoute = (props) => {
   return (
     <Container>
-      <Row className='bg-dark rounded m-5 px-2 py-4 text-light'>
+      <Row className='bg-info rounded m-2 px-2 py-4 text-dark'>
         <h1>About NodesApp</h1>
         <span>
           <h2>Security</h2>
@@ -29,25 +29,25 @@ const AboutRoute = (props) => {
           <h2>Supported Projects</h2>
           <h4 className='ps-3'>Avalanche</h4>
           <ol className='ps-5'>
-            <li><a href='https://dapp.ascendnodeclub.money/' className='link-light'>Ascend</a></li>
-            <li><a href='https://app.nebulanodes.finance/'  className='link-light'>Nebula</a></li>
-            <li><a href='https://redlightnodes.app/'  className='link-light'>Redlight Nodes District</a></li>
-            <li><a href='https://app.thor.financial/'  className='link-light'>Thor</a></li>
-            <li><a href='https://univ.money/observatory'  className='link-light'>Universe</a></li>
-            <li><a href='https://app.vapornodes.finance/'  className='link-light'>Vapor</a></li>
+            <li><a href='https://dapp.ascendnodeclub.money/' className='link-dark'>Ascend</a></li>
+            <li><a href='https://app.nebulanodes.finance/'  className='link-dark'>Nebula</a></li>
+            <li><a href='https://redlightnodes.app/'  className='link-dark'>Redlight Nodes District</a></li>
+            <li><a href='https://app.thor.financial/'  className='link-dark'>Thor</a></li>
+            <li><a href='https://univ.money/observatory'  className='link-dark'>Universe</a></li>
+            <li><a href='https://app.vapornodes.finance/'  className='link-dark'>Vapor</a></li>
           </ol>
           <h4 className='ps-3'>Ethereum</h4>
           <ol className='ps-5'>
-            <li><a href='https://app.strongblock.com/'  className='link-light'>StrongBlock</a></li>
+            <li><a href='https://app.strongblock.com/'  className='link-dark'>StrongBlock</a></li>
           </ol>
           <h4 className='ps-3'>Fantom</h4>
           <ol className='ps-5'>
-            <li><a href='https://app.comb.financial/dashboard' className='link-light'>Comb</a></li>
-            <li><a href='https://app.powernode.io/#'  className='link-light'>Power</a></li>
+            <li><a href='https://app.comb.financial/dashboard' className='link-dark'>Comb</a></li>
+            <li><a href='https://app.powernode.io/#'  className='link-dark'>Power</a></li>
           </ol>
           <h4 className='ps-3'>Polygon</h4>
           <ol className='ps-5'>
-            <li><a href='https://app.pentagon.financial/node'  className='link-light'>Pentagon</a></li>
+            <li><a href='https://app.pentagon.financial/node'  className='link-dark'>Pentagon</a></li>
           </ol>
         </span>
       </Row>
