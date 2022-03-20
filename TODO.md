@@ -7,10 +7,9 @@
 
 # Future Tasks
 1. Projects to add:
-  1. Project X - PXT2
+  1. Atlas
   1. Cronodes
   1. Magia
-  1. Atlas
   1. Fire
   1. Cubo
   1. Kingdoms

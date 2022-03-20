@@ -5,13 +5,14 @@ import AscendPlatinumContract from '../ContractsApi/AscendPlatinumContract';
 import AscendInfiniteContract from '../ContractsApi/AscendInfiniteContract';
 import AscendMetaContract from '../ContractsApi/AscendMetaContract';
 import CombContract from '../ContractsApi/CombContract';
-import LouvertureContract from '../ContractsApi/LouvertureContract';
+// import LouvertureContract from '../ContractsApi/LouvertureContract';
 import NebulaContract from '../ContractsApi/NebulaContract';
 import PentagonContract from '../ContractsApi/PentagonContract';
 import PowerSolarContract from '../ContractsApi/PowerSolarContract';
 import PowerHydroContract from '../ContractsApi/PowerHydroContract';
 import PowerWindContract from '../ContractsApi/PowerWindContract';
 import PowerNuclearContract from '../ContractsApi/PowerNuclearContract';
+import ProjectXContract from '../ContractsApi/ProjectXContract';
 import RndDistrictsContract from '../ContractsApi/RndDistrictsContract';
 import RndMansionsContract from '../ContractsApi/RndMansionsContract';
 import StrongEthContract from '../ContractsApi/StrongEthContract';
@@ -33,6 +34,7 @@ const AvalancheContracts = (props) => {
       <NetworkTableRow contract={new AscendMetaContract(props.provider, props.addresses)} {...props} />
       {/* <NetworkTableRow contract={new LouvertureContract(props.provider, props.addresses)} {...props} /> */}
       <NetworkTableRow contract={new NebulaContract(props.provider, props.addresses)} {...props} />
+      <NetworkTableRow contract={new ProjectXContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new RndMansionsContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new RndDistrictsContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new ThorHeimdallContract(props.provider, props.addresses)} {...props} />
