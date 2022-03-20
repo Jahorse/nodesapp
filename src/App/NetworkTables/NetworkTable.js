@@ -46,7 +46,7 @@ const TableTitle = (props) => {
 const tableColumnToHeaderMap = {
   claim: (<th key='header-claim'>Claim</th>),
   compound: (<th key='header-compound'>Compound</th>),
-  claimCompound: (<th key='header-claim-compound'>Claim/Compound</th>),
+  claimCompound: (<th key='header-claim-compound'>Claim</th>),
   tokenPrice: (<th key='header-token-price'>Token Price</th>),
   rewardsToken: (<th key='header-rewards-token'>Rewards</th>),
   rewardsUsd: (<th key='header-rewards-usd'>Rewards USD</th>),

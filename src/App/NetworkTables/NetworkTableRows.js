@@ -31,7 +31,7 @@ const AvalancheContracts = (props) => {
       <NetworkTableRow contract={new AscendPlatinumContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new AscendInfiniteContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new AscendMetaContract(props.provider, props.addresses)} {...props} />
-      <NetworkTableRow contract={new LouvertureContract(props.provider, props.addresses)} {...props} />
+      {/* <NetworkTableRow contract={new LouvertureContract(props.provider, props.addresses)} {...props} /> */}
       <NetworkTableRow contract={new NebulaContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new RndMansionsContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new RndDistrictsContract(props.provider, props.addresses)} {...props} />

@@ -59,14 +59,24 @@ const compoundAll = (props) => {
   }
 }
 
+const claimApp = (props) => {
+  const timeUntilClaim = props.timeUntilClaim;
+  const contract = props.contract;
+  const contractName = contract.metadata.name;
+
+  let claimAll;
+  if (timeUntilClaim > 0) {
+    claimAll = <Button color='primary' disabled>{dhm(timeUntilClaim)}</Button>;
+  } else {
+    claimAll = <a href={contract.metadata.appLink}><Button color='primary'>Go to App</Button></a>;
+  }
+  return (<td key={`${contractName}-claim-compound`}>{claimAll}</td>);
+}
+
 const tableColumnToContentMap = {
   claim: (props) => claimAll(props),
   compound: (props) => compoundAll(props),
-  claimCompound: (n, l) => (
-    <td key={`${n}-claim-compound`}>
-      <a href={l}><Button color='primary'>Go to App</Button></a>
-    </td>
-  ),
+  claimCompound: (props) => claimApp(props),
   tokenPrice: (n, l, p) => (
     <td key={`${n}-price`}>
       <a className="link-dark text-decoration-none" href={l}>{p ? `$${p}` : 'View'}</a>
@@ -116,7 +126,7 @@ const NetworkTableRowChild = (props) => {
         columns.push(tableColumnToContentMap.claim({timeUntilClaim, contract, contractName, isConnected: props.isConnected, signer: props.signer}));
         break;
       case 'claimCompound':
-        columns.push(tableColumnToContentMap.claimCompound(contractName, contract.metadata.appLink));
+        columns.push(tableColumnToContentMap.claimCompound({timeUntilClaim, contract, contractName}));
         break;
       case 'compound':
         columns.push(tableColumnToContentMap.compound({timeUntilClaim, contract, contractName, isConnected: props.isConnected, signer: props.signer}));
