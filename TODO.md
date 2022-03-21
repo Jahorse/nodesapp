@@ -1,13 +1,10 @@
 # TASK LIST
 1. Enable/disable node projects
-1. Mobile enhancements:
-  - Figure out the NavBar expand and how to add a burger menu to mobile
-  - Services switches overlap on mobile
-1. Redirect to homepage after connecting a wallet
 
 # Future Tasks
 1. Projects to add:
   1. Cronodes
+  1. EasyBlock
   1. Magia
   1. Fire
   1. Cubo
@@ -19,10 +16,7 @@
   1. LVT v2
   1. Starz
   1. Division
-1. Make it pretty
-  - Custom colour scheme and logo
 1. Move the contract creation up the stack so that a network table only gets created when it has at least one row
-1. Add cache to dex.guru call
 1. Add the total of the rewards in USD somewhere
 1. Add an "adjusted rewards" column that applies bonuses and taxes
   - Universe currently applies compound bonus to rewards

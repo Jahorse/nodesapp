@@ -1,4 +1,5 @@
 const axios = require('axios').default;
+const cache = require('memory-cache-ttl');
 
 const networkNameToIdMap = {
   "Ethereum": 1,
@@ -7,38 +8,32 @@ const networkNameToIdMap = {
   "Avalanche": 43114,
 };
 
-async function decodeStream(stream) {
-  const reader = stream.getReader();
+cache.init({ ttl: 60, interval: 1, randomize: false });
 
-  const readableStream = new ReadableStream({
-    start(controller) {
-      // The following function handles each data chunk
-      function push() {
-        // "done" is a Boolean and value a "Uint8Array"
-        reader.read().then( ({done, value}) => {
-          // If there is no more data to read
-          if (done) {
-            controller.close();
-            return;
-          }
-          // Get the data and send it to the browser via the controller
-          controller.enqueue(value);
-          push();
-        })
-      }
+function getCachedValue(cacheKey) {
+  let cachedValue = null;
 
-      push();
-    }
-  });
+  if (cache.check(cacheKey)) {
+    console.log(`Found cache key ${cacheKey}`);
+    cachedValue = cache.get(cacheKey);
+  }
 
-  return new Response(readableStream, { headers: { "Content-Type": "text/html" } }).text();
+  return cachedValue;
 }
 
 async function getPriceDg(network, hash) {
+  const cacheKey = network + hash;
+  const cachedValue = getCachedValue(cacheKey);
+  if (cachedValue !== null) {
+    return cachedValue;
+  }
+
   const chainId = networkNameToIdMap[network];
   const dataUrl = `https://api.dev.dex.guru/v1/chain/${chainId}/tokens/${hash}/market`;
   try {
     const response = await axios.get(dataUrl, {headers: {'api-key':'WBUhTGV5Y8CRtuOL0bDikZ-Wld_FzC43F0vvjTe_TD4'}});
+    console.log(response.data);
+    cache.set(cacheKey, response.data);
 
     return response.data;
   } catch (e) {
