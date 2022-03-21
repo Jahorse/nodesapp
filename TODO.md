@@ -1,9 +1,9 @@
 # TASK LIST
 1. Enable/disable node projects
+1. Cronodes
 
 # Future Tasks
 1. Projects to add:
-  1. Cronodes
   1. EasyBlock
   1. Magia
   1. Fire

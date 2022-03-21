@@ -47,7 +47,7 @@ import Footer from './Footer';
    *  */
 
 const Main = (props) => {
-  const [cookies, setCookie] = useCookies(['activeProfileName', 'profiles']);
+  const [cookies, setCookie, removeCookie] = useCookies(['activeProfileName', 'profiles']);
   const [provider, setProvider] = useState();
   const [activeProfile, setActiveProfile] = useState();
   const [hasNoProfiles, setHasNoProfiles] = useState(false);
@@ -102,12 +102,19 @@ const Main = (props) => {
       if (profile) {
         if (profile.isWeb3) {
           const ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-          await ethersProvider.send('eth_requestAccounts', []);
-          ethersProvider.on('network', (newNetwork, oldNetwork) => {
-            if (oldNetwork) {
-              window.location.reload();
-            }
-          });
+          try {
+            await ethersProvider.send('eth_requestAccounts', []);
+            ethersProvider.on('network', (newNetwork, oldNetwork) => {
+              if (oldNetwork) {
+                window.location.reload();
+              }
+            });
+          } catch (e) {
+            removeCookie('activeProfileName');
+            delete cookies.profiles['_MetaMask'];
+            setCookie('profiles', cookies.profiles);
+            window.location.reload();
+          }
 
           providerObj.ethers.signer = ethersProvider.getSigner();
           providerObj.ethers.web3 = ethersProvider;
