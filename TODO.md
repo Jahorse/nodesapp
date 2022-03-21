@@ -7,11 +7,11 @@
 
 # Future Tasks
 1. Projects to add:
-  1. Atlas
   1. Cronodes
   1. Magia
   1. Fire
   1. Cubo
+  1. Bigger Minds
   1. Kingdoms
     - Token: https://ftmscan.com/address/0xd3b8037853785463D06957Fefa0f06Af53B9e504
     - Couldn't find rewards

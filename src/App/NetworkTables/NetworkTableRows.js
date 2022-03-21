@@ -24,6 +24,7 @@ import ThorThorContract from '../ContractsApi/ThorThorContract';
 import UniverseContract from '../ContractsApi/UniverseContract';
 import VaporContract from '../ContractsApi/VaporContract';
 import NetworkTableRow from './NetworkTableRow';
+import AtlasContract from '../ContractsApi/AtlasContract';
 
 const AvalancheContracts = (props) => {
   return (
@@ -59,6 +60,7 @@ const EthereumContracts = (props) => {
 const FantomContracts = (props) => {
   return (
     <>
+      <NetworkTableRow contract={new AtlasContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new CombContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new PowerSolarContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new PowerWindContract(props.provider, props.addresses)} {...props} />
