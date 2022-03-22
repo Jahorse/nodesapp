@@ -29,7 +29,7 @@ class CombContract extends Contract {
   }
 
   async getPriceUsd() {
-    return await getPriceCg('pentagon-finance');
+    return await getPriceCg('comb-finance');
   }
 
   getTotalRewards(nodes, compounding) {
