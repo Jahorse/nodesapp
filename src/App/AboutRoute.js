@@ -53,6 +53,7 @@ const AboutRoute = (props) => {
           </ol>
           <h4 className='ps-3'>Polygon</h4>
           <ol className='ps-5'>
+            <li><a href='https://app.dominium.finance/'  className='link-dark'>Dominium</a></li>
             <li><a href='https://app.pentagon.financial/node'  className='link-dark'>Pentagon</a></li>
           </ol>
         </span>

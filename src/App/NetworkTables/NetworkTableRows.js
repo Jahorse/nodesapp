@@ -26,6 +26,7 @@ import ThorThorContract from '../ContractsApi/ThorThorContract';
 import UniverseContract from '../ContractsApi/UniverseContract';
 import VaporContract from '../ContractsApi/VaporContract';
 import NetworkTableRow from './NetworkTableRow';
+import DominiumContract from '../ContractsApi/DominiumContract';
 
 const AvalancheContracts = (props) => {
   return (
@@ -83,6 +84,7 @@ const PolygonContracts = (props) => {
   return (
     <>
       <NetworkTableRow contract={new PentagonContract(props.provider, props.addresses)} {...props} />
+      <NetworkTableRow contract={new DominiumContract(props.provider, props.addresses)} {...props} />
     </>
   );
 }
