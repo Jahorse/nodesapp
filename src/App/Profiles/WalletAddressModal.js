@@ -23,6 +23,7 @@ const WalletAddressModal = (props) => {
   const [addressInput, setAddressInput] = useState('');
   const [networkInput, setNetworkInput] = useState({
     'Avalanche': false,
+    'Cronos': false,
     'Ethereum': false,
     'Fantom': false,
     'Polygon': false,
@@ -48,6 +49,9 @@ const WalletAddressModal = (props) => {
     if (networkInput.Avalanche && !profile.walletAddresses.avalanche.includes(addressInput)) {
       profile.walletAddresses.avalanche.push(addressInput);
     }
+    if (networkInput.Cronos && !profile.walletAddresses.cronos.includes(addressInput)) {
+      profile.walletAddresses.cronos.push(addressInput);
+    }
     if (networkInput.Ethereum && !profile.walletAddresses.ethereum.includes(addressInput)) {
       profile.walletAddresses.ethereum.push(addressInput);
     }
@@ -66,6 +70,12 @@ const WalletAddressModal = (props) => {
     setNetworkInput({
       ...networkInput,
       Avalanche: !networkInput.Avalanche,
+    });
+  };
+  const toggleCronos = () => {
+    setNetworkInput({
+      ...networkInput,
+      Cronos: !networkInput.Cronos,
     });
   };
   const toggleEthereum = () => {
@@ -89,11 +99,13 @@ const WalletAddressModal = (props) => {
   const toggleAll = () => {
     const isChecked =  $('#select-all-checkbox').prop('checked')
     $('#avalanche-checkbox').prop('checked', isChecked);
+    $('#cronos-checkbox').prop('checked', isChecked);
     $('#ethereum-checkbox').prop('checked', isChecked);
     $('#fantom-checkbox').prop('checked', isChecked);
     $('#polygon-checkbox').prop('checked', isChecked);
     setNetworkInput({
       Avalanche: isChecked,
+      Cronos: isChecked,
       Ethereum: isChecked,
       Fantom: isChecked,
       Polygon: isChecked,
@@ -129,6 +141,10 @@ const WalletAddressModal = (props) => {
               <FormGroup check inline>
                 <Input id="avalanche-checkbox" type="checkbox" onClick={toggleAvalanche} />
                 <Label check>Avalanche</Label>
+              </FormGroup>
+              <FormGroup check inline>
+                <Input id="cronos-checkbox" type="checkbox" onClick={toggleCronos} />
+                <Label check>Cronos</Label>
               </FormGroup>
               <FormGroup check inline>
                 <Input id="ethereum-checkbox" type="checkbox" onClick={toggleEthereum} />

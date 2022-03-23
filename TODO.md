@@ -1,6 +1,8 @@
 # TASK LIST
 1. Enable/disable node projects
 1. Cronodes
+1. Fix Nebula claim
+1. Set MetaMask as active profile after connecting
 
 # Future Tasks
 1. Projects to add:

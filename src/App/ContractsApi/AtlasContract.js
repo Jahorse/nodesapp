@@ -89,7 +89,7 @@ class AtlasContract extends Contract {
           nextProcessingTime: Date.now(),
         });
       } catch (e) {
-        if (!e.reason.includes('No nodes')) {
+        if (!e.reason.includes('NO NODE OWNER')) {
           console.log('ERR', e);
         }
       }

@@ -79,6 +79,17 @@ const EditProfileRoute = (props) => {
       with={width}
     />);
   })
+  profile.walletAddresses.cronos.forEach((a) => {
+    addressRows.push(<AddressRow
+      key={`cronos-${a}`}
+      address={a}
+      networkName='cronos'
+      profileName={params.profileName}
+      cookies={cookies}
+      setCookie={setCookie}
+      with={width}
+    />);
+  })
   profile.walletAddresses.ethereum.forEach((a) => {
     addressRows.push(<AddressRow
       key={`ethereum-${a}`}

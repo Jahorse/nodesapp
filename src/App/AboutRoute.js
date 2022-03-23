@@ -37,6 +37,10 @@ const AboutRoute = (props) => {
             <li><a href='https://univ.money/observatory'  className='link-dark'>Universe</a></li>
             <li><a href='https://app.vapornodes.finance/'  className='link-dark'>Vapor</a></li>
           </ol>
+          <h4 className='ps-3'>Cronos</h4>
+          <ol className='ps-5'>
+            <li><a href='https://app.strongblock.com/'  className='link-dark'>Cronodes</a></li>
+          </ol>
           <h4 className='ps-3'>Ethereum</h4>
           <ol className='ps-5'>
             <li><a href='https://app.strongblock.com/'  className='link-dark'>StrongBlock</a></li>

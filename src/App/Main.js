@@ -20,22 +20,24 @@ import '../scss/custom.scss';
 import Footer from './Footer';
 
   /**
-   * activeProfileName = 'Example';
+   * activeProfileName = 'MyProfile';
    * profiles = {
-   *   MetaMask: {
+   *   _MetaMask: {
    *     walletAddresses: null,
    *     disabledProjects: {},
    *     isWeb3: true,
    *   },
-   *   Example: {
+   *   MyProfile: {
    *     walletAddresses: {
    *       avalanche: [],
+   *       cronos: []
    *       ethereum: [],
    *       fantom: [],
    *       polygon: [],
    *     },
    *     disabledProjects: {
    *       avalanche: [],
+   *       cronos: [],
    *       ethereum: [],
    *       fantom: [],
    *       polygon: [],
@@ -86,6 +88,19 @@ const Main = (props) => {
       let profile;
       if (cookies.activeProfileName) {
         profile = cookies.profiles[cookies.activeProfileName];
+
+        ['avalanche', 'cronos', 'ethereum', 'fantom', 'polygon'].forEach(n => {
+          if (!Object.prototype.hasOwnProperty.call(profile.walletAddresses, n)) {
+            profile.walletAddresses[n] = [];
+
+            if (!Object.prototype.hasOwnProperty.call(profile.disabledProjects, n)) {
+              profile.disabledProjects[n] = [];
+            }
+
+            cookies.profiles[cookies.activeProfileName] = profile;
+            setCookie('profiles', cookies.profiles);
+          }
+        });
       }
 
       let providerObj = {
@@ -93,6 +108,7 @@ const Main = (props) => {
           web3: null,
           signer: null,
           avalanche: null,
+          cronos: null,
           ethereum: null,
           fantom: null,
           polygon: null,
@@ -120,6 +136,7 @@ const Main = (props) => {
           providerObj.ethers.web3 = ethersProvider;
           providerObj.networkName = networkIdToNameMap[(await ethersProvider.getNetwork()).chainId];
           providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
+          providerObj.ethers.cronos = new ethers.providers.JsonRpcProvider('https://evm-cronos.crypto.org/');
           providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://api.mycryptoapi.com/eth');
           providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
           providerObj.ethers.polygon = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
@@ -127,6 +144,9 @@ const Main = (props) => {
         } else {
           if (profile.walletAddresses.avalanche.length > 0) {
             providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
+          }
+          if (profile.walletAddresses.cronos.length > 0) {
+            providerObj.ethers.cronos = new ethers.providers.JsonRpcProvider('https://evm-cronos.crypto.org/');
           }
           if (profile.walletAddresses.ethereum.length > 0) {
             providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://api.mycryptoapi.com/eth');
@@ -145,7 +165,7 @@ const Main = (props) => {
     if (activeProfile) {
       getProvider();
     }
-  }, [activeProfile, cookies.activeProfileName, cookies.profiles]);
+  }, [activeProfile, cookies.activeProfileName, cookies.profiles, removeCookie, setCookie]);
 
 
   const onManageProfilesPage = useMatch("manage-profiles");

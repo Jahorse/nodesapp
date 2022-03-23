@@ -4,7 +4,9 @@ import AscendAmsContract from '../ContractsApi/AscendAmsContract';
 import AscendPlatinumContract from '../ContractsApi/AscendPlatinumContract';
 import AscendInfiniteContract from '../ContractsApi/AscendInfiniteContract';
 import AscendMetaContract from '../ContractsApi/AscendMetaContract';
+import AtlasContract from '../ContractsApi/AtlasContract';
 import CombContract from '../ContractsApi/CombContract';
+import CronodesContract from '../ContractsApi/CronodesContract';
 // import LouvertureContract from '../ContractsApi/LouvertureContract';
 import NebulaContract from '../ContractsApi/NebulaContract';
 import PentagonContract from '../ContractsApi/PentagonContract';
@@ -24,7 +26,6 @@ import ThorThorContract from '../ContractsApi/ThorThorContract';
 import UniverseContract from '../ContractsApi/UniverseContract';
 import VaporContract from '../ContractsApi/VaporContract';
 import NetworkTableRow from './NetworkTableRow';
-import AtlasContract from '../ContractsApi/AtlasContract';
 
 const AvalancheContracts = (props) => {
   return (
@@ -47,6 +48,14 @@ const AvalancheContracts = (props) => {
     </>
   );
 };
+
+const CronosContracts = (props) => {
+  return (
+    <>
+      <NetworkTableRow contract={new CronodesContract(props.provider, props.addresses)} {...props} />
+    </>
+  );
+}
 
 const EthereumContracts = (props) => {
   return (
@@ -81,6 +90,8 @@ const PolygonContracts = (props) => {
 const NetworkTableRows = (props) => {
   if (props.networkName === 'Avalanche') {
     return (<AvalancheContracts {...props} />);
+  } else if (props.networkName === 'Cronos') {
+    return (<CronosContracts {...props} />);
   } else if (props.networkName === 'Ethereum') {
     return (<EthereumContracts {...props} />);
   } else if (props.networkName === 'Fantom') {

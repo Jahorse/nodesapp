@@ -79,7 +79,9 @@ class ProjectXContract extends Contract {
           });
         }
       } catch (e) {
-        console.log('ERR', e);
+        if (!e.reason.includes('NO NODE OWNER')) {
+          console.log('ERR', e);
+        }
       }
     }
 

@@ -81,7 +81,9 @@ class NebulaContract extends Contract {
           nodes.push(node);
         }
       } catch (e) {
-        console.log('ERR', e);
+        if (!e.reason.includes('NOT_OWNER')) {
+          console.log('ERR', e);
+        }
       }
     }
 

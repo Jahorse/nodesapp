@@ -6,10 +6,11 @@ import NetworkTable from './NetworkTables/NetworkTable';
 
 const selectNetworks = (providers) => {
   if (providers.web3) {
-    return ['avalanche', 'ethereum', 'fantom', 'polygon'];
+    return ['avalanche', 'cronos', 'ethereum', 'fantom', 'polygon'];
   }
   const networks = [];
   if (providers.avalanche) { networks.push('avalanche'); }
+  if (providers.cronos) { networks.push('cronos'); }
   if (providers.ethereum) { networks.push('ethereum'); }
   if (providers.fantom) { networks.push('fantom'); }
   if (providers.polygon) { networks.push('polygon'); }
@@ -28,6 +29,15 @@ const Summary = (props) => {
             provider={props.provider}
             networkName='Avalanche'
             walletAddresses={props.profile.walletAddresses.avalanche}
+          />
+        : null
+      }
+      {networks.includes('cronos')
+        ? <NetworkTable
+            profile={props.profile}
+            provider={props.provider}
+            networkName='Cronos'
+            walletAddresses={props.profile.walletAddresses.cronos}
           />
         : null
       }
