@@ -34,7 +34,6 @@ const AddressRow = (props) => {
 
   const longAddresses = props.width > breakpoint ? true : false;
 
-
   return (
     <tr>
       <td>{longAddresses ? props.address : `${props.address.substring(0,8)}...`}</td>
@@ -76,7 +75,7 @@ const EditProfileRoute = (props) => {
       profileName={params.profileName}
       cookies={cookies}
       setCookie={setCookie}
-      with={width}
+      width={width}
     />);
   })
   profile.walletAddresses.cronos.forEach((a) => {
@@ -87,7 +86,7 @@ const EditProfileRoute = (props) => {
       profileName={params.profileName}
       cookies={cookies}
       setCookie={setCookie}
-      with={width}
+      width={width}
     />);
   })
   profile.walletAddresses.ethereum.forEach((a) => {
@@ -98,6 +97,7 @@ const EditProfileRoute = (props) => {
       profileName={params.profileName}
       cookies={cookies}
       setCookie={setCookie}
+      width={width}
     />);
   })
   profile.walletAddresses.fantom.forEach((a) => {
@@ -108,6 +108,7 @@ const EditProfileRoute = (props) => {
       profileName={params.profileName}
       cookies={cookies}
       setCookie={setCookie}
+      width={width}
     />);
   })
   profile.walletAddresses.polygon.forEach((a) => {
@@ -118,6 +119,7 @@ const EditProfileRoute = (props) => {
       profileName={params.profileName}
       cookies={cookies}
       setCookie={setCookie}
+      width={width}
     />);
   })
 
