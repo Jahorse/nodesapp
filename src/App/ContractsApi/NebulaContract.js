@@ -1,6 +1,6 @@
 import * as ethers from 'ethers';
 
-import abi from './abi/nebula';
+import { claimAbi, managerAbi } from './abi/nebula';
 import Contract from './Contract';
 import { getPriceDg } from '../Utils/Pricing';
 
@@ -11,16 +11,13 @@ class NebulaContract extends Contract {
     networkName: 'Avalanche',
     decimals: 3,
     claimSupport: true,
-    hasCompound: false,
+    hasCompound: true,
     appLink: 'https://app.nebulanodes.finance/',
-    chartLink: 'https://dexscreener.com/avalanche/0x36c1d7d2eb0cf928ab05dfe8c339f5b5c7c818a4',
-    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x1aea17a08ede10d158baac969f809e6747cb2b22#/',
+    chartLink: 'https://dexscreener.com/avalanche/0xd177B5D5c73Cb385732b658824F2c6614eB6eD4f',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x5aa2ff4ab706307d8b3d90a462c1ddc055655734#/',
   };
-  contractAddress = '0xd311d77c8F4665bdA9e684Cd08f8991f364AbEF5';
-  claimContractAddress = '0x1aEa17a08EdE10D158baac969f809E6747cb2B22';
-  claimContractAbi = [
-    'function cashoutAll()',
-  ];
+  contractAddress = '0x7Fb35013090590B8FFb628a89851FaC6e6f0EBC9';
+  claimAddress = '0x5AA2Ff4Ab706307d8B3D90A462c1ddC055655734';
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
@@ -42,43 +39,53 @@ class NebulaContract extends Contract {
   }
 
   async compoundAll() {
-    console.error('Nebula.compoundAll() is not implemented.');
-    return;
-  }
-
-  async claimAll() {
+    if (this.walletAddresses.length > 1) {
+      console.error('Cannot claim multiple addresses at once.');
+      return;
+    }
     if (!this.signer) {
       console.error('Tried calling Nebula.claimAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.claimContractAddress, this.claimContractAbi, this.signer);
+    const contract = new ethers.Contract(this.claimAddress, claimAbi, this.signer);
+    const createTimeEpoch = this.nodes[0].creationTime.getTime() / 1000;
+    return contract.compoundAllNodes(createTimeEpoch);
+  }
+
+  async claimAll() {
+    if (this.walletAddresses.length > 1) {
+      console.error('Cannot claim multiple addresses at once.');
+      return;
+    }
+    if (!this.signer) {
+      console.error('Tried calling Nebula.claimAll() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.claimAddress, claimAbi, this.signer);
     return contract.cashoutAll();
   }
 
   async fetchNodes() {
-    const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
+    const contract = new ethers.Contract(this.contractAddress, managerAbi, this.jsonRpcProvider);
 
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const [nodeNames, lastClaims, creationTimes] = [
-          (await contract.getNodesNames(walletAddress)).split('#'),
-          (await contract.getNodesLastClaimTime(walletAddress)).split('#'),
-          (await contract.getNodesCreationTime(walletAddress)).split('#'),
-        ];
+        const nodesRaw = await contract.getAllNodes(walletAddress);
 
-        for (const i in nodeNames) {
-          const rewards = await contract.getNodeReward(walletAddress, creationTimes[i]);
+        for (const nodeRaw of nodesRaw) {
+          const name = nodeRaw.name;
+          const creationTime = parseInt(nodeRaw.creationTime);
+          const lastClaimTime = parseInt(nodeRaw.lastClaimTime);
+          const rewards = await contract.getNodeReward(walletAddress, creationTime);
 
-          const node = {
-            name: nodeNames[i],
+          nodes.push({
+            name,
             rewards: parseInt(rewards.toHexString(), 16) / 1e18,
-            creationTime: new Date(parseInt(creationTimes[i]) * 1000),
-            lastProcessingTime: lastClaims[i] ? new Date(parseInt(lastClaims[i]) * 1000) : 'Never',
+            creationTime: new Date(creationTime * 1000),
+            lastProcessingTime: new Date(lastClaimTime * 1000),
             nextProcessingTime: Date.now(),
-          };
-
-          nodes.push(node);
+          });
         }
       } catch (e) {
         if (!e.reason.includes('NOT_OWNER')) {
