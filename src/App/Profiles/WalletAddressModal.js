@@ -35,6 +35,13 @@ const WalletAddressModal = (props) => {
 
   const toggleModal = () => {
     setAddressInput('');
+    setNetworkInput({
+      Avalanche: false,
+      Cronos: false,
+      Ethereum: false,
+      Fantom: false,
+      Polygon: false,
+    });
     setToggleModal(!modalOpen);
   }
 

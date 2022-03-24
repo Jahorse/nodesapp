@@ -1,6 +1,9 @@
 import * as ethers from 'ethers';
 
-import abi from './abi/cronodes';
+import {
+  contractAbi,
+  distributionAbi,
+} from './abi/cronodes';
 import Contract from './Contract';
 import { getPriceCg } from '../Utils/Pricing';
 
@@ -16,7 +19,8 @@ class CronodesContract extends Contract {
     chartLink: 'https://dexscreener.com/cronos/0x3ca50d07b1cfb4a4e61ee8d00c2ef1af6e42cee8',
     swapLink: 'https://app.cronaswap.org/swap?outputCurrency=0x8174bac1453c3ac7caed909c20ceadeb5e1cda00',
   };
-  contractAddress = '0x7f0CCde008102a2Db79c3372A10E21c07451dB38';
+  contractAddress = '0x8174BaC1453c3AC7CaED909c20ceaDeb5E1CDA00';
+  distributionContractAddress = '0x6aD4Ff63fD7CF6672eE33Cdad8e3EE14Bad52B4E';
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Cronos');
@@ -51,39 +55,46 @@ class CronodesContract extends Contract {
       console.error('Tried calling AtlasContract.claimAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.contractAddress, abi, this.signer);
-    return contract._cashoutAllNodesReward(this.walletAddresses[0]);
+    const contract = new ethers.Contract(this.distributionContractAddress, distributionAbi, this.signer);
+    return contract.claimReward();
   }
 
   async fetchNodes() {
-    const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
+    const contract = new ethers.Contract(this.contractAddress, contractAbi, this.jsonRpcProvider);
+    const distributionContract = new ethers.Contract(this.distributionContractAddress, distributionAbi, this.jsonRpcProvider);
+    const currentBlock = await this.jsonRpcProvider.getBlockNumber();
+    const currentTimestamp = await this.jsonRpcProvider.getBlock(currentBlock).then(b => b.timestamp);
 
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const [nodeNames, creationTimes, lastClaimTimes] = [
-          (await contract._getNodesNames(walletAddress)).split('#'),
-          (await contract._getNodesCreationTime(walletAddress)).split('#'),
-          (await contract._getNodesLastClaimTime(walletAddress)).split('#'),
-        ];
+        const nodeCount = parseInt((await contract.getNodeNumberOf(walletAddress)).toHexString(), 16);
+        if (nodeCount > 1) {
+          const lastClaimBlock = await distributionContract.getLastClaimedBlock(walletAddress);
+          const lastClaimTime = await this.jsonRpcProvider.getBlock(lastClaimBlock.toHexString()).then(b => b.timestamp);
 
-        for (const i in nodeNames) {
-          const reward = await contract._getRewardAmountOf(walletAddress, creationTimes[i]);
+          const nextClaimBlock = parseInt((await distributionContract.getNextClaimBlock(walletAddress)).toHexString(), 16);
+          let nextClaimTime = Date.now();
+          if (nextClaimBlock > currentBlock) {
+            const blockDiff = nextClaimBlock - currentBlock;
+            const timeDiffSecs = blockDiff * 6;
+            nextClaimTime = (currentTimestamp + timeDiffSecs) * 1000;
+          }
 
-          const node = {
-            name: nodeNames[i],
-            rewards: parseInt(reward.toHexString(), 16) / 1e18,
-            creationTime: new Date(creationTimes[i] * 1000),
-            lastProcessingTime: new Date(lastClaimTimes[i] * 1000),
-            nextProcessingTime: Date.now(),
-          };
+          const timeSinceClaim = currentTimestamp - lastClaimTime;
+          const blocksSinceClaim = currentBlock - lastClaimBlock;
+          const daysSinceClaim = (blocksSinceClaim - (blocksSinceClaim % 14400)) / 14400;
+          const rewards = (nodeCount * daysSinceClaim * 0.5);
 
-          nodes.push(node);
+          nodes.push({
+            name: `Cronodes-${nodeCount}`,
+            lastProcessingTime: new Date(lastClaimTime * 1000),
+            nextProcessingTime: nextClaimTime,
+            rewards,
+          });
         }
       } catch (e) {
-        if (!e.reason.includes('NO NODE OWNER')) {
-          console.log('ERR', e);
-        }
+        console.log('ERR', e);
       }
     }
 
