@@ -30,6 +30,7 @@ const AboutRoute = (props) => {
           <h4 className='ps-3'>Avalanche</h4>
           <ol className='ps-5'>
             <li><a href='https://dapp.ascendnodeclub.money/' className='link-dark'>Ascend</a></li>
+            <li><a href='https://thephoenix.finance/app/' className='link-dark'>Fire</a></li>
             <li><a href='https://app.nebulanodes.finance/'  className='link-dark'>Nebula</a></li>
             <li><a href='https://projectx.financial/#nodes'  className='link-dark'>Project X</a></li>
             <li><a href='https://redlightnodes.app/'  className='link-dark'>Redlight Nodes District</a></li>
