@@ -8,6 +8,7 @@ import AtlasContract from '../ContractsApi/AtlasContract';
 import CombContract from '../ContractsApi/CombContract';
 import CronodesContract from '../ContractsApi/CronodesContract';
 import DominiumContract from '../ContractsApi/DominiumContract';
+import EtherstonesContract from '../ContractsApi/EtherstonesContract';
 // import LouvertureContract from '../ContractsApi/LouvertureContract';
 import NebulaContract from '../ContractsApi/NebulaContract';
 import PentagonContract from '../ContractsApi/PentagonContract';
@@ -36,6 +37,7 @@ const AvalancheContracts = (props) => {
       <NetworkTableRow contract={new AscendPlatinumContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new AscendInfiniteContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new AscendMetaContract(props.provider, props.addresses)} {...props} />
+      <NetworkTableRow contract={new EtherstonesContract(props.provider, props.addresses)} {...props} />
       {/* <NetworkTableRow contract={new LouvertureContract(props.provider, props.addresses)} {...props} /> */}
       <NetworkTableRow contract={new NebulaContract(props.provider, props.addresses)} {...props} />
       <NetworkTableRow contract={new PhoenixContract(props.provider, props.addresses)} {...props} />
