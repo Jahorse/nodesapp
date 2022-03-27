@@ -15,13 +15,13 @@ class VaporContract extends Contract {
     chartLink: 'https://dexscreener.com/avalanche/0x4cd20f3e2894ed1a0f4668d953a98e689c647bfe',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x83a283641c6b4df383bcddf807193284c84c5342#/',
   };
-  nodeControllerAddress = '0xa1ce9bb5563822e320e2f7832a5df17a13b951ae';
+  nodeControllerAddress = '0xD7Ce2935008Ae8ca17E90fbe2410D2DB7608058C';
   nodeControllerAbi = [
     'function getAllNodesRewards(address _account) view returns (uint256)',
-    'function getNodeRewards(address _account, uint256 _creationTime) view returns (uint256)',
+    'function getNodeRewards(address _account, uint256 _creationTime) view returns (uint256, uint256, uint256)',
   ];
-  nodeManagerAddress = '0x9d71D8B79dff5929eA21caBfbc1Ae5F964f3cAe3';
-  nodeManagerAbi = [
+  vaporControllerAddress = '0xF964De4bf6EB0Ca9408F771f6921641b913f9255';
+  vaporControllerAbi = [
     'function compound(uint256[])',
     'function claim(uint256[])',
   ];
@@ -103,7 +103,7 @@ class VaporContract extends Contract {
       console.error('Tried calling VaporContract.compoundAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, this.signer);
+    const contract = new ethers.Contract(this.vaporControllerAddress, this.vaporControllerAbi, this.signer);
     const creationTimes = this.nodes.map(n => parseInt(n.creationTime));
     return contract.compound(creationTimes);
   }
@@ -113,7 +113,7 @@ class VaporContract extends Contract {
       console.error('Tried calling VaporContract.claimAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.nodeManagerAddress, this.nodeManagerAbi, this.signer);
+    const contract = new ethers.Contract(this.vaporControllerAddress, this.vaporControllerAbi, this.signer);
     const creationTimes = this.nodes.map(n => parseInt(n.creationTime));
     return contract.claim(creationTimes);
   }
@@ -148,7 +148,7 @@ class VaporContract extends Contract {
             lastProcessingTime,
             nextProcessingTime,
             amount: parseInt(rawNode['amount'].toHexString(), 16) / 1e18,
-            rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+            rewards: parseInt(rewards[rewards.length - 1].toHexString(), 16) / 1e18,
           }
           nodes.push(node);
         }
