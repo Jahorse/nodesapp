@@ -8,7 +8,7 @@ class RndDistrictsContract extends RndContract {
     super(
       provider,
       walletAddresses,
-      '0xEb92b856a9Fb9F7eA6530eaB40F56C6dA616eC7d',
+      '0x9aDA04Af0B1c989A188F0063358f2d0530327386',
       'Districts',
     );
   }
