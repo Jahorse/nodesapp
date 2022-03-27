@@ -1,13 +1,14 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import {
   contractAbi,
   distributionAbi,
 } from './abi/cronodes';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class CronodesContract extends Contract {
+class Cronodes extends Contract {
   metadata = {
     name: 'Cronodes',
     symbol: 'CRN',
@@ -81,7 +82,6 @@ class CronodesContract extends Contract {
             nextClaimTime = (currentTimestamp + timeDiffSecs) * 1000;
           }
 
-          const timeSinceClaim = currentTimestamp - lastClaimTime;
           const blocksSinceClaim = currentBlock - lastClaimBlock;
           const daysSinceClaim = (blocksSinceClaim - (blocksSinceClaim % 14400)) / 14400;
           const rewards = (nodeCount * daysSinceClaim * 0.5);
@@ -98,8 +98,11 @@ class CronodesContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('cronos-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default CronodesContract;
+export default Cronodes;

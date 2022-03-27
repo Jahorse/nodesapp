@@ -1,10 +1,11 @@
 import { ethers } from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/thor';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class ThorContract extends Contract {
+class Thor extends Contract {
   metadata = {
     name: 'Thor',
     symbol: 'THOR',
@@ -93,8 +94,11 @@ class ThorContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('avalanche-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default ThorContract;
+export default Thor;

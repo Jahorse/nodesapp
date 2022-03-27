@@ -1,10 +1,11 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/phoenix';
 import Contract from './Contract';
-import { getPriceDg } from '../Utils/Pricing';
+import { getPriceDg } from '../Utils/pricing';
 
-class PhoenixContract extends Contract {
+class Phoenix extends Contract {
   metadata = {
     name: 'Phoenix',
     symbol: 'FIRE',
@@ -78,8 +79,11 @@ class PhoenixContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('avalanche-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default PhoenixContract;
+export default Phoenix;

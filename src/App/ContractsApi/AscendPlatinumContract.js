@@ -1,9 +1,10 @@
 import { ethers } from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/ascend-platinum';
-import AscendContract from './AscendContract';
+import Ascend from './AscendContract';
 
-class AscendPlatinumContract extends AscendContract {
+class AscendPlatinum extends Ascend {
   constructor(provider, walletAddresses) {
     super(
       provider,
@@ -54,9 +55,13 @@ class AscendPlatinumContract extends AscendContract {
       } catch (e) {
         console.log('ERR', e);
       }
+
+      if (nodes.length > 0) {
+        emitCustomEvent('avalanche-node', undefined);
+      }
       return nodes;
     }
   }
 }
 
-export default AscendPlatinumContract;
+export default AscendPlatinum;

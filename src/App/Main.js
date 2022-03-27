@@ -11,7 +11,7 @@ import {
   useMatch,
 } from 'react-router-dom';
 
-import { networkIdToNameMap } from './Utils/Networking';
+import { networkIdToNameMap } from './Utils/networking';
 
 import { ethers } from 'ethers';
 import RouteView from './RouteView';
@@ -137,7 +137,7 @@ const Main = (props) => {
           providerObj.networkName = networkIdToNameMap[(await ethersProvider.getNetwork()).chainId];
           providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
           providerObj.ethers.cronos = new ethers.providers.JsonRpcProvider('https://evm-cronos.crypto.org/');
-          providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://api.mycryptoapi.com/eth');
+          providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://speedy-nodes-nyc.moralis.io/2e5324a27df3693603edaffa/eth/mainnet');
           providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
           providerObj.ethers.polygon = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
 
@@ -149,7 +149,7 @@ const Main = (props) => {
             providerObj.ethers.cronos = new ethers.providers.JsonRpcProvider('https://evm-cronos.crypto.org/');
           }
           if (profile.walletAddresses.ethereum.length > 0) {
-            providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://api.mycryptoapi.com/eth');
+            providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://speedy-nodes-nyc.moralis.io/2e5324a27df3693603edaffa/eth/mainnet');
           }
           if (profile.walletAddresses.fantom.length > 0) {
             providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');

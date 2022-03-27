@@ -1,9 +1,10 @@
 import { ethers } from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class VaporContract extends Contract {
+class Vapor extends Contract {
   metadata = {
     name: 'Vapor',
     symbol: 'VPND',
@@ -153,14 +154,17 @@ class VaporContract extends Contract {
           nodes.push(node);
         }
 
+        if (nodes.length > 0) {
+          emitCustomEvent('avalanche-node', undefined);
+        }
         return nodes;
       } catch (e) {
         console.log('ERR', e);
       }
     }
 
-      return null;
+    return null;
   }
 }
 
-export default VaporContract;
+export default Vapor;

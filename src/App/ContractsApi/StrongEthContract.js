@@ -1,10 +1,11 @@
 import { ethers } from 'ethers';
-import Contract from './Contract';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from "./abi/strong-eth.js";
-import { getPriceCg } from '../Utils/Pricing';
+import Contract from './Contract';
+import { getPriceCg } from '../Utils/pricing';
 
-class StrongEthContract extends Contract {
+class StrongEth extends Contract {
   metadata = {
     name: 'Strong ETH',
     symbol: 'STRONG',
@@ -74,8 +75,11 @@ class StrongEthContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('ethereum-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default StrongEthContract;
+export default StrongEth;

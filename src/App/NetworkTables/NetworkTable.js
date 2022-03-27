@@ -7,8 +7,8 @@ import {
   Table,
 } from 'reactstrap';
 
-import NetworkTableRows from './NetworkTableRows';
-import { setNetwork } from '../Utils/Networking';
+import NetworkTableRow from './NetworkTableRow';
+import { setNetwork } from '../Utils/networking';
 import { breakpoint, useViewport } from '../Utils/Hooks';
 
 const ConnectNetworkButton = (props) => {
@@ -88,6 +88,20 @@ const NetworkTable = (props) => {
   }
 
   const addresses = props.walletAddresses;
+  const rows = [];
+  for (const [protocolName, protocolProvider] of Object.entries(props.protocolProviders)) {
+    rows.push(
+      <NetworkTableRow
+        key={protocolName}
+        contract={protocolProvider.contract}
+        addresses={addresses}
+        columns={columns}
+        isConnected={isConnected}
+        networkName={networkName}
+        provider={provider}
+      />
+    );
+  }
   return (
     <Container className='my-2 bg-info rounded'>
       <TableTitle networkName={networkName} isWeb3={isWeb3} provider={provider} />
@@ -98,13 +112,7 @@ const NetworkTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          <NetworkTableRows
-            addresses={addresses}
-            columns={columns}
-            isConnected={isConnected}
-            networkName={networkName}
-            provider={provider}
-          />
+          {rows}
         </tbody>
       </Table>
     </Container>

@@ -1,10 +1,11 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import { claimAbi, managerAbi } from './abi/nebula';
 import Contract from './Contract';
-import { getPriceDg } from '../Utils/Pricing';
+import { getPriceDg } from '../Utils/pricing';
 
-class NebulaContract extends Contract {
+class Nebula extends Contract {
   metadata = {
     name: 'Nebula',
     symbol: 'NeBu',
@@ -94,8 +95,11 @@ class NebulaContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('avalanche-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default NebulaContract;
+export default Nebula;

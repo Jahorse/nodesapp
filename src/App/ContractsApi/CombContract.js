@@ -1,13 +1,14 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import {
   claimAbi,
   nodeQueryAbi,
 } from './abi/comb';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class CombContract extends Contract {
+class Comb extends Contract {
   metadata = {
     name: 'Comb',
     symbol: 'COMB',
@@ -82,8 +83,11 @@ class CombContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('fantom-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default CombContract;
+export default Comb;

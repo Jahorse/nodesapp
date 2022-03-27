@@ -1,6 +1,6 @@
-import PowerContract from './PowerContract';
+import Power from './PowerContract';
 
-class PowerNuclearContract extends PowerContract {
+class PowerNuclear extends Power {
   constructor(provider, walletAddresses) {
     super(
       provider,
@@ -11,8 +11,8 @@ class PowerNuclearContract extends PowerContract {
   }
 
   async claimAll() {
-    PowerContract.prototype.claimAllTier.call(this, 'SUPERHUMAN');
+    Power.prototype.claimAllTier.call(this, 'SUPERHUMAN');
   }
 }
 
-export default PowerNuclearContract;
+export default PowerNuclear;

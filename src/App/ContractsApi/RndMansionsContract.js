@@ -1,9 +1,10 @@
 import { ethers } from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
-import RndContract from './RndContract';
+import Rnd from './RndContract';
 import abi from './abi/rnd-mansions';
 
-class RndMansionsContract extends RndContract {
+class RndMansions extends Rnd {
   constructor(provider, walletAddresses) {
     super(
       provider,
@@ -42,9 +43,13 @@ class RndMansionsContract extends RndContract {
       } catch (e) {
         console.log('ERR', e);
       }
+
+      if (nodes.length > 0) {
+        emitCustomEvent('avalanche-node', undefined);
+      }
       return nodes;
     }
   }
 }
 
-export default RndMansionsContract;
+export default RndMansions;

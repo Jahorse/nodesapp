@@ -1,10 +1,11 @@
 import { ethers } from 'ethers';
-import Contract from './Contract';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from "./abi/universe.js";
-import { getPriceCg } from '../Utils/Pricing';
+import Contract from './Contract';
+import { getPriceCg } from '../Utils/pricing';
 
-class UniverseContract extends Contract {
+class Universe extends Contract {
   metadata = {
     name: 'Universe',
     symbol: 'UNIV',
@@ -27,7 +28,7 @@ class UniverseContract extends Contract {
   async getPriceUsd() {
     return await getPriceCg('universe-2');
   }
-
+s
   getTotalRewards(planets, compounding) {
     let rewards = 0;
     for (const planet of planets) {
@@ -105,8 +106,11 @@ class UniverseContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('avalanche-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default UniverseContract;
+export default Universe;

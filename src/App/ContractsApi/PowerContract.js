@@ -1,10 +1,11 @@
 import { ethers } from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/thor';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class PowerContract extends Contract {
+class Power extends Contract {
   metadata = {
     name: 'Power',
     symbol: 'POWER',
@@ -92,8 +93,11 @@ class PowerContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('fantom-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default PowerContract;
+export default Power;

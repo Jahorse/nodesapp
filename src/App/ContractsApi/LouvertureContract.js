@@ -1,10 +1,11 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/louverture';
 import Contract from './Contract';
 import { getPriceCg } from '../Utils/Pricing';
 
-class LouvertureContract extends Contract {
+class Louverture extends Contract {
   metadata = {
     name: 'Louverture v1',
     symbol: 'LVT',
@@ -90,8 +91,11 @@ class LouvertureContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('avalanche-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default LouvertureContract;
+export default Louverture;

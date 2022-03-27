@@ -1,10 +1,11 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/dominium';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class DominiumContract extends Contract {
+class Dominium extends Contract {
   metadata = {
     name: 'Dominium',
     symbol: 'DOM',
@@ -82,8 +83,11 @@ class DominiumContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('polygon-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default DominiumContract;
+export default Dominium;

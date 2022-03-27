@@ -1,13 +1,14 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import {
   managerAbi,
   tokenAbi,
 } from './abi/atlas';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class AtlasContract extends Contract {
+class Atlas extends Contract {
   metadata = {
     name: 'Atlas',
     symbol: 'ATLAS',
@@ -95,8 +96,11 @@ class AtlasContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('fantom-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default AtlasContract;
+export default Atlas;

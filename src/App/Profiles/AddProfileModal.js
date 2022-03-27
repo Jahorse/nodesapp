@@ -67,7 +67,8 @@ const ConnectWallet = (props) => {
     // Check that the wallet is connected
     // Create the profile and set it as the active profile
     if (connectedSuccessfully) {
-      props.profiles['_MetaMask'] = {
+      const profileName = '_MetaMask';
+      props.profiles[profileName] = {
         isWeb3: true,
         walletAddresses,
         disabledProjects: {
@@ -80,6 +81,7 @@ const ConnectWallet = (props) => {
       };
 
       props.setCookie('profiles', props.profiles);
+      props.setCookie('activeProfileName', profileName);
 
       // Reload the page
       window.location.replace('/');
@@ -98,7 +100,7 @@ const ConnectWallet = (props) => {
 const AddProfileModal = (props) => {
   const [modalOpen, setToggleModal] = useState(false);
   const [tooltipOpen, setToggleTooltip] = useState(false);
-  const [cookies, setCookie] = useCookies(['profiles']);
+  const [cookies, setCookie] = useCookies(['activeProfileName', 'profiles']);
   const [profileNameInput, setProfileNameInput] = useState('');
 
   const toggleModal = () => {

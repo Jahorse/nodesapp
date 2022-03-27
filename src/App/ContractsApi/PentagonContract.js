@@ -1,13 +1,14 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import {
   claimAbi,
   nodeQueryAbi,
 } from './abi/pentagon';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class PentagonContract extends Contract {
+class Pentagon extends Contract {
   metadata = {
     name: 'Pentagon',
     symbol: 'PENT',
@@ -90,8 +91,11 @@ class PentagonContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('polygon-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default PentagonContract;
+export default Pentagon;

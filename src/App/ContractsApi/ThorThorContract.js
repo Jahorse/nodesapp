@@ -1,6 +1,6 @@
-import ThorContract from './ThorContract';
+import Thor from './ThorContract';
 
-class ThorThorContract extends ThorContract {
+class ThorThor extends Thor {
   constructor(provider, walletAddresses) {
     super(
       provider,
@@ -12,4 +12,4 @@ class ThorThorContract extends ThorContract {
   }
 }
 
-export default ThorThorContract;
+export default ThorThor;

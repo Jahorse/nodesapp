@@ -1,10 +1,11 @@
 import { ethers } from 'ethers';
-import Contract from './Contract';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from "./abi/strong-matic.js";
-import { getPriceCg } from '../Utils/Pricing';
+import Contract from './Contract';
+import { getPriceCg } from '../Utils/pricing';
 
-class StrongMaticContract extends Contract {
+class StrongMatic extends Contract {
   metadata = {
     name: 'Strong MATIC',
     symbol: 'STRONG',
@@ -74,8 +75,11 @@ class StrongMaticContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('ethereum-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default StrongMaticContract;
+export default StrongMatic;

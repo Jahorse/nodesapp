@@ -1,8 +1,8 @@
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 import abi from './abi/ascend-helper';
 
-class AscendContract extends Contract {
+class Ascend extends Contract {
   metadata = {
     name: 'Ascend',
     symbol: 'ASND',
@@ -66,4 +66,4 @@ class AscendContract extends Contract {
   }
 }
 
-export default AscendContract;
+export default Ascend;

@@ -1,7 +1,7 @@
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class RndContract extends Contract {
+class Rnd extends Contract {
   metadata = {
     name: 'RND',
     symbol: 'PLAYMATES',
@@ -52,4 +52,4 @@ class RndContract extends Contract {
   }
 }
 
-export default RndContract;
+export default Rnd;

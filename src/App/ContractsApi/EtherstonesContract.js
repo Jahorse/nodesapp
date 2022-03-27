@@ -1,10 +1,11 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/etherstones';
 import Contract from './Contract';
-import { getPriceDg } from '../Utils/Pricing';
+import { getPriceDg } from '../Utils/pricing';
 
-class EtherstonesContract extends Contract {
+class Etherstones extends Contract {
   metadata = {
     name: 'Etherstones',
     symbol: 'ETHS',
@@ -86,8 +87,11 @@ class EtherstonesContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('avalanche-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default EtherstonesContract;
+export default Etherstones;

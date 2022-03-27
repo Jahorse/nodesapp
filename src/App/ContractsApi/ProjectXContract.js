@@ -1,10 +1,11 @@
 import * as ethers from 'ethers';
+import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/project-x';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/Pricing';
+import { getPriceCg } from '../Utils/pricing';
 
-class ProjectXContract extends Contract {
+class ProjectX extends Contract {
   metadata = {
     name: 'Project X',
     symbol: 'PXT2',
@@ -85,8 +86,11 @@ class ProjectXContract extends Contract {
       }
     }
 
+    if (nodes.length > 0) {
+      emitCustomEvent('avalanche-node', undefined);
+    }
     return nodes;
   }
 }
 
-export default ProjectXContract;
+export default ProjectX;

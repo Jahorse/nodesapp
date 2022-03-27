@@ -1,8 +1,5 @@
 # TASK LIST
-1. Move the contract creation up the stack so that a network table only gets created when it has at least one row
-1. Set MetaMask as active profile after connecting
 1. Enable/disable node projects
-
 
 # Future Tasks
 1. Projects to add:
@@ -21,7 +18,7 @@
   - Universe currently applies compound bonus to rewards
   - Ascend has high taxes that aren't applied to rewards
 1. Expand the add profile modal to be able to add addresses and projects right away.
-1. Figure out how to monitor transactions to show when they're complete
+1. Upgrade to use https://usedapp.io/ which can track transactions and auto-refresh with new blocks
 1. Add validation to profile name field, wallet address field: https://reactstrap.github.io/?path=/story/components-forms--form-feedback
 1. Request form for adding nodes https://docs.google.com/forms/d/e/1FAIpQLSe0tIojm2WPAT_i3lkiv5OVMJRyEC14hm5merqH2NrnaPWUOQ/viewform
 1. Update countdown timers to actually count down
