@@ -35,7 +35,8 @@ const HeaderMenu = (props) => {
     <Collapse navbar isOpen={menuOpen}>
       <Nav className="me-auto" navbar>
         <NavItem><NavLink tag={RRNavLink} to="/manage-profiles">Manage Profiles</NavLink></NavItem>
-        <NavItem><NavLink tag={RRNavLink} to="/about">About</NavLink></NavItem>
+        <NavItem><NavLink tag={RRNavLink} to="/security">Security</NavLink></NavItem>
+        <NavItem><NavLink tag={RRNavLink} to="/protocols">Protocols</NavLink></NavItem>
       </Nav>
       <Nav>
         <PropfileDropdown networkName={props.provider?.networkName} />

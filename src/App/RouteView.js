@@ -4,10 +4,11 @@ import {
   Routes,
 } from 'react-router-dom';
 
-import AboutRoute from './AboutRoute';
 import HeaderMenu from './HeaderMenu';
 import EditProfileRoute from './Profiles/EditProfileRoute';
 import ManageProfilesRoute from './Profiles/ManageProfilesRoute';
+import ProtocolsRoute from './ProtocolsRoute';
+import SecurityRoute from './SecurityRoute';
 import Summary from './SummaryRoute';
 
 const RouteView = (props) => {
@@ -23,7 +24,8 @@ const RouteView = (props) => {
         <div className="d-flex justify-content-center pt-1">
           <Routes>
             {provider ? <Route path="/" element={<Summary profile={props.profile} provider={provider} />} /> : null}
-            <Route path="/about" element={<AboutRoute />} />
+            <Route path="/protocols" element={<ProtocolsRoute />} />
+            <Route path="/security" element={<SecurityRoute />} />
             <Route path="/manage-profiles" element={<ManageProfilesRoute />} />
             <Route path="/manage-profile/:profileName" element={<EditProfileRoute />} />
           </Routes>
