@@ -1,5 +1,6 @@
 # TASK LIST
 1. Enable/disable node projects
+1. Add the total of the rewards in USD somewhere
 
 # Future Tasks
 1. Projects to add:
@@ -10,10 +11,7 @@
     - Token: https://ftmscan.com/address/0xd3b8037853785463D06957Fefa0f06Af53B9e504
     - Couldn't find rewards
   1. Oxy
-  1. LVT v2
-  1. Starz
   1. Division
-1. Add the total of the rewards in USD somewhere
 1. Add an "adjusted rewards" column that applies bonuses and taxes
   - Universe currently applies compound bonus to rewards
   - Ascend has high taxes that aren't applied to rewards
