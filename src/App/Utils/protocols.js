@@ -40,42 +40,42 @@ export class ProtocolProvider {
 }
 
 export const avalancheProtocols = new Map([
-  // ['AscendAms', AscendAms],
-  // ['AscendPlatinum', AscendPlatinum],
-  // ['AscendInfinite', AscendInfinite],
-  // ['AscendMeta', AscendMeta],
-  // ['Etherstones', Etherstones],
+  ['AscendAms', AscendAms],
+  ['AscendPlatinum', AscendPlatinum],
+  ['AscendInfinite', AscendInfinite],
+  ['AscendMeta', AscendMeta],
+  ['Etherstones', Etherstones],
   ['Louverture', Louverture],
-  // ['Nebula', Nebula],
-  // ['Phoenix', Phoenix],
-  // ['ProjectX', ProjectX],
-  // ['RndMansions', RndMansions],
-  // ['RndDistricts', RndDistricts],
-  // ['ThorHeimdall', ThorHeimdall],
-  // ['ThorFreya', ThorFreya],
-  // ['ThorThor', ThorThor],
-  // ['ThorOdin', ThorOdin],
-  // ['Universe', Universe],
-  // ['Vapor', Vapor],
+  ['Nebula', Nebula],
+  ['Phoenix', Phoenix],
+  ['ProjectX', ProjectX],
+  ['RndMansions', RndMansions],
+  ['RndDistricts', RndDistricts],
+  ['ThorHeimdall', ThorHeimdall],
+  ['ThorFreya', ThorFreya],
+  ['ThorThor', ThorThor],
+  ['ThorOdin', ThorOdin],
+  ['Universe', Universe],
+  ['Vapor', Vapor],
 ]);
 export const cronosProtocols = new Map([
-  // ['Cronodes', Cronodes],
+  ['Cronodes', Cronodes],
 ]);
 export const ethereumProtocols = new Map([
-  // ['StrongEth', StrongEth],
-  // ['StrongMatic', StrongMatic],
+  ['StrongEth', StrongEth],
+  ['StrongMatic', StrongMatic],
 ]);
 export const fantomProtocols = new Map([
-  // ['Atlas', Atlas],
-  // ['Comb', Comb],
-  // ['PowerSolar', PowerSolar],
-  // ['PowerWind', PowerWind],
-  // ['PowerHydro', PowerHydro],
-  // ['PowerNuclear', PowerNuclear],
+  ['Atlas', Atlas],
+  ['Comb', Comb],
+  ['PowerSolar', PowerSolar],
+  ['PowerWind', PowerWind],
+  ['PowerHydro', PowerHydro],
+  ['PowerNuclear', PowerNuclear],
 ]);
 export const polygonProtocols = new Map([
-  // ['Dominium', Dominium],
-  // ['Pentagon', Pentagon],
+  ['Dominium', Dominium],
+  ['Pentagon', Pentagon],
 ]);
 
 export const getProtocolProviders = (protocolMap, provider, addresses, disabledList = []) => {
