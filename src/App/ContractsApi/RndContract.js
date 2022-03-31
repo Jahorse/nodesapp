@@ -37,12 +37,12 @@ class Rnd extends Contract {
   }
 
   async compoundAll() {
-    console.error('AscendContract has no compoundAll().');
+    console.error('RndContract has no compoundAll().');
     return null;
   }
 
   async claimAll() {
-    console.error('AscendContract has no claimAll().');
+    console.error('RndContract has no claimAll().');
     return null;
   }
 

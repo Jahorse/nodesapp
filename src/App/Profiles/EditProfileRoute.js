@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useCookies } from 'react-cookie';
 import { useParams } from "react-router-dom";
 import {
@@ -7,10 +7,10 @@ import {
   Row,
   Table,
 } from 'reactstrap';
+
 import WalletAddressModal from './WalletAddressModal';
 import { breakpoint, useViewport } from '../Utils/Hooks';
 import DisableProtocolsForm from './DisableProtocolsForm';
-
 
 const AddressRow = (props) => {
   const cookies = props.cookies;
@@ -43,7 +43,6 @@ const AddressRow = (props) => {
 const EditProfileRoute = (props) => {
   let params = useParams();
   const [cookies, setCookie] = useCookies(['profiles']);
-  const [tooltipOpen, setToggleTooltip] = useState(false);
   const { width } = useViewport();
 
   if (!cookies.profiles) {
@@ -117,10 +116,6 @@ const EditProfileRoute = (props) => {
       width={width}
     />);
   })
-
-  const toggleTooltip = () => {
-    setToggleTooltip(!tooltipOpen);
-  }
 
   return (
     <Container>

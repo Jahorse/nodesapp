@@ -19,6 +19,7 @@ import PowerNuclear from '../ContractsApi/PowerNuclearContract';
 import ProjectX from '../ContractsApi/ProjectXContract';
 import RndDistricts from '../ContractsApi/RndDistrictsContract';
 import RndMansions from '../ContractsApi/RndMansionsContract';
+import StackOs from '../ContractsApi/StackOsContract';
 import StrongEth from '../ContractsApi/StrongEthContract';
 import StrongMatic from '../ContractsApi/StrongMatic';
 import ThorFreya from '../ContractsApi/ThorFreyaContract';
@@ -76,6 +77,7 @@ export const fantomProtocols = new Map([
 export const polygonProtocols = new Map([
   ['Dominium', Dominium],
   ['Pentagon', Pentagon],
+  ['StackOs', StackOs],
 ]);
 
 export const getProtocolProviders = (protocolMap, provider, addresses, disabledList = []) => {

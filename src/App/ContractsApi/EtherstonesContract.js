@@ -3,7 +3,7 @@ import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/etherstones';
 import Contract from './Contract';
-import { getPriceDg } from '../Utils/pricing';
+import { getPriceCg } from '../Utils/pricing';
 
 class Etherstones extends Contract {
   metadata = {
@@ -26,7 +26,7 @@ class Etherstones extends Contract {
   }
 
   async getPriceUsd() {
-    return await getPriceDg('avalanche', '0x1efe6a8af01920912f0b4f7f26fc16e294664c4c');
+    return await getPriceCg('etherstones');
   }
 
   getTotalRewards(nodes, compounding) {
