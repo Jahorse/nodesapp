@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/thor';
 import Contract from './Contract';
@@ -29,20 +28,11 @@ class Power extends Contract {
     this.contractName = contractName;
     this.metadata.name = `Power ${contractName}`;
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('power-nodes');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-        rewards += parseFloat(node['rewards']);
-    }
-
-    return rewards;
   }
 
   async compoundAll() {
@@ -93,9 +83,6 @@ class Power extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('fantom-node', undefined);
-    }
     return nodes;
   }
 }

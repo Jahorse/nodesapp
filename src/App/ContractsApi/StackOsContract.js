@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as ethers from 'ethers';
 import { collection, getDocs, getFirestore, query } from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
-import { emitCustomEvent } from 'react-custom-events';
 
 import { royaltiesAbi, subscriptionAbi } from './abi/stack-os';
 import Contract from './Contract';
@@ -36,16 +35,16 @@ class StackOs extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Polygon');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('stackos');
   }
 
-  getTotalRewards(nodes, compounding) {
+  getTotalRewards() {
     let rewards = 0;
-    for (const node of nodes) {
+    for (const node of this.nodes) {
       rewards += node.rewards;
       rewards += node.bonus;
       rewards += node.royalties;
@@ -119,9 +118,6 @@ class StackOs extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('polygon-node', undefined);
-    }
     return nodes;
   }
 }

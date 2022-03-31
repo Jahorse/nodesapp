@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import Rnd from './RndContract';
 import abi from './abi/rnd-mansions';
@@ -44,9 +43,6 @@ class RndMansions extends Rnd {
         console.log('ERR', e);
       }
 
-      if (nodes.length > 0) {
-        emitCustomEvent('avalanche-node', undefined);
-      }
       return nodes;
     }
   }

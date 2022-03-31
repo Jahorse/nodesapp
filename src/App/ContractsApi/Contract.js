@@ -1,3 +1,5 @@
+import { emitCustomEvent } from 'react-custom-events';
+
 class Contract {
   constructor(provider, walletAddresses, networkName) {
     if(this.constructor === Contract){
@@ -17,15 +19,16 @@ class Contract {
     this.nodes = [];
   }
 
-  getTotalRewards(planets, compounding) {
+  getTotalRewards() {
     let rewards = 0;
-    for (const planet of planets) {
-        rewards += parseFloat(planet['rewards']);
-    }
-    if (compounding) {
-        rewards = rewards + (rewards * 0.1);
+    for (const node of this.nodes) {
+        rewards += parseFloat(node.rewards);
     }
     return rewards;
+  }
+
+  async getRewardsUsd() {
+    return parseFloat(parseFloat(this.getTotalRewards() * (await this.getPriceUsd())).toFixed(2));
   }
 
   timeUntilClaim() {
@@ -51,6 +54,15 @@ class Contract {
 
   async claimAll() {
     throw new Error('Calling an abstract method.');
+  }
+
+  async initNodes() {
+    this.fetchPromise = this.fetchNodes().then(n => {
+      this.nodes = n;
+      if (this.nodes.length > 0) {
+        emitCustomEvent(`${this.metadata.networkName.toLowerCase()}-node`, { rewards: this.getRewardsUsd() });
+      }
+    });
   }
 
   async getNodes() {

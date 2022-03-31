@@ -1,5 +1,4 @@
 import * as ethers from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import {
   contractAbi,
@@ -26,20 +25,11 @@ class Cronodes extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Cronos');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('cronodes');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-        rewards += parseFloat(node['rewards']);
-    }
-
-    return rewards;
   }
 
   async compoundAll() {
@@ -98,9 +88,6 @@ class Cronodes extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('cronos-node', undefined);
-    }
     return nodes;
   }
 }

@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import abi from "./abi/strong-matic.js";
 import Contract from './Contract';
@@ -22,7 +21,7 @@ class StrongMatic extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Ethereum');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
@@ -75,9 +74,6 @@ class StrongMatic extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('ethereum-node', undefined);
-    }
     return nodes;
   }
 }

@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import Contract from './Contract';
 import { getPriceCg } from '../Utils/pricing';
@@ -83,20 +82,11 @@ class Vapor extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('vapornodes');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-      rewards += parseFloat(node['rewards']);
-    }
-
-    return rewards;
   }
 
   async compoundAll() {
@@ -154,9 +144,6 @@ class Vapor extends Contract {
           nodes.push(node);
         }
 
-        if (nodes.length > 0) {
-          emitCustomEvent('avalanche-node', undefined);
-        }
         return nodes;
       } catch (e) {
         console.log('ERR', e);

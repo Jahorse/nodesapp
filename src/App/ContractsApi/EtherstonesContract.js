@@ -1,5 +1,4 @@
 import * as ethers from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/etherstones';
 import Contract from './Contract';
@@ -22,20 +21,11 @@ class Etherstones extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('etherstones');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-        rewards += parseFloat(node['rewards']);
-    }
-
-    return rewards;
   }
 
   async compoundAll() {
@@ -87,9 +77,6 @@ class Etherstones extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('avalanche-node', undefined);
-    }
     return nodes;
   }
 }

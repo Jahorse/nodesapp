@@ -17,8 +17,9 @@ import {
 } from 'reactstrap';
 
 function isValidProfileName(name) {
-  var code, i, len;
+  if (name.length < 1) { return false; }
 
+  let code, i, len;
   for (i = 0, len = name.length; i < len; i++) {
     code = name.charCodeAt(i);
     if (!(code > 47 && code < 58) && // numeric (0-9)

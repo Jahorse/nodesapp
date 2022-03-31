@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/ascend-ams';
 import Ascend from './AscendContract';
@@ -56,9 +55,6 @@ class AscendAms extends Ascend {
         console.log('ERR', e);
       }
 
-      if (nodes.length > 0) {
-        emitCustomEvent('avalanche-node', undefined);
-      }
       return nodes;
     }
   }

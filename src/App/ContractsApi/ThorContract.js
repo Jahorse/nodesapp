@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import abi from './abi/thor';
 import Contract from './Contract';
@@ -27,20 +26,11 @@ class Thor extends Contract {
     this.contractName = contractName;
     this.rotDays = rotDays;
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('thor');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-        rewards += parseFloat(node['rewards']);
-    }
-
-    return rewards;
   }
 
   async compoundAll() {
@@ -94,9 +84,6 @@ class Thor extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('avalanche-node', undefined);
-    }
     return nodes;
   }
 }

@@ -21,7 +21,7 @@ import RndDistricts from '../ContractsApi/RndDistrictsContract';
 import RndMansions from '../ContractsApi/RndMansionsContract';
 import StackOs from '../ContractsApi/StackOsContract';
 import StrongEth from '../ContractsApi/StrongEthContract';
-import StrongMatic from '../ContractsApi/StrongMatic';
+import StrongMatic from '../ContractsApi/StrongMaticContract';
 import ThorFreya from '../ContractsApi/ThorFreyaContract';
 import ThorHeimdall from '../ContractsApi/ThorHeimdallContract';
 import ThorOdin from '../ContractsApi/ThorOdinContract';

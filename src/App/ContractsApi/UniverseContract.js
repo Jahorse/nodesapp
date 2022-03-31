@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import abi from "./abi/universe.js";
 import Contract from './Contract';
@@ -22,22 +21,11 @@ class Universe extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('universe-2');
-  }
-s
-  getTotalRewards(planets, compounding) {
-    let rewards = 0;
-    for (const planet of planets) {
-        rewards += parseFloat(planet['rewards']);
-    }
-    if (compounding) {
-        rewards = rewards + (rewards * 0.1);
-    }
-    return rewards;
   }
 
   async compoundAll() {
@@ -106,9 +94,6 @@ s
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('avalanche-node', undefined);
-    }
     return nodes;
   }
 }

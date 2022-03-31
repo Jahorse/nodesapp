@@ -35,7 +35,7 @@ const TableTitle = (props) => {
     <Container>
       <Row>
         <Col xs='8' lg='10' key={`networkName-${props.networkName}`} className='p-2'>
-          <h3>{props.networkName}</h3>
+          <h3>{props.networkName}: ${props.totalRewards}</h3>
         </Col>
         {connectButton}
       </Row>
@@ -104,7 +104,12 @@ const NetworkTable = (props) => {
   }
   return (
     <Container className='my-2 bg-info rounded'>
-      <TableTitle networkName={networkName} isWeb3={isWeb3} provider={provider} />
+      <TableTitle
+        networkName={networkName}
+        isWeb3={isWeb3}
+        provider={provider}
+        totalRewards={props.totalRewards}
+      />
       <Table borderless hover responsive striped>
         <thead>
           <tr key='summary-headers'>

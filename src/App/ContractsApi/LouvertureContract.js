@@ -1,5 +1,4 @@
 import * as ethers from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 import axios from 'axios';
 
 import abi from './abi/louverture';
@@ -31,20 +30,11 @@ class Louverture extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('louverture');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-        rewards += parseFloat(node['rewards']);
-    }
-
-    return rewards;
   }
 
   async compoundAll() {
@@ -109,9 +99,6 @@ class Louverture extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('avalanche-node', undefined);
-    }
     return nodes;
   }
 }

@@ -1,5 +1,4 @@
 import * as ethers from 'ethers';
-import { emitCustomEvent } from 'react-custom-events';
 
 import {
   claimAbi,
@@ -26,20 +25,11 @@ class Comb extends Contract {
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Fantom');
 
-    this.fetchPromise = this.fetchNodes().then(n => this.nodes = n);
+    this.initNodes();
   }
 
   async getPriceUsd() {
     return await getPriceCg('comb-finance');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-        rewards += parseFloat(node['rewards']);
-    }
-
-    return rewards;
   }
 
   async compoundAll() {
@@ -83,9 +73,6 @@ class Comb extends Contract {
       }
     }
 
-    if (nodes.length > 0) {
-      emitCustomEvent('fantom-node', undefined);
-    }
     return nodes;
   }
 }
