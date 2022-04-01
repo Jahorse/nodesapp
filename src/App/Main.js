@@ -52,7 +52,6 @@ const Main = (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(['activeProfileName', 'profiles']);
   const [provider, setProvider] = useState();
   const [activeProfile, setActiveProfile] = useState();
-  const [hasNoProfiles, setHasNoProfiles] = useState(false);
 
   if (!cookies.profiles) {
     cookies.profiles = {};
@@ -70,17 +69,12 @@ const Main = (props) => {
     ) {
       setCookie('activeProfileName', profileNames[0]);
       setActiveProfile(profileNames[0]);
-      setHasNoProfiles(false);
 
     } else {
       if (cookies.activeProfileName && cookies.profiles[cookies.activeProfileName]) {
         setActiveProfile(cookies.profiles[cookies.activeProfileName]);
-        setHasNoProfiles(false);
-      } else {
-        setHasNoProfiles(true);
       }
     }
-
   }, [cookies.activeProfileName, cookies.profiles, profileNames, setCookie]);
 
   useEffect(() => {
@@ -169,13 +163,15 @@ const Main = (props) => {
 
 
   const onManageProfilesPage = useMatch("manage-profiles");
-  const onAboutPage = useMatch("about");
-  const shouldRedirect = !onManageProfilesPage && !onAboutPage && hasNoProfiles;
+  const onSecurityPage = useMatch("security");
+  const onProtocolsPage = useMatch("protocols");
+  const onNonProfilePage = (onManageProfilesPage || onSecurityPage || onProtocolsPage);
+  const shouldRedirect = !onNonProfilePage && Object.keys(cookies.profiles).length === 0;
   return (
     <Container>
       {shouldRedirect ? <Navigate to="/manage-profiles" replace /> : null}
       {
-        (provider || onManageProfilesPage || onAboutPage)
+        (provider || onNonProfilePage)
           ? <RouteView profileName={cookies.activeProfileName} profile={activeProfile} provider={provider} />
           : null
       }

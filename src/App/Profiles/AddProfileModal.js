@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { FaQuestionCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -99,9 +100,12 @@ const ConnectWallet = (props) => {
 }
 
 const AddProfileModal = (props) => {
+  const [cookies, setCookie] = useCookies(['activeProfileName', 'profiles']);
+
+  const navigate = useNavigate();
+
   const [modalOpen, setToggleModal] = useState(false);
   const [tooltipOpen, setToggleTooltip] = useState(false);
-  const [cookies, setCookie] = useCookies(['activeProfileName', 'profiles']);
   const [profileNameInput, setProfileNameInput] = useState('');
 
   const toggleModal = () => {
@@ -113,7 +117,7 @@ const AddProfileModal = (props) => {
     setToggleTooltip(!tooltipOpen);
   }
 
-  const addProfile = () => {
+  const addProfile = async () => {
     if (!isValidProfileName(profileNameInput)) {
       // TODO: Use input validation from https://reactstrap.github.io/?path=/docs/components-forms--input
       console.log("Profile name must only contain letters, numbers, and dashes.");
@@ -144,7 +148,8 @@ const AddProfileModal = (props) => {
      },
     };
     setCookie('profiles', cookies.profiles);
-    toggleModal();
+
+    navigate(`/manage-profile/${profileNameInput}`);
   }
 
   const walletConnected = Object.values(cookies.profiles).some(p => {

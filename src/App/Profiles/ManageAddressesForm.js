@@ -3,13 +3,14 @@ import { useCookies } from 'react-cookie';
 import { useParams } from "react-router-dom";
 import {
   Button,
+  Col,
   Container,
   Row,
+  Table,
 } from 'reactstrap';
 
 import { breakpoint, useViewport } from '../Utils/Hooks';
-import DisableProtocolsForm from './DisableProtocolsForm';
-import ManageAddressesForm from './ManageAddressesForm';
+import AddAddressForm from './AddAddressBox';
 
 const AddressRow = (props) => {
   const cookies = props.cookies;
@@ -39,7 +40,7 @@ const AddressRow = (props) => {
   );
 }
 
-const EditProfileRoute = (props) => {
+const ManageAddressesForm = (props) => {
   let params = useParams();
   const [cookies, setCookie] = useCookies(['profiles']);
   const { width } = useViewport();
@@ -117,16 +118,32 @@ const EditProfileRoute = (props) => {
   })
 
   return (
-    <Container>
-      <Container className='bg-info rounded p-2 my-2'>
-        <Row className='my-1'>
-          <h2>Edit Addresses - {params.profileName}</h2>
-        </Row>
-        <ManageAddressesForm profileName={params.profileName} cookies={cookies} setCookie={setCookie} />
-      </Container>
-      {/* <DisableProtocolsForm /> */}
-    </Container>
+    <>
+      <Row className='justify-content-center py-2'>
+        <Col xs='10' lg='auto' className='border border-secondary rounded'>
+          <AddAddressForm profileName ={params.profileName} cookies={cookies} setCookie={setCookie} />
+        </Col>
+      </Row>
+      <Row>
+        {
+          addressRows.length > 0
+            ? <Table borderless hover responsive striped className='bg-info rounded'>
+              <thead>
+                <tr>
+                  <th>Address</th>
+                  <th>Network</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {addressRows}
+              </tbody>
+            </Table>
+            : null
+        }
+      </Row>
+    </>
   );
 }
 
-export default EditProfileRoute;
+export default ManageAddressesForm;

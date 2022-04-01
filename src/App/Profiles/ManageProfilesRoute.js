@@ -91,7 +91,7 @@ const ManageProfilesRoute = (props) => {
 
   return (
     <Container>
-      <Alert className='my-2 alert-new' isOpen={alertOpen}>
+      <Alert className='my-2 py-2 alert-new' isOpen={alertOpen}>
         You can create a profile using the Add Profile button below and then add wallet addresses to it, or try an&nbsp;
         <a href='/#' className='alert-link' onClick={addExample}>example profile</a> to see what it's all about!
       </Alert>
