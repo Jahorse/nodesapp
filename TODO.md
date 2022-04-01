@@ -1,11 +1,10 @@
 # TASK LIST
-1. Add the total of the rewards in USD somewhere
 1. Expand the add profile modal to be able to add addresses and projects right away.
-
 1. Enable/disable node projects
 
 # Future Tasks
 1. Projects to add:
+  1. Hive
   1. EasyBlock
   1. Cubo
   1. Bigger Minds

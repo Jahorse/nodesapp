@@ -34,14 +34,19 @@ span.divider:after {
   margin-left: 10px;
 }
 
+$alert: #E29578;
+.alert-new {
+  @include alert-variant(lighten($alert, 10%), $alert, darken($alert, 50%));
+}
+
 $button:#E29578;
 .btn-primary {
-  @include button-variant($button, darken($button, 7.5%), darken($button, 40%), lighten($button,5%), lighten($button, 10%), lighten($button, 20%));
+  @include button-variant($button, darken($button, 7.5%), darken($button, 40%), lighten($button,5%), lighten($button, 10%), lighten($button, 30%));
 }
 
 $button2:#E29578;
 .btn-secondary {
-    @include button-variant($button2, darken($button2, 7.5%), lighten($button2, 40%), lighten($button2,5%), lighten($button2, 10%), lighten($button2, 20%));
+    @include button-variant($button2, darken($button2, 7.5%), lighten($button2, 40%), lighten($button2,5%), lighten($button2, 10%), lighten($button2, 30%));
 }
 
 $button3:#70331a;
