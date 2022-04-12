@@ -10,7 +10,7 @@ class Power extends Contract {
     symbol: 'POWER',
     networkName: 'Fantom',
     decimals: 4,
-    claimSupport: true,
+    claimSupport: false,
     hasCompound: false,
     appLink: 'https://app.powernode.io/#',
     chartLink: 'https://dexscreener.com/fantom/0x8eae6aac525e6ec6a686f77e4751d3e8f96f6a83',
