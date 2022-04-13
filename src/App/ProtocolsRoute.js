@@ -18,7 +18,7 @@ const ProtocolsRoute = (props) => {
           <ol className='ps-5'>
             <li><a href='https://dapp.ascendnodeclub.money/' className='link-dark'>Ascend</a></li>
             <li><a href='https://etherstones.fi/dashboard' className='link-dark'>Etherstones</a></li>
-            <li><a href='https://thephoenix.finance/app/' className='link-dark'>Fire</a></li>
+            <li><a href='https://thephoenix.finance/app/' className='link-dark'>Phoenix/Fire</a></li>
             <li><a href='https://www.louverture.finance/blackhole'  className='link-dark'>Louverture</a></li>
             <li><a href='https://app.nebulanodes.finance/'  className='link-dark'>Nebula</a></li>
             <li><a href='https://projectx.financial/#nodes'  className='link-dark'>Project X</a></li>
@@ -29,7 +29,7 @@ const ProtocolsRoute = (props) => {
           </ol>
           <h4 className='ps-3'>Cronos</h4>
           <ol className='ps-5'>
-            <li><a href='https://app.strongblock.com/'  className='link-dark'>Cronodes</a></li>
+            <li><a href='https://cronodes.app/'  className='link-dark'>Cronodes</a></li>
           </ol>
           <h4 className='ps-3'>Ethereum</h4>
           <ol className='ps-5'>
@@ -37,7 +37,7 @@ const ProtocolsRoute = (props) => {
           </ol>
           <h4 className='ps-3'>Fantom</h4>
           <ol className='ps-5'>
-          <li><a href='https://atlascloud.network/app' className='link-dark'>Atlas</a></li>
+            <li><a href='https://atlascloud.network/app' className='link-dark'>Atlas</a></li>
             <li><a href='https://app.comb.financial/dashboard' className='link-dark'>Comb</a></li>
             <li><a href='https://app.powernode.io/#'  className='link-dark'>Power</a></li>
           </ol>
