@@ -88,7 +88,7 @@ const tableColumnToContentMap = {
     </td>
   ),
   rewardsUsd: (n, p, r) => (
-    <td key={`${n}-rewards-usd`}>
+    <td key={`${n}-rewards-usd`} style={{textAlign: 'right', paddingRight: '5rem'}}>
       {p ? `$${parseFloat(p * r).toFixed(2)}` : null}
     </td>
   ),
