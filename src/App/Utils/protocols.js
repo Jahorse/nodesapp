@@ -8,6 +8,7 @@ import Comb from '../ContractsApi/CombContract';
 import Cronodes from '../ContractsApi/CronodesContract';
 import Dominium from '../ContractsApi/DominiumContract';
 import Etherstones from '../ContractsApi/EtherstonesContract';
+import Hive from '../ContractsApi/HiveContract';
 import Louverture from '../ContractsApi/LouvertureContract';
 import Nebula from '../ContractsApi/NebulaContract';
 import Pentagon from '../ContractsApi/PentagonContract';
@@ -76,6 +77,7 @@ export const fantomProtocols = new Map([
 ]);
 export const polygonProtocols = new Map([
   ['Dominium', Dominium],
+  ['Hive', Hive],
   ['Pentagon', Pentagon],
   ['StackOs', StackOs],
 ]);

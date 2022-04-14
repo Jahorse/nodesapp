@@ -72,7 +72,7 @@ const ManageProfilesRoute = (props) => {
           cronos: ['0x17D7692eD63FD96d2b1B7c28DEDd301386E74174'],
           ethreum: [],
           fantom: ['0x7e97826d95986110f22aa66170f9dfe910bf8e69'],
-          polygon: [],
+          polygon: ['0x7EcAB1A2900BaaF015Ff10274dB5E552e81D7f7D'],
         },
         disabledProjects: {
           avalanche: [],
