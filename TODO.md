@@ -2,13 +2,11 @@
 
 # Future Tasks
 1. Projects to add:
-    1. Hive
-    2. Tavern
-    3. EasyBlock
-    4. Polar
-    5. Cubo
-    6. Bigger Minds
-    7. Kingdoms
+    1. EasyBlock
+    2. Polar
+    3. Cubo
+    4. Bigger Minds
+    5. Kingdoms
         - Attempted but couldn't find rewards contract
         - Token: https://ftmscan.com/address/0xd3b8037853785463D06957Fefa0f06Af53B9e504
 2. Add feature to enable/disable node protocols in a profile to reduce the amount of calls being made

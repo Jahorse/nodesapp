@@ -24,6 +24,7 @@ import Samurai from '../ContractsApi/SamuraiContract';
 import StackOs from '../ContractsApi/StackOsContract';
 import StrongEth from '../ContractsApi/StrongEthContract';
 import StrongMatic from '../ContractsApi/StrongMaticContract';
+import Tavern from '../ContractsApi/TavernContract';
 import ThorFreya from '../ContractsApi/ThorFreyaContract';
 import ThorHeimdall from '../ContractsApi/ThorHeimdallContract';
 import ThorOdin from '../ContractsApi/ThorOdinContract';
@@ -54,6 +55,7 @@ export const avalancheProtocols = new Map([
   ['ProjectX', ProjectX],
   ['RndMansions', RndMansions],
   ['RndDistricts', RndDistricts],
+  ['Tavern', Tavern],
   ['ThorHeimdall', ThorHeimdall],
   ['ThorFreya', ThorFreya],
   ['ThorThor', ThorThor],
