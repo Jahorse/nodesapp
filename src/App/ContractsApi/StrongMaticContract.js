@@ -7,14 +7,14 @@ import { getPriceCg } from '../Utils/pricing';
 class StrongMatic extends Contract {
   metadata = {
     name: 'Strong MATIC',
-    symbol: 'STRONG',
+    symbol: 'STRNGR',
     networkName: 'Ethereum',
     decimals: 2,
     claimSupport: false,
     hasCompound: false,
     appLink: 'https://app.strongblock.com/',
-    chartLink: 'https://dexscreener.com/ethereum/0xc0bf97bffa94a50502265c579a3b7086d081664b',
-    swapLink: 'https://app.uniswap.org/#/swap?outputCurrency=0x990f341946a3fdb507ae7e52d17851b87168017c&chain=mainnet',
+    chartLink: 'https://dexscreener.com/ethereum/0x453a43e2bf3080f7a23c9bb034ccdd869e306102',
+    swapLink: 'https://app.uniswap.org/#/swap?outputCurrency=0xdc0327d50e6c73db2f8117760592c8bbf1cdcf38&chain=mainnet',
   };
   contractAddress = '0xC5622f143972A5Da6aaBC5F5379311eE5EB48568';
 
@@ -25,15 +25,7 @@ class StrongMatic extends Contract {
   }
 
   async getPriceUsd() {
-    return await getPriceCg('strong');
-  }
-
-  getTotalRewards(nodes, compounding) {
-    let rewards = 0;
-    for (const node of nodes) {
-        rewards += parseFloat(node.rewards);
-    }
-    return rewards;
+    return await getPriceCg('stronger');
   }
 
   async compoundAll() {
@@ -67,6 +59,7 @@ class StrongMatic extends Contract {
         nodes.push({
           name: `${walletAddress.substring(0,8)}`,
           rewards: rewards,
+          nextProcessingTime: Date.now(),
         });
 
       } catch (e) {

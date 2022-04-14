@@ -169,7 +169,7 @@ const AddAddressForm = (props) => {
           <Row className='justify-content-end'>
             <Col xs='auto p-1'>
               <Button onClick={addWalletAddress}>Add</Button>&nbsp;
-              <Button className='' onClick={clearForm}>Cancel</Button>
+              <Button className='' onClick={clearForm}>Clear</Button>
             </Col>
           </Row>
         </Form>
