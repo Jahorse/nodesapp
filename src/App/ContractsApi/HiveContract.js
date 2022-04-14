@@ -9,7 +9,7 @@ class Hive extends Contract {
     name: 'Hive',
     symbol: 'HNY',
     networkName: 'Polygon',
-    decimals: 2,
+    decimals: 4,
     claimSupport: true,
     hasCompound: false,
     appLink: 'https://dapp.hive.investments/',
@@ -50,7 +50,7 @@ class Hive extends Contract {
     for (const walletAddress of this.walletAddresses) {
       try {
         const count = await contract.balanceOf(walletAddress);
-        if (count == 0) {
+        if (count === 0) {
           return nodes;
         }
 

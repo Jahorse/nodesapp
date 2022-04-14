@@ -40,6 +40,7 @@ const ProtocolsRoute = (props) => {
             <li><a href='https://atlascloud.network/app' className='link-dark'>Atlas</a></li>
             <li><a href='https://app.comb.financial/dashboard' className='link-dark'>Comb</a></li>
             <li><a href='https://app.powernode.io/#'  className='link-dark'>Power</a></li>
+            <li><a href='https://app.samurai.financial/'  className='link-dark'>Samurai</a></li>
           </ol>
           <h4 className='ps-3'>Polygon</h4>
           <ol className='ps-5'>

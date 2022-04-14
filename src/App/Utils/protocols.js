@@ -20,6 +20,7 @@ import PowerNuclear from '../ContractsApi/PowerNuclearContract';
 import ProjectX from '../ContractsApi/ProjectXContract';
 import RndDistricts from '../ContractsApi/RndDistrictsContract';
 import RndMansions from '../ContractsApi/RndMansionsContract';
+import Samurai from '../ContractsApi/SamuraiContract';
 import StackOs from '../ContractsApi/StackOsContract';
 import StrongEth from '../ContractsApi/StrongEthContract';
 import StrongMatic from '../ContractsApi/StrongMaticContract';
@@ -74,6 +75,7 @@ export const fantomProtocols = new Map([
   ['PowerWind', PowerWind],
   ['PowerHydro', PowerHydro],
   ['PowerNuclear', PowerNuclear],
+  ['Samurai', Samurai],
 ]);
 export const polygonProtocols = new Map([
   ['Dominium', Dominium],

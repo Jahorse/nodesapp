@@ -87,6 +87,9 @@ class StackOs extends Contract {
 
         for(const nodeRaw of nodesRaw) {
           const genId = genTokenAddressToId[nodeRaw.token_address];
+          if (genId === undefined) {
+            continue;
+          }
           const tokenId = parseInt(nodeRaw.token_id);
 
           const contractAddress = genId === 0 ? this.subscription0Contract : this.subscription1PlusContract;
