@@ -20,7 +20,7 @@ class Pentagon extends Contract {
     swapLink: 'https://quickswap.exchange/#/swap?outputCurrency=0x283366bb42ef49a994913baf22263c6562e588a4',
   };
   nodeQueryContractAddress = '0x1aEa18307D5063d9c4533Ac3093352B1DffeE2Fd';
-  claimContractAddress = '0xF75BC031f362e55967Cf278586bBeB0954442D84';
+  claimContractAddress = '0x584bb8a63a8fd85c08107d25ff4d5aed96d9fc2b';
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Polygon');
