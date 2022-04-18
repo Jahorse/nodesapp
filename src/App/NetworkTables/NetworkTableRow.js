@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'reactstrap';
 
+import { breakpoint, useViewport } from '../Utils/Hooks';
+
 const dhm = (t) => {
   var cd = 24 * 60 * 60 * 1000,
       ch = 60 * 60 * 1000,
@@ -87,9 +89,9 @@ const tableColumnToContentMap = {
       {r} {s}
     </td>
   ),
-  rewardsUsd: (n, p, r) => (
-    <td key={`${n}-rewards-usd`} style={{textAlign: 'right', paddingRight: '5rem'}}>
-      {p ? `$${parseFloat(p * r).toFixed(2)}` : null}
+  rewardsUsd: (name, price, rewards, pad = 5) => (
+    <td key={`${name}-rewards-usd`} style={{textAlign: 'right', paddingRight: `${pad}rem`}}>
+      {price ? `$${parseFloat(price * rewards).toFixed(2)}` : null}
     </td>
   ),
   serviceName: (n, l) => (
@@ -106,6 +108,7 @@ const tableColumnToContentMap = {
 
 const NetworkTableRowChild = (props) => {
   const [price, setPrice] = useState();
+  const { width } = useViewport();
   const contract = props.contract;
   const contractName = props.contract.metadata.name;
 
@@ -138,7 +141,8 @@ const NetworkTableRowChild = (props) => {
         columns.push(tableColumnToContentMap.rewardsToken(contractName, rewards.toFixed(contract.metadata.decimals), contract.metadata.symbol));
         break;
       case 'rewardsUsd':
-        columns.push(tableColumnToContentMap.rewardsUsd(contractName, price, rewards));
+        const pad = width > breakpoint ? 5 : 1;
+        columns.push(tableColumnToContentMap.rewardsUsd(contractName, price, rewards, pad));
         break;
       case 'tokenPrice':
         columns.push(tableColumnToContentMap.tokenPrice(contractName, contract.metadata.chartLink, price));

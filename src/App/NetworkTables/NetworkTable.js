@@ -26,7 +26,7 @@ const TableTitle = (props) => {
   let connectButton;
   if (props.isWeb3) {
     connectButton = (
-      <Col xs='2' lg='2' key={`connect-${props.networkName}`} className='d-flex justify-content-end'>
+      <Col xs='4' lg='2' key={`connect-${props.networkName}`} className='d-flex justify-content-end'>
         <ConnectNetworkButton {...props} />
       </Col>
     );
