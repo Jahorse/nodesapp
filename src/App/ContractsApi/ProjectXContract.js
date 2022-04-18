@@ -7,20 +7,16 @@ import { getPriceCg } from '../Utils/pricing';
 class ProjectX extends Contract {
   metadata = {
     name: 'Project X',
-    symbol: 'PXT2',
+    symbol: 'PXT',
     networkName: 'Avalanche',
     decimals: 3,
     claimSupport: true,
     hasCompound: false,
     appLink: 'https://projectx.financial/#nodes',
-    chartLink: 'https://dexscreener.com/avalanche/0x326238cfaf10fc6f536791b548441d03b80daca8',
-    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x9e20af05ab5fed467dfdd5bb5752f7d5410c832e#/',
+    chartLink: 'https://dexscreener.com/avalanche/0x9ADCbba4b79eE5285E891512b44706F41F14CAFd',
+    swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x9adcbba4b79ee5285e891512b44706f41f14cafd#/',
   };
-  contractAddress = '0x05c88F67fa0711b3a76ada2B6f0A2D3a54Fc775c';
-  claimContractAddress = '0x9e20Af05AB5FED467dFDd5bb5752F7d5410C832e';
-  claimContractAbi = [
-    'function cashoutAll()',
-  ];
+  contractAddress = '0x89a48f08963BE9DDEEf49796C6f2cae7AD54752f';
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');
@@ -42,8 +38,8 @@ class ProjectX extends Contract {
       console.error('Tried calling ProjectX.claimAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.claimContractAddress, this.claimContractAbi, this.signer);
-    return contract.cashoutAll();
+    const contract = new ethers.Contract(this.contractAddress, this.claimContractAbi, this.signer);
+    return contract.claim();
   }
 
   async fetchNodes() {
@@ -52,27 +48,28 @@ class ProjectX extends Contract {
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const creationTimes = (await contract._getNodesCreationTime(walletAddress)).split('#');
+        const nodesRaw = await contract.nodes(walletAddress);
+        const tier = await contract.getTierByName('basic');
 
-        for (const i in creationTimes) {
-          const nodeInfo = await contract.getNodeInfo(walletAddress, creationTimes[i]);
-          const reward = await contract._getRewardAmountOf(walletAddress, creationTimes[i]);
-          const creationTime = new Date(parseInt(nodeInfo.creationTime.toHexString(), 16) * 1000);
-          const nextProcessingTime = new Date(creationTime.getTime());
-          nextProcessingTime.setHours(nextProcessingTime.getHours() + 1);
+        for (const node of nodesRaw) {
+          const claimeableAmount = (((new Date().getTime() / 1000 -
+            parseInt(node.claimedTime)) *
+            (parseInt(node.tierIndex) === 0
+              ? tier.rewardsPerTime
+              : 0.8))
+            / tier.claimInterval) + parseInt(node.leftover);
 
           nodes.push({
-            name: parseInt(nodeInfo.nodeId.toHexString(), 16),
-            rewards: parseInt(reward.toHexString(), 16) / 1e18,
-            creationTime,
-            lastProcessingTime: new Date(parseInt(nodeInfo.lastClaimTime.toHexString(), 16) * 1000),
-            nextProcessingTime,
+            id: node.id,
+            name: node.id,
+            rewards: parseInt(claimeableAmount.toString()) / 1e18,
+            creationTime: new Date(node.createdTime * 1000),
+            lastProcessingTime: new Date(node.claimedTime * 1000),
+            nextProcessingTime: Date.now(),
           });
         }
       } catch (e) {
-        if (!e.reason.includes('NO NODE OWNER')) {
-          console.log('ERR', e);
-        }
+        console.log('ERR', e);
       }
     }
 
