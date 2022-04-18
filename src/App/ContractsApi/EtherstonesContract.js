@@ -16,7 +16,7 @@ class Etherstones extends Contract {
     chartLink: 'https://dexscreener.com/avalanche/0x78871b497613dc9b9886167e75e6ffd57d351046',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x1efe6a8af01920912f0b4f7f26fc16e294664c4c#/',
   };
-  contractAddress = '0x0e8c7D0424573112D5e663e0D68726D73Aa8B245';
+  contractAddress = '0x4cE3dc6aFe5AC7cFe53f29837337331F99EE6010';
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Avalanche');

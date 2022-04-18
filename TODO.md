@@ -10,6 +10,7 @@
         - Attempted but couldn't find rewards contract
         - Token: https://ftmscan.com/address/0xd3b8037853785463D06957Fefa0f06Af53B9e504
 2. Add feature to enable/disable node protocols in a profile to reduce the amount of calls being made
+3. Integrate web3 React components from https://github.com/ethereum-boilerplate/ethereum-boilerplate
 3. Add more columns:
     - Time until next compound (a few protocols only give daily rewards, so this would only affect them)
     - Add 24 hour token price change column
