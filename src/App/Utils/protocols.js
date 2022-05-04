@@ -60,7 +60,7 @@ export const avalancheProtocols = new Map([
   ['ThorFreya', ThorFreya],
   ['ThorThor', ThorThor],
   ['ThorOdin', ThorOdin],
-  ['Universe', Universe],
+  // ['Universe', Universe],
   ['Vapor', Vapor],
 ]);
 export const cronosProtocols = new Map([
