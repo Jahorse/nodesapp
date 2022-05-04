@@ -2,7 +2,7 @@ import * as ethers from 'ethers';
 
 import abi from './abi/project-x';
 import Contract from './Contract';
-import { getPriceCg } from '../Utils/pricing';
+import { getPriceDg } from '../Utils/pricing';
 
 class ProjectX extends Contract {
   metadata = {
@@ -25,7 +25,7 @@ class ProjectX extends Contract {
   }
 
   async getPriceUsd() {
-    return await getPriceCg('project-x-nodes');
+    return await getPriceDg('avalanche', '0x9adcbba4b79ee5285e891512b44706f41f14cafd');
   }
 
   async compoundAll() {
@@ -48,26 +48,35 @@ class ProjectX extends Contract {
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const nodesRaw = await contract.nodes(walletAddress);
-        const tier = await contract.getTierByName('basic');
+        const rawNodes = await contract.nodes(walletAddress);
+        const reward = await contract.claimable(walletAddress);
 
-        for (const node of nodesRaw) {
-          const claimeableAmount = (((new Date().getTime() / 1000 -
-            parseInt(node.claimedTime)) *
-            (parseInt(node.tierIndex) === 0
-              ? tier.rewardsPerTime
-              : 0.8))
-            / tier.claimInterval) + parseInt(node.leftover);
-
-          nodes.push({
-            id: node.id,
-            name: node.id,
-            rewards: parseInt(claimeableAmount.toString()) / 1e18,
-            creationTime: new Date(node.createdTime * 1000),
-            lastProcessingTime: new Date(node.claimedTime * 1000),
-            nextProcessingTime: Date.now(),
-          });
+        const ids = [];
+        let creationTime = 0;
+        let lastClaim = 0;
+        let feesDue = Number.MAX_SAFE_INTEGER;
+        let leftovers = 0;
+        for (const rawNode of rawNodes) {
+          ids.push(rawNode.id);
+          if (rawNode.createdTime > creationTime) {
+            creationTime = rawNode.createdTime;
+          }
+          if (rawNode.claimedTime > lastClaim) {
+            lastClaim = rawNode.claimedTime;
+          }
+          if (rawNode.limitedTime < feesDue) {
+            feesDue = rawNode.limitedTime;
+          }
+          leftovers += parseInt(rawNode.leftover.toHexString(), 16) / 1e18;
         }
+        nodes.push({
+          name: ids.join(','),
+          rewards: (parseInt(reward.toHexString(), 16) / 1e18) + leftovers,
+          creationTime: new Date(creationTime * 1000),
+          lastProcessingTime: new Date(lastClaim * 1000),
+          nextProcessingTime: Date.now(),
+          feesDue: new Date(feesDue * 1000),
+        });
       } catch (e) {
         console.log('ERR', e);
       }
