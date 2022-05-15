@@ -1,4 +1,5 @@
 
+import Aleph from '../ContractsApi/Aleph';
 import AscendAms from '../ContractsApi/AscendAmsContract';
 import AscendPlatinum from '../ContractsApi/AscendPlatinumContract';
 import AscendInfinite from '../ContractsApi/AscendInfiniteContract';
@@ -29,7 +30,6 @@ import ThorFreya from '../ContractsApi/ThorFreyaContract';
 import ThorHeimdall from '../ContractsApi/ThorHeimdallContract';
 import ThorOdin from '../ContractsApi/ThorOdinContract';
 import ThorThor from '../ContractsApi/ThorThorContract';
-import Universe from '../ContractsApi/UniverseContract';
 import Vapor from '../ContractsApi/VaporContract';
 
 export class ProtocolProvider {
@@ -44,6 +44,7 @@ export class ProtocolProvider {
 }
 
 export const avalancheProtocols = new Map([
+  ['Aleph', Aleph],
   ['AscendAms', AscendAms],
   ['AscendPlatinum', AscendPlatinum],
   ['AscendInfinite', AscendInfinite],
