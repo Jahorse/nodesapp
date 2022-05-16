@@ -1,5 +1,4 @@
 import * as ethers from 'ethers';
-import axios from 'axios';
 
 import abi from './abi/louverture';
 import Contract from './Contract';
@@ -62,8 +61,8 @@ class Louverture extends Contract {
     for (const walletAddress of this.walletAddresses) {
       const url = `https://deep-index.moralis.io/api/v2/${walletAddress}/nft?chain=avalanche&format=decimal&token_addresses=0x023a1EafC590d790FaBD1D00872881C2a9E3C74A`
       try {
-        const resp = await axios.get(url, {headers: {'x-api-key': '4hW8gnEfM0sDiVMUWZ4r0MJWKvLJ4pxgC4oEJL9h2Wb8kXIVkDUdOkxSvtJdMmeI'}})
-          .then(r => r.data.result);
+        const resp = await fetch(url, {headers: {'x-api-key': '4hW8gnEfM0sDiVMUWZ4r0MJWKvLJ4pxgC4oEJL9h2Wb8kXIVkDUdOkxSvtJdMmeI'}})
+          .then(r => r.json());
 
         for (const nodeRaw of resp) {
           const tokenId = parseInt(nodeRaw.token_id);

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as ethers from 'ethers';
 import { collection, getDocs, getFirestore, query } from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
@@ -78,12 +77,15 @@ class StackOs extends Contract {
 
         const url = 'https://upnhjiwrcp2x.usemoralis.com:2053/server/functions/getNFTs_old';
 
-        const nodesRaw = await axios.post(url, {
-          address: walletAddress,
-          chain: 'matic',
-          _ApplicationId: '8RIlQgep1V8Z4K4QGRB8Zpwn2ocvKDXigRYfIcng',
-          _ClientVersion: 'js1.4.0',
-        }).then(r => r.data.result);
+        const nodesRaw = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({
+            address: walletAddress,
+            chain: 'matic',
+            _ApplicationId: '8RIlQgep1V8Z4K4QGRB8Zpwn2ocvKDXigRYfIcng',
+            _ClientVersion: 'js1.4.0',
+          }),
+        }).then(r => r.json());
 
         for(const nodeRaw of nodesRaw) {
           const genId = genTokenAddressToId[nodeRaw.token_address];

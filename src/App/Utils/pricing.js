@@ -35,7 +35,9 @@ export async function getPriceCg(symbol) {
   try {
     const dataUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`;
     const response = await fetch(dataUrl)
-      .then(r => decodeStream(r.body));
+      .then(r => {
+        return decodeStream(r.body)
+      });
     const data = JSON.parse(response);
 
     return round(data[symbol]['usd']);
