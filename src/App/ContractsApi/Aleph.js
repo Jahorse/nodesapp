@@ -247,6 +247,10 @@ class Aleph extends Contract {
         const rawNodes = await contract.getInvestment(walletAddress);
         const parsedNodes = (parseRawInvestment(rawNodes));
 
+        if (parsedNodes.nodeTotal === 0) {
+          return [];
+        }
+
         let nftBoost = 1;
         const stakeTimestamp = parsedNodes.nftBoost.timestamp;
         const totalDuration = currentTimestamp - parsedNodes.timestamp;

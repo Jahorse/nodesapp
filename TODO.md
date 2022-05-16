@@ -4,6 +4,7 @@
 1. Projects to add:
     1. EasyBlock
     2. Polar
+    1. Valifi https://snowtrace.io/address/0xba30bc97476b4ccb74d660d558bfa4427e9c8c3c
     3. Cubo
     4. Bigger Minds
     5. Kingdoms

@@ -25,7 +25,7 @@ class Samurai extends Contract {
   }
 
   async getPriceUsd() {
-    return await getPriceDg('fantom', '0x36667966c79dec0dcda0e2a41370fb58857f5182');
+    return await getPriceDg('Fantom', '0x36667966c79dec0dcda0e2a41370fb58857f5182');
   }
 
   async compoundAll() {
@@ -66,7 +66,7 @@ class Samurai extends Contract {
           });
         }
       } catch (e) {
-        if (!e.reason.includes('Zero node owner')) {
+        if (!e.reason.includes('Zero node owner') && !e.reason.includes('caller is not the Shogun')) {
           console.log('ERR', e);
         }
       }

@@ -2,7 +2,7 @@ import * as ethers from 'ethers';
 
 import abi from './abi/project-x';
 import Contract from './Contract';
-import { getPriceDg } from '../Utils/pricing';
+import { getPriceCg } from '../Utils/pricing';
 
 class ProjectX extends Contract {
   metadata = {
@@ -25,7 +25,7 @@ class ProjectX extends Contract {
   }
 
   async getPriceUsd() {
-    return await getPriceDg('avalanche', '0x9adcbba4b79ee5285e891512b44706f41f14cafd');
+    return await getPriceCg('project-x-nodes');
   }
 
   async compoundAll() {

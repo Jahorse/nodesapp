@@ -26,7 +26,7 @@ class Nebula extends Contract {
   }
 
   async getPriceUsd() {
-    return await getPriceDg('Avalanche', '0x1aea17a08ede10d158baac969f809e6747cb2b22');
+    return await getPriceDg('Avalanche', '0x5aa2ff4ab706307d8b3d90a462c1ddc055655734');
   }
 
   async compoundAll() {

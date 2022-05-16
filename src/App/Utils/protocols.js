@@ -10,6 +10,7 @@ import Cronodes from '../ContractsApi/CronodesContract';
 import Dominium from '../ContractsApi/DominiumContract';
 import Etherstones from '../ContractsApi/EtherstonesContract';
 import Hive from '../ContractsApi/HiveContract';
+import Lava from '../ContractsApi/Lava';
 import Louverture from '../ContractsApi/LouvertureContract';
 import Nebula from '../ContractsApi/NebulaContract';
 import Pentagon from '../ContractsApi/PentagonContract';
@@ -50,6 +51,7 @@ export const avalancheProtocols = new Map([
   ['AscendInfinite', AscendInfinite],
   ['AscendMeta', AscendMeta],
   ['Etherstones', Etherstones],
+  ['Lava', Lava],
   ['Louverture', Louverture],
   ['Nebula', Nebula],
   ['Phoenix', Phoenix],
@@ -61,7 +63,6 @@ export const avalancheProtocols = new Map([
   ['ThorFreya', ThorFreya],
   ['ThorThor', ThorThor],
   ['ThorOdin', ThorOdin],
-  // ['Universe', Universe],
   ['Vapor', Vapor],
 ]);
 export const cronosProtocols = new Map([

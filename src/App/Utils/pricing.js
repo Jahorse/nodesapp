@@ -1,3 +1,5 @@
+import { networkNameToIdMap } from './networking';
+
 function round(number) {
   return Math.round((number + Number.EPSILON) * 100000) / 100000;
 }
@@ -43,12 +45,15 @@ export async function getPriceCg(symbol) {
   return;
 }
 
-export async function getPriceDg(chainId, hash) {
+export async function getPriceDg(chainName, hash) {
   try {
-    const dataUrl = `/price?chainId=${chainId}&tokenAddress=${hash}`;
-    const data = await fetch(dataUrl)
-      .then(r => r.json())
-      .then(o => JSON.parse(o));
+    const chainId = networkNameToIdMap[chainName];
+    const dataUrl = `https://api.dev.dex.guru/v1/chain/${chainId}/tokens/${hash}/market`;
+    const data = await fetch(dataUrl, {headers: {'api-key':'WBUhTGV5Y8CRtuOL0bDikZ-Wld_FzC43F0vvjTe_TD4'}})
+      .then(async r => {
+        const json = await r.json();
+        return json;
+      });
 
     return round(data.price_usd);
   } catch (e) {
