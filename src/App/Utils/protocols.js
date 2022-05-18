@@ -13,7 +13,6 @@ import Hive from '../ContractsApi/HiveContract';
 import Lava from '../ContractsApi/Lava';
 import Louverture from '../ContractsApi/LouvertureContract';
 import Nebula from '../ContractsApi/NebulaContract';
-import Pentagon from '../ContractsApi/PentagonContract';
 import Phoenix from '../ContractsApi/PhoenixContract';
 import PowerSolar from '../ContractsApi/PowerSolarContract';
 import PowerHydro from '../ContractsApi/PowerHydroContract';
@@ -84,7 +83,6 @@ export const fantomProtocols = new Map([
 export const polygonProtocols = new Map([
   ['Dominium', Dominium],
   ['Hive', Hive],
-  ['Pentagon', Pentagon],
   ['StackOs', StackOs],
 ]);
 

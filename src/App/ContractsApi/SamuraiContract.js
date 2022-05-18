@@ -4,6 +4,8 @@ import abi from './abi/samurai';
 import Contract from './Contract';
 import { getPriceDg } from '../Utils/pricing';
 
+const tiers = ['Buke', 'Mononofu', 'Musha'];
+
 class Samurai extends Contract {
   metadata = {
     name: 'Samurai',
@@ -16,7 +18,7 @@ class Samurai extends Contract {
     chartLink: 'https://dexscreener.com/fantom/0x663684fb5cb68004f9e844b4950ee3e0ec0e20b6',
     swapLink: 'https://spookyswap.finance/swap?outputCurrency=0x36667966c79dec0dcda0e2a41370fb58857f5182',
   };
-  contractAddress = '0x36667966c79dEC0dCDA0E2a41370fb58857F5182';
+  contractAddress = '0x4f89c90E64AE57eaf805Ff2Abf868fE2aD6c55f3';
 
   constructor(provider, walletAddresses) {
     super(provider, walletAddresses, 'Fantom');
@@ -39,30 +41,36 @@ class Samurai extends Contract {
       return null;
     }
     const contract = new ethers.Contract(this.contractAddress, abi, this.signer);
-    return contract.cashoutAll();
+    const nodeIds = this.nodes.map(n => n.id);
+    return contract.claimAllRewards(nodeIds);
   }
 
   async fetchNodes() {
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
-      const tempSigner = this.jsonRpcProvider.getSigner(walletAddress);
-      const contract = new ethers.Contract(this.contractAddress, abi, tempSigner);
+      const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
       try {
-        const [names, creationTimes, lastClaims, rewards, tiers] = [
-          (await contract.getNodesNames()).split('#'),
-          (await contract.getNodesCreationTime()).split('#'),
-          (await contract.getNodesLastClaims()).split('#'),
-          (await contract.getNodesRewards()).split('#'),
-          (await contract.getNodesTiers()).split('#'),
-        ];
-        for (const i in names) {
+        const count = await contract.balanceOf(walletAddress);
+
+        for (let i=0; i<count; i++) {
+          const nodeId = await contract.tokenOfOwnerByIndex(walletAddress, i);
+          const nodeTraits = await contract.nodeTraits(nodeId);
+          const tax = await contract.calculateSlidingTaxRate(nodeId);
+          const rewards = await contract.calculateTotalDynamicRewards([nodeId]);
+
           nodes.push({
-            name: names[i],
-            rewards: parseInt(rewards[i]) / 1e18,
-            creationTime: new Date(parseInt(creationTimes[i]) * 1000),
-            lastProcessingTime: new Date(parseInt(lastClaims[i]) * 1000),
+            id: nodeId,
+            name: nodeTraits.name,
+            tier: tiers[nodeTraits.tier],
+            uri: await contract.tokenURI(nodeId),
+            lastClaimTime: new Date(parseInt(nodeTraits.lastClaimTime.toHexString(), 16) * 1000),
             nextProcessingTime: Date.now(),
-            tier: tiers[i],
+            fantomRPC: nodeTraits.fantomRPC,
+            avalancheRPC: nodeTraits.avalancheRPC,
+            polygonRPC: nodeTraits.polygonRPC,
+            rewardsClaimed: parseInt(nodeTraits.rewardsClaimed.toHexString(), 16) / 1e18,
+            rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+            tax: parseInt(tax.toHexString(), 16),
           });
         }
       } catch (e) {

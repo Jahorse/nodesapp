@@ -160,9 +160,6 @@ const NetworkTableRowChild = (props) => {
       case 'tokenPrice':
         columns.push(tableColumnToContentMap.tokenPrice(contractName, price));
         break;
-      case 'swap':
-        columns.push(tableColumnToContentMap.swap(contractName, contract.metadata.swaplink));
-        break;
       default:
         console.error(`Invalid column: ${column}`);
         break;

@@ -49,7 +49,7 @@ const ProtocolsRoute = (props) => {
           <ol className='ps-5'>
             <li><a href='https://app.dominium.finance/'  className='link-dark'>Dominium</a></li>
             <li><a href='https://dapp.hive.investments/'  className='link-dark'>Hive</a></li>
-            <li><a href='https://app.pentagon.financial/node'  className='link-dark'>Pentagon</a></li>
+            <li><s>Pentagon</s></li>
             <li><a href='https://www.home.stackos.io/nodes'  className='link-dark'>StackOS</a></li>
           </ol>
         </span>
