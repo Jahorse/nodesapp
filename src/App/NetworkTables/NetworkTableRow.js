@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { FaChartLine } from 'react-icons/fa';
+import { MdOutlineChangeCircle } from 'react-icons/md';
 import { Button } from 'reactstrap';
 
 import { breakpoint, useViewport } from '../Utils/Hooks';
@@ -79,9 +81,9 @@ const tableColumnToContentMap = {
   claim: (props) => claimAll(props),
   compound: (props) => compoundAll(props),
   claimCompound: (props) => claimApp(props),
-  tokenPrice: (n, l, p) => (
+  tokenPrice: (n, p) => (
     <td key={`${n}-price`}>
-      <a className="link-dark text-decoration-none" href={l}>{p ? `$${p}` : 'View'}</a>
+      {p ? `$${p}` : ''}
     </td>
   ),
   rewardsToken: (n, r, s) => (
@@ -94,9 +96,13 @@ const tableColumnToContentMap = {
       {price ? `$${parseFloat(price * rewards).toFixed(2)}` : null}
     </td>
   ),
-  serviceName: (n, l) => (
-    <th key={`${n}-name`} scope="row">
-      <a href={l} className='link-dark' style={{textDecoration: 'none'}}>{n}</a>
+  serviceName: (name, appLink, chartLink, swapLink, pad) => (
+    <th key={`${name}-name`} scope="row">
+      <a href={appLink} className='link-dark' style={{textDecoration: 'none'}}>{name}</a><br />
+      <a href={chartLink} className='link-dark' style={{textDecoration: 'none'}}><FaChartLine /></a>
+      <span style={{paddingLeft: `${pad}rem`}}>
+        <a href={swapLink} className='link-dark' style={{textDecoration: 'none', fontSize: '110%'}}><MdOutlineChangeCircle /></a>
+      </span>
     </th>
   ),
   swap: (n, l) => (
@@ -135,7 +141,14 @@ const NetworkTableRowChild = (props) => {
         columns.push(tableColumnToContentMap.compound({timeUntilClaim, contract, contractName, isConnected: props.isConnected, signer: props.signer}));
         break;
       case 'serviceName':
-        columns.push(tableColumnToContentMap.serviceName(contractName, contract.metadata.appLink));
+        const namePad = width > breakpoint ? 1 : 0.5;
+        columns.push(tableColumnToContentMap.serviceName(
+          contractName,
+          contract.metadata.appLink,
+          contract.metadata.chartLink,
+          contract.metadata.swapLink,
+          namePad
+        ));
         break;
       case 'rewardsToken':
         columns.push(tableColumnToContentMap.rewardsToken(contractName, rewards.toFixed(contract.metadata.decimals), contract.metadata.symbol));
@@ -145,7 +158,7 @@ const NetworkTableRowChild = (props) => {
         columns.push(tableColumnToContentMap.rewardsUsd(contractName, price, rewards, pad));
         break;
       case 'tokenPrice':
-        columns.push(tableColumnToContentMap.tokenPrice(contractName, contract.metadata.chartLink, price));
+        columns.push(tableColumnToContentMap.tokenPrice(contractName, price));
         break;
       case 'swap':
         columns.push(tableColumnToContentMap.swap(contractName, contract.metadata.swaplink));

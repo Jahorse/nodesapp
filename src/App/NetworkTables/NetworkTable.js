@@ -43,20 +43,26 @@ const TableTitle = (props) => {
   );
 };
 
-const tableColumnToHeaderMap = {
-  claim: (<th key='header-claim'>Claim</th>),
-  compound: (<th key='header-compound'>Compound</th>),
-  claimCompound: (<th key='header-claim-compound'>Claim</th>),
-  tokenPrice: (<th key='header-token-price'>Token Price</th>),
-  rewardsToken: (<th key='header-rewards-token'>Rewards</th>),
-  rewardsUsd: (<th key='header-rewards-usd'>Rewards USD</th>),
-  serviceName: (<th key='header-service-name'>Service</th>),
-  swap: (<th key='header-swap'>Swap</th>),
-};
+const ColumnHeader = (props) => {
+  const { width } = useViewport();
+  const pad = width > breakpoint ? 5 : 1;
+
+  const tableColumnToHeaderMap = {
+    claim: (<th key='header-claim'>Claim</th>),
+    compound: (<th key='header-compound'>Compound</th>),
+    claimCompound: (<th key='header-claim-compound'>Claim</th>),
+    tokenPrice: (<th key='header-token-price'>Token Price</th>),
+    rewardsToken: (<th key='header-rewards-token'>Rewards</th>),
+    rewardsUsd: (<th key='header-rewards-usd' style={{textAlign: 'right', paddingRight: `${pad}rem`}}>Rewards USD</th>),
+    serviceName: (<th key='header-service-name'>Service</th>),
+  };
+
+  return tableColumnToHeaderMap[props.columnName];
+}
 
 const TableHeaders = (props) => {
   const tableHeaders = [];
-  props.columns.forEach(c => tableHeaders.push(tableColumnToHeaderMap[c]));
+  props.columns.forEach(c => tableHeaders.push(<ColumnHeader columnName={c} />));
 
   return tableHeaders;
 };
@@ -77,13 +83,12 @@ const NetworkTable = (props) => {
   } else {
     const claimColumns = isConnected
       ? ['claim', 'compound']
-      : ['claimCompound'];
+      : [];
     columns.push(
       'tokenPrice',
       'rewardsToken',
       'rewardsUsd',
       ...claimColumns,
-      'swap',
     );
   }
 
