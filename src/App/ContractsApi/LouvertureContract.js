@@ -64,7 +64,7 @@ class Louverture extends Contract {
         const resp = await fetch(url, {headers: {'x-api-key': '4hW8gnEfM0sDiVMUWZ4r0MJWKvLJ4pxgC4oEJL9h2Wb8kXIVkDUdOkxSvtJdMmeI'}})
           .then(r => r.json());
 
-        for (const nodeRaw of resp) {
+        for (const nodeRaw of resp.result) {
           const tokenId = parseInt(nodeRaw.token_id);
           const metadata = await contract.getMeta(tokenId);
 

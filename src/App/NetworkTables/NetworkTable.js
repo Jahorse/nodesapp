@@ -62,7 +62,7 @@ const ColumnHeader = (props) => {
 
 const TableHeaders = (props) => {
   const tableHeaders = [];
-  props.columns.forEach(c => tableHeaders.push(<ColumnHeader columnName={c} />));
+  props.columns.forEach(c => tableHeaders.push(<ColumnHeader key={c} columnName={c} />));
 
   return tableHeaders;
 };
