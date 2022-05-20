@@ -11,7 +11,7 @@ class ProjectX extends Contract {
     networkName: 'Avalanche',
     decimals: 3,
     claimSupport: true,
-    hasCompound: false,
+    hasCompound: true,
     appLink: 'https://projectx.financial/#nodes',
     chartLink: 'https://dexscreener.com/avalanche/0x9ADCbba4b79eE5285E891512b44706F41F14CAFd',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x9adcbba4b79ee5285e891512b44706f41f14cafd#/',
@@ -29,8 +29,12 @@ class ProjectX extends Contract {
   }
 
   async compoundAll() {
-    console.error('ProjectX.compoundAll() is not implemented.');
-    return;
+    if (!this.signer) {
+      console.error('Tried calling ProjectX.claimAll() without a valid signer.');
+      return null;
+    }
+    const contract = new ethers.Contract(this.contractAddress, abi, this.signer);
+    return contract.compound('basic', 1);
   }
 
   async claimAll() {
@@ -38,7 +42,7 @@ class ProjectX extends Contract {
       console.error('Tried calling ProjectX.claimAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.contractAddress, this.claimContractAbi, this.signer);
+    const contract = new ethers.Contract(this.contractAddress, abi, this.signer);
     return contract.claim();
   }
 

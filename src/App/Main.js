@@ -131,7 +131,7 @@ const Main = (props) => {
           providerObj.networkName = networkIdToNameMap[(await ethersProvider.getNetwork()).chainId];
           providerObj.ethers.avalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
           providerObj.ethers.cronos = new ethers.providers.JsonRpcProvider('https://evm-cronos.crypto.org/');
-          providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://speedy-nodes-nyc.moralis.io/2e5324a27df3693603edaffa/eth/mainnet');
+          providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://mainnet.strongblock.com/6bfddc9eaaa3715b2e35cb2546a05acabf5b421c');
           providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
           providerObj.ethers.polygon = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
 
@@ -143,7 +143,7 @@ const Main = (props) => {
             providerObj.ethers.cronos = new ethers.providers.JsonRpcProvider('https://evm-cronos.crypto.org/');
           }
           if (profile.walletAddresses.ethereum.length > 0) {
-            providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://speedy-nodes-nyc.moralis.io/2e5324a27df3693603edaffa/eth/mainnet');
+            providerObj.ethers.ethereum = new ethers.providers.JsonRpcProvider('https://mainnet.strongblock.com/6bfddc9eaaa3715b2e35cb2546a05acabf5b421c');
           }
           if (profile.walletAddresses.fantom.length > 0) {
             providerObj.ethers.fantom = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
@@ -167,6 +167,23 @@ const Main = (props) => {
   const onProtocolsPage = useMatch("protocols");
   const onNonProfilePage = (onManageProfilesPage || onSecurityPage || onProtocolsPage);
   const shouldRedirect = !onNonProfilePage && Object.keys(cookies.profiles).length === 0;
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){window.dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7LW4M4X86F');
+  if (onManageProfilesPage) {
+    gtag('set', 'page_path', '/manage-profiles');
+  } else if (onSecurityPage) {
+    gtag('set', 'page_path', '/security');
+  } else if (onProtocolsPage) {
+    gtag('set', 'page_path', '/protocols');
+  } else {
+    gtag('set', 'page_path', '/');
+  }
+  gtag('event', 'page_view');
+
   return (
     <Container>
       {shouldRedirect ? <Navigate to="/manage-profiles" replace /> : null}
