@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   Row,
 } from 'reactstrap';
 
 const ProtocolsRoute = (props) => {
+  useEffect(() => {
+    document.title = "Node Protocols";
+  });
+
   return (
     <Container>
       <Row className='bg-info rounded m-2 px-2 py-4 text-dark'>

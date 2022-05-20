@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   Row,
 } from 'reactstrap';
 
 const SecurityRoute = (props) => {
+  useEffect(() => {
+    document.title = "Security";
+  });
+
   return (
     <Container>
       <Row className='bg-info rounded m-2 px-2 py-4 text-dark'>

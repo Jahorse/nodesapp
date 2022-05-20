@@ -58,6 +58,10 @@ const ManageProfilesRoute = (props) => {
   }
 
   useEffect(() => {
+    document.title = "Manage Profiles";
+  });
+
+  useEffect(() => {
     if (Object.keys(cookies.profiles).length === 0) {
       setExampleAlert(true);
     }

@@ -57,6 +57,10 @@ const Summary = (props) => {
   const networks = selectNetworks(props.provider.ethers);
 
   useEffect(() => {
+    document.title = "Nodes App";
+  });
+
+  useEffect(() => {
     setTotalRewards(avalancheRewards + cronosRewards + ethereumRewards + fantomRewards + polygonRewards);
   }, [avalancheRewards, cronosRewards, ethereumRewards, fantomRewards, polygonRewards]);
 

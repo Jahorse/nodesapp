@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaChartLine } from 'react-icons/fa';
 import { MdOutlineChangeCircle } from 'react-icons/md';
 import { Button } from 'reactstrap';
@@ -171,12 +171,22 @@ const NetworkTableRowChild = (props) => {
 
 const NetworkTableRow = (props) => {
   const [nodeInfo, updateNodeInfo] = useState();
+  const mountedRef = useRef(true);
+
   useEffect(() => {
     const getNodeData = async () => {
+      if (!mountedRef.current) return null;
       updateNodeInfo(await props.contract.getNodes());
     }
     getNodeData();
   }, [props.contract]);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   return (nodeInfo && nodeInfo.length > 0)
     ? <NetworkTableRowChild
       key={props.contract.metadata.name}
