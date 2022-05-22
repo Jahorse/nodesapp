@@ -53,7 +53,7 @@ class ProjectX extends Contract {
     for (const walletAddress of this.walletAddresses) {
       try {
         const rawNodes = await contract.nodes(walletAddress);
-        const reward = await contract.claimable(walletAddress);
+        const reward = (await contract.claimable(walletAddress)).add(await contract.oldRewardsOfUser(walletAddress));
 
         const ids = [];
         let creationTime = 0;
@@ -75,7 +75,7 @@ class ProjectX extends Contract {
         }
         nodes.push({
           name: ids.join(','),
-          rewards: (parseInt(reward.toHexString(), 16) / 1e18) + leftovers,
+          rewards: (parseInt(reward.toHexString(), 16) / 1e18),
           creationTime: new Date(creationTime * 1000),
           lastProcessingTime: new Date(lastClaim * 1000),
           nextProcessingTime: Date.now(),
