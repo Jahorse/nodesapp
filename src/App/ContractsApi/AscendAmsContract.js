@@ -8,55 +8,61 @@ class AscendAms extends Ascend {
     super(
       provider,
       walletAddresses,
-      '0x5867843f6C4d13a54f7565dB8d31E716112BEBFC',
+      '0xC88Fff4aDF86Adc2af20c57dF9B3b9eB7D664816',
       'AMS',
     );
   }
 
   async claimAll() {
-    if (this.walletAddresses.length > 1) {
-      console.error('Cannot claim multiple addresses at once.');
-      return;
-    }
-    if (!this.signer) {
-      console.error('Tried calling AscendAms.claimAll() without a valid signer.');
-      return null;
-    }
-    const amsContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.signer);
+    console.error("No claim all available for AMS");
+    return null;
+    // if (this.walletAddresses.length > 1) {
+    //   console.error('Cannot claim multiple addresses at once.');
+    //   return;
+    // }
+    // if (!this.signer) {
+    //   console.error('Tried calling AscendAms.claimAll() without a valid signer.');
+    //   return null;
+    // }
+    // const amsContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
 
-    const amsIds = await amsContract.getMembershipsOf(this.walletAddresses[0]);
-    return helperContract.claimAll(amsIds);
+    // const amsIds = this.nodes.map(n => n.id);
+    // return amsContract.claimAll(amsIds);
   }
 
   async fetchNodes() {
     const amsContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const rewardsContract = new ethers.Contract(this.rewardsContractAddress, this.rewardsAbi, this.jsonRpcProvider);
+    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.jsonRpcProvider);
 
     const nodes = [];
-    for (const address of this.walletAddresses) {
+    for (const walletAddress of this.walletAddresses) {
       try {
-        const count = await amsContract.balanceOf(address);
-        const rewards = parseInt((await amsContract.getAddressRewards(address)).toHexString(), 16) / 1e18;
-        const lastClaimSeconds = parseInt((await rewardsContract.calculateTimeToRewardsRewardsAms(address)).toHexString(), 16);
-        const lastClaimTime = Date.now() - (lastClaimSeconds * 1000);
-        const nextProcessingTime = lastClaimTime + (84600 * 1000);
+        const nodeIds = await amsContract.getMembershipsOf(walletAddress);
+        // const rewards = parseInt((await amsContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
 
-        if (count > 0) {
-          const node = {
-            name: `Ams x${count}`,
-            rewards: rewards,
-            lastProcessingTime: new Date(lastClaimTime),
-            nextProcessingTime,
-          };
-          nodes.push(node);
+        if (nodeIds.length > 0) {
+          for (const nodeId of nodeIds) {
+            const rewards = await amsContract.getRewardOf(nodeId, walletAddress);
+            const rewardsAfterTax = await helperContract.calculateRewardsAmsAfterTaxes(walletAddress, rewards);
+            const nodeInfo = await amsContract.getMemberships(nodeId);
+            const node = {
+              id: parseInt(nodeId.toHexString(), 16),
+              name: `AMS #${nodeId}`,
+              rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+              rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+              creationTime: new Date(nodeInfo.mint * 1000),
+              lastProcessingTime: new Date(nodeInfo.claim * 1000),
+              nextProcessingTime: Date.now(),
+            };
+            nodes.push(node);
+          }
         }
       } catch (e) {
         console.log('ERR', e);
       }
-
-      return nodes;
     }
+
+    return nodes;
   }
 }
 

@@ -1,5 +1,8 @@
 import { ethers } from 'ethers';
 
+import amsAbi from './abi/ascend-ams';
+import platinumAbi from './abi/ascend-platinum';
+import infiniteAbi from './abi/ascend-infinite';
 import abi from './abi/ascend-meta';
 import Ascend from './AscendContract';
 
@@ -8,12 +11,12 @@ class AscendMeta extends Ascend {
     super(
       provider,
       walletAddresses,
-      '0x397dcC7841d31d80A67C0aD17b9dA4381850B00A',
+      '0x5DB97004E839151639839eEfE266BDcB14D2c507',
       'Meta',
     );
   }
 
-  async claimAll() {
+  async compoundAll() {
     if (this.walletAddresses.length > 1) {
       console.error('Cannot claim multiple addresses at once.');
       return;
@@ -22,34 +25,82 @@ class AscendMeta extends Ascend {
       console.error('Tried calling AscendMeta.claimAll() without a valid signer.');
       return null;
     }
-    const metaContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.signer);
 
-    const metaIds = await metaContract.getMetasOf(this.walletAddresses[0]);
-    return helperContract.claimMeta(metaIds);
+    const walletAddress = this.walletAddresses[0];
+
+    const amsContract = new ethers.Contract('0xC88Fff4aDF86Adc2af20c57dF9B3b9eB7D664816', amsAbi, this.jsonRpcProvider);
+    const amsIds = await amsContract.getMembershipsOf(walletAddress);
+    if (amsIds.length < 50) {
+      console.error('50 AMS required to compound.');
+      return null;
+    }
+
+    const infiniteContract = new ethers.Contract('0x3B9dd6ea99D0c88931D5DbbF36a0FAE82b58b210', infiniteAbi, this.jsonRpcProvider);
+    const infiniteIds = await infiniteContract.getInfinitesOf(walletAddress);
+    if (amsIds.length < 1) {
+      console.error('1 infinite required to compound.');
+      return null;
+    }
+
+    // Need total rewards to be > 1000
+    const calculatorContract = new ethers.Contract('0x781a7ED06aEf134526Fb8650ab182B72DAc5BaC2', ['function calculateAllRewards(address from) external view returns (uint256)'], this.jsonRpcProvider);
+    const asndContract = new ethers.Contract('0xFd0c58F03c83d6960BB9dbFd45076d78Df2F095D', ['function balanceOf(address from) external view returns (uint256)'], this.jsonRpcProvider);
+    const rewards = parseInt((await calculatorContract.calculateAllRewards(walletAddress)).toHexString(), 16) / 1e18;
+    const asndBalance = parseInt((await asndContract.balanceOf(walletAddress)).toHexString(), 16) / 1e18;
+    const total = rewards + asndBalance;
+    if (total < 1000) {
+      console.error('1000 ASND required between your wallet and pending rewards.');
+      return null;
+    }
+
+    const metaContract = new ethers.Contract(this.contractAddress, abi, this.signer);
+    return metaContract.createMultipleNodeWithRewards('NodesApp Meta', amsIds.slice(0, 50), infiniteIds);
+  }
+
+  async claimAll() {
+    console.error("No claim all available for meta.")
+    return null;
+    // if (this.walletAddresses.length > 1) {
+    //   console.error('Cannot claim multiple addresses at once.');
+    //   return;
+    // }
+    // if (!this.signer) {
+    //   console.error('Tried calling AscendMeta.claimAll() without a valid signer.');
+    //   return null;
+    // }
+    // const metaContract = new ethers.Contract(this.contractAddress, abi, this.signer);
+
+    // const metaIds = this.nodes.map(n => n.id);
+    // return metaContract.claim(this.walletAddresses[0], metaIds);
   }
 
   async fetchNodes() {
     const metaContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const rewardsContract = new ethers.Contract(this.rewardsContractAddress, this.rewardsAbi, this.jsonRpcProvider);
+    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.jsonRpcProvider);
 
     const nodes = [];
-    for (const address of this.walletAddresses) {
+    for (const walletAddress of this.walletAddresses) {
       try {
-        const count = await metaContract.balanceOf(address);
-        const rewards = parseInt((await rewardsContract.calculateRewardsMeta(address)).toHexString(), 16);
-        const lastClaimSeconds = parseInt((await rewardsContract.calculateTimeToRewardsMeta(address)).toHexString(), 16);
-        const lastClaimTime = Date.now() - (lastClaimSeconds * 1000);
-        const nextProcessingTime = lastClaimTime + (84600 * 1000);
+        const nodeIds = await metaContract.getMetasOf(walletAddress);
+        // const rewards = parseInt((await metaContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
 
-        if (count > 0) {
-          const node = {
-            name: `Meta x${count}`,
-            rewards: rewards,
-            lastProcessingTime: new Date(lastClaimTime),
-            nextProcessingTime,
-          };
-          nodes.push(node);
+        if (nodeIds.length > 0) {
+          for (const nodeId of nodeIds) {
+            // const rewards = await metaContract.getRewardOf(nodeId, walletAddress);
+            const rewards = await metaContract.getAddressRewards(walletAddress);
+            const rewardsAfterTax = await helperContract.calculateRewardaMetaAfterTaxes(walletAddress, rewards);
+            const nodeInfo = await metaContract.getMetas(nodeId);
+            const node = {
+              id: parseInt(nodeId.toHexString(), 16),
+              name: `Meta #${nodeId}`,
+              rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+              rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+              creationTime: new Date(nodeInfo.mint * 1000),
+              lastProcessingTime: new Date(nodeInfo.claim * 1000),
+              nextProcessingTime: Date.now(),
+            };
+            nodes.push(node);
+          }
         }
       } catch (e) {
         console.log('ERR', e);

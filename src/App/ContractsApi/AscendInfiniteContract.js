@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 
-import abi from './abi/ascend-meta';
+import abi from './abi/ascend-infinite';
 import Ascend from './AscendContract';
 
 class AscendInfinite extends Ascend {
@@ -8,7 +8,7 @@ class AscendInfinite extends Ascend {
     super(
       provider,
       walletAddresses,
-      '0x4d80c0c467DA74f684A2Ee5AE3a5E9C96a754fcd',
+      '0x3B9dd6ea99D0c88931D5DbbF36a0FAE82b58b210',
       'Infinite',
     );
   }
@@ -22,34 +22,39 @@ class AscendInfinite extends Ascend {
       console.error('Tried calling AscendInfinite.claimAll() without a valid signer.');
       return null;
     }
-    const metaContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.signer);
+    const infiniteContract = new ethers.Contract(this.contractAddress, abi, this.signer);
 
-    const metaIds = await metaContract.getInfinitesOf(this.walletAddresses[0]);
-    return helperContract.claimInfinite(metaIds);
+    const infiniteIds = this.nodes.map(n => n.id);
+    return infiniteContract.claim(this.walletAddresses[0], infiniteIds);
   }
 
   async fetchNodes() {
-    const metaContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const rewardsContract = new ethers.Contract(this.rewardsContractAddress, this.rewardsAbi, this.jsonRpcProvider);
+    const infiniteContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
+    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.jsonRpcProvider);
 
     const nodes = [];
-    for (const address of this.walletAddresses) {
+    for (const walletAddress of this.walletAddresses) {
       try {
-        const count = await metaContract.balanceOf(address);
-        const rewards = parseInt((await rewardsContract.calculateRewardsInfinite(address)).toHexString(), 16);
-        const lastClaimSeconds = parseInt((await rewardsContract.calculateTimeToRewardsRewardsInfinite(address)).toHexString(), 16);
-        const lastClaimTime = Date.now() - (lastClaimSeconds * 1000);
-        const nextProcessingTime = lastClaimTime + (84600 * 1000);
+        const nodeIds = await infiniteContract.getInfinitesOf(walletAddress);
+        // const rewards = parseInt((await infiniteContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
 
-        if (count > 0) {
-          const node = {
-            name: `Infinite x${count}`,
-            rewards: rewards,
-            lastProcessingTime: new Date(lastClaimTime),
-            nextProcessingTime,
-          };
-          nodes.push(node);
+        if (nodeIds.length > 0) {
+          for (const nodeId of nodeIds) {
+            // const rewards = await infiniteContract.getRewardOf(nodeId, walletAddress);
+            const rewards = await infiniteContract.getAddressRewards(walletAddress);
+            const rewardsAfterTax = await helperContract.calculateRewardaInfiniteAfterTaxes(rewards);
+            const nodeInfo = await infiniteContract.getInfinites(nodeId);
+            const node = {
+              id: parseInt(nodeId.toHexString(), 16),
+              name: `Infinite #${nodeId}`,
+              rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+              rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+              creationTime: new Date(nodeInfo.mint * 1000),
+              lastProcessingTime: new Date(nodeInfo.claim * 1000),
+              nextProcessingTime: Date.now(),
+            };
+            nodes.push(node);
+          }
         }
       } catch (e) {
         console.log('ERR', e);

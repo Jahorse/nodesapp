@@ -8,7 +8,7 @@ class AscendPlatinum extends Ascend {
     super(
       provider,
       walletAddresses,
-      '0x479C7aB08a72e004023E27aA1166814CAf9D2718',
+      '0x4a1bcb925A6972c7E9195252DbD8fbccF545A00b',
       'Platinum',
     );
   }
@@ -22,34 +22,39 @@ class AscendPlatinum extends Ascend {
       console.error('Tried calling AscendPlatinum.claimAll() without a valid signer.');
       return null;
     }
-    const platinumContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.signer);
+    const platinumContract = new ethers.Contract(this.contractAddress, abi, this.signer);
 
-    const platinumIds = await platinumContract.getPlatinumsOf(this.walletAddresses[0]);
-    return helperContract.claimPlatinum(platinumIds);
+    const platinumIds = this.nodes.map(n => n.id);
+    return platinumContract.claim(this.walletAddresses[0], platinumIds);
   }
 
   async fetchNodes() {
     const platinumContract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
-    const rewardsContract = new ethers.Contract(this.rewardsContractAddress, this.rewardsAbi, this.jsonRpcProvider);
+    const helperContract = new ethers.Contract(this.helperContractAddress, this.helperAbi, this.jsonRpcProvider);
 
     const nodes = [];
-    for (const address of this.walletAddresses) {
+    for (const walletAddress of this.walletAddresses) {
       try {
-        const count = await platinumContract.balanceOf(address);
-        const rewards = parseInt((await rewardsContract.calculateRewardsPlatinum(address)).toHexString(), 16);
-        const lastClaimSeconds = parseInt((await rewardsContract.calculateTimeToRewardsRewardsPlatinum(address)).toHexString(), 16);
-        const lastClaimTime = Date.now() - (lastClaimSeconds * 1000);
-        const nextProcessingTime = lastClaimTime + (84600 * 1000);
+        const nodeIds = await platinumContract.getPlatinumsOf(walletAddress);
+        // const rewards = parseInt((await platinumContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
 
-        if (count > 0) {
-          const node = {
-            name: `Platinum x${count}`,
-            rewards: rewards,
-            lastProcessingTime: new Date(lastClaimTime),
-            nextProcessingTime,
-          };
-          nodes.push(node);
+        if (nodeIds.length > 0) {
+          for (const nodeId of nodeIds) {
+            // const rewards = await platinumContract.getRewardOf(nodeId, walletAddress);
+            const rewards = await platinumContract.getAddressRewards(walletAddress);
+            const rewardsAfterTax = await helperContract.calculateRewardsPlatinumAfterTaxes(rewards);
+            const nodeInfo = await platinumContract.getPlatinums(nodeId);
+            const node = {
+              id: parseInt(nodeId.toHexString(), 16),
+              name: `Platinum #${nodeId}`,
+              rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+              rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+              creationTime: new Date(nodeInfo.mint * 1000),
+              lastProcessingTime: new Date(nodeInfo.claim * 1000),
+              nextProcessingTime: Date.now(),
+            };
+            nodes.push(node);
+          }
         }
       } catch (e) {
         console.log('ERR', e);
