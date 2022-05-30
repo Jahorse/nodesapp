@@ -14,6 +14,7 @@ import Lava from '../ContractsApi/Lava';
 import Louverture from '../ContractsApi/LouvertureContract';
 import Nebula from '../ContractsApi/NebulaContract';
 import Phoenix from '../ContractsApi/PhoenixContract';
+import Polar from '../ContractsApi/PolarContract';
 import PowerSolar from '../ContractsApi/PowerSolarContract';
 import PowerHydro from '../ContractsApi/PowerHydroContract';
 import PowerWind from '../ContractsApi/PowerWindContract';
@@ -54,6 +55,7 @@ export const avalancheProtocols = new Map([
   ['Louverture', Louverture],
   ['Nebula', Nebula],
   ['Phoenix', Phoenix],
+  ['Polar', Polar],
   ['ProjectX', ProjectX],
   ['RndMansions', RndMansions],
   ['RndDistricts', RndDistricts],

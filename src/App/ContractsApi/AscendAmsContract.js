@@ -41,21 +41,28 @@ class AscendAms extends Ascend {
         // const rewards = parseInt((await amsContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
 
         if (nodeIds.length > 0) {
-          for (const nodeId of nodeIds) {
-            const rewards = await amsContract.getRewardOf(nodeId, walletAddress);
-            const rewardsAfterTax = await helperContract.calculateRewardsAmsAfterTaxes(walletAddress, rewards);
-            const nodeInfo = await amsContract.getMemberships(nodeId);
-            const node = {
-              id: parseInt(nodeId.toHexString(), 16),
-              name: `AMS #${nodeId}`,
-              rewards: parseInt(rewards.toHexString(), 16) / 1e18,
-              rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
-              creationTime: new Date(nodeInfo.mint * 1000),
-              lastProcessingTime: new Date(nodeInfo.claim * 1000),
-              nextProcessingTime: Date.now(),
-            };
-            nodes.push(node);
-          }
+          // for (const nodeId of nodeIds) {
+          //   const rewards = await amsContract.getRewardOf(nodeId, walletAddress);
+          //   const rewardsAfterTax = await helperContract.calculateRewardsAmsAfterTaxes(walletAddress, rewards);
+          //   const nodeInfo = await amsContract.getMemberships(nodeId);
+          //   const node = {
+          //     id: parseInt(nodeId.toHexString(), 16),
+          //     name: `AMS #${nodeId}`,
+          //     rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+          //     rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+          //     creationTime: new Date(nodeInfo.mint * 1000),
+          //     lastProcessingTime: new Date(nodeInfo.claim * 1000),
+          //     nextProcessingTime: Date.now(),
+          //   };
+          //   nodes.push(node);
+          // }
+          const rewards = await amsContract.getAddressRewards(walletAddress);
+          const rewardsAfterTax = parseInt((await helperContract.calculateRewardsAmsAfterTaxes(walletAddress, rewards)).toHexString(), 16) / 1e18;
+          nodes.push({
+            name: `AMS ${nodeIds.length}`,
+            rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+            rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+          })
         }
       } catch (e) {
         console.log('ERR', e);

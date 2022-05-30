@@ -27,6 +27,7 @@ const ProtocolsRoute = (props) => {
             <li><a href='https://app.lava.financial/'  className='link-dark'>Lava</a></li>
             <li><a href='https://www.louverture.finance/blackhole'  className='link-dark'>Louverture</a></li>
             <li><a href='https://app.nebulanodes.finance/'  className='link-dark'>Nebula</a></li>
+            <li><a href='https://app.polar.financial/'  className='link-dark'>Polar</a></li>
             <li><a href='https://projectx.financial/#nodes'  className='link-dark'>Project X</a></li>
             <li><a href='https://redlightnodes.app/'  className='link-dark'>Redlight Nodes District</a></li>
             <li><a href='https://dapp.tavern.money/'  className='link-dark'>Tavern</a></li>
