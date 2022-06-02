@@ -6,6 +6,7 @@ import {
   useCookies,
   withCookies,
 } from 'react-cookie';
+import ReactGA from 'react-ga';
 import {
   Navigate,
   useMatch,
@@ -168,21 +169,16 @@ const Main = (props) => {
   const onNonProfilePage = (onManageProfilesPage || onSecurityPage || onProtocolsPage);
   const shouldRedirect = !onNonProfilePage && Object.keys(cookies.profiles).length === 0;
 
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){window.dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7LW4M4X86F');
+  ReactGA.initialize('G-7LW4M4X86F');
+  let pagePath = '/';
   if (onManageProfilesPage) {
-    gtag('set', 'page_path', '/manage-profiles');
+    pagePath = '/manage-profiles';
   } else if (onSecurityPage) {
-    gtag('set', 'page_path', '/security');
+    pagePath = '/security';
   } else if (onProtocolsPage) {
-    gtag('set', 'page_path', '/protocols');
-  } else {
-    gtag('set', 'page_path', '/');
+    pagePath = '/protocols';
   }
-  gtag('event', 'page_view');
+  ReactGA.pageview(pagePath);
 
   return (
     <Container>

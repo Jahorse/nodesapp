@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
+import ReactGA from 'react-ga';
 import { FaQuestionCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -84,6 +85,10 @@ const ConnectWallet = (props) => {
 
       props.setCookie('profiles', props.profiles);
       props.setCookie('activeProfileName', profileName);
+      ReactGA.event({
+        category: 'User',
+        action: 'Connected MetaMask',
+      });
 
       // Reload the page
       window.location.replace('/');
@@ -148,6 +153,10 @@ const AddProfileModal = (props) => {
      },
     };
     setCookie('profiles', cookies.profiles);
+    ReactGA.event({
+      category: 'User',
+      action: 'Created Profile',
+    });
 
     navigate(`/manage-profile/${profileNameInput}`);
   }

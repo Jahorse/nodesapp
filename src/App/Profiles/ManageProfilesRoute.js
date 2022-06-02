@@ -9,10 +9,12 @@ import {
 import {
   useCookies,
 } from 'react-cookie';
+import ReactGA from 'react-ga';
 import {
   Link,
   NavLink,
 } from 'react-router-dom';
+
 import AddProfileModal from './AddProfileModal';
 
 const ProfileRow = (props) => {
@@ -89,6 +91,10 @@ const ManageProfilesRoute = (props) => {
 
       setCookie('profiles', cookies.profiles);
       setCookie('activeProfileName', profileName);
+      ReactGA.event({
+        category: 'User',
+        action: 'Loaded Example',
+      });
 
       window.location.replace('/');
   }
