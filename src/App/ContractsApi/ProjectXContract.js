@@ -59,7 +59,6 @@ class ProjectX extends Contract {
         let creationTime = 0;
         let lastClaim = 0;
         let feesDue = Number.MAX_SAFE_INTEGER;
-        let leftovers = 0;
         for (const rawNode of rawNodes) {
           ids.push(rawNode.id);
           if (rawNode.createdTime > creationTime) {
@@ -71,7 +70,6 @@ class ProjectX extends Contract {
           if (rawNode.limitedTime < feesDue) {
             feesDue = rawNode.limitedTime;
           }
-          leftovers += parseInt(rawNode.leftover.toHexString(), 16) / 1e18;
         }
         nodes.push({
           name: ids.join(','),

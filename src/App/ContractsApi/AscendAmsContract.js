@@ -57,7 +57,7 @@ class AscendAms extends Ascend {
           //   nodes.push(node);
           // }
           const rewards = await amsContract.getAddressRewards(walletAddress);
-          const rewardsAfterTax = parseInt((await helperContract.calculateRewardsAmsAfterTaxes(walletAddress, rewards)).toHexString(), 16) / 1e18;
+          const rewardsAfterTax = await helperContract.calculateRewardsAmsAfterTaxes(walletAddress, rewards);
           nodes.push({
             name: `AMS ${nodeIds.length}`,
             rewards: parseInt(rewards.toHexString(), 16) / 1e18,

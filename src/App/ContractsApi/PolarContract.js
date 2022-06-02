@@ -56,12 +56,16 @@ class Polar extends Contract {
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const [rewards, fees] = await contract.getClaimableRewardsOf(walletAddress);
+        const count = await contract.getTotalNodesOf(walletAddress);
+        if (count > 0) {
+          const [rewards, fees] = await contract.getClaimableRewardsOf(walletAddress);
 
-        nodes.push({
-          rewards: (parseInt(rewards.toHexString(), 16) / 1e18),
-          fees: (parseInt(fees.toHexString(), 16) / 1e18),
-        });
+          nodes.push({
+            rewards: (parseInt(rewards.toHexString(), 16) / 1e18),
+            fees: (parseInt(fees.toHexString(), 16) / 1e18),
+            nextProcessingTime: Date.now(),
+          });
+        }
       } catch (e) {
         console.log('ERR', e);
       }

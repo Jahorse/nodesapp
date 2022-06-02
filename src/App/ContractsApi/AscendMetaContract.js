@@ -1,7 +1,6 @@
 import { ethers } from 'ethers';
 
 import amsAbi from './abi/ascend-ams';
-import platinumAbi from './abi/ascend-platinum';
 import infiniteAbi from './abi/ascend-infinite';
 import abi from './abi/ascend-meta';
 import Ascend from './AscendContract';
@@ -82,19 +81,21 @@ class AscendMeta extends Ascend {
     for (const walletAddress of this.walletAddresses) {
       try {
         const nodeIds = await metaContract.getMetasOf(walletAddress);
-        // const rewards = parseInt((await metaContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
 
         if (nodeIds.length > 0) {
+          const rewards = await metaContract.getAddressRewards(walletAddress);
+          const rewardsAfterTax = await helperContract.calculateRewardaMetaAfterTaxes(walletAddress, rewards);
+          const rewardsParsed = parseInt(rewards.toHexString(), 16) / 1e18;
+          const rewardsAfterTaxParsed = parseInt(rewardsAfterTax.toHexString(), 16) / 1e18;
+          const individualRewards = rewardsParsed / nodeIds.length;
+          const individualRewardsAfterTax = rewardsAfterTaxParsed / nodeIds.length;
           for (const nodeId of nodeIds) {
-            // const rewards = await metaContract.getRewardOf(nodeId, walletAddress);
-            const rewards = await metaContract.getAddressRewards(walletAddress);
-            const rewardsAfterTax = await helperContract.calculateRewardaMetaAfterTaxes(walletAddress, rewards);
             const nodeInfo = await metaContract.getMetas(nodeId);
             const node = {
               id: parseInt(nodeId.toHexString(), 16),
               name: `Meta #${nodeId}`,
-              rewards: parseInt(rewards.toHexString(), 16) / 1e18,
-              rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+              rewards: individualRewards,
+              rewardsAfterTax: individualRewardsAfterTax,
               creationTime: new Date(nodeInfo.mint * 1000),
               lastProcessingTime: new Date(nodeInfo.claim * 1000),
               nextProcessingTime: Date.now(),

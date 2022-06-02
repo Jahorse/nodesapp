@@ -36,13 +36,11 @@ class AscendPlatinum extends Ascend {
     for (const walletAddress of this.walletAddresses) {
       try {
         const nodeIds = await platinumContract.getPlatinumsOf(walletAddress);
-        // const rewards = parseInt((await platinumContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
+        const rewards = await platinumContract.getAddressRewards(walletAddress);
+        const rewardsAfterTax = await helperContract.calculateRewardsPlatinumAfterTaxes(rewards);
 
         if (nodeIds.length > 0) {
           for (const nodeId of nodeIds) {
-            // const rewards = await platinumContract.getRewardOf(nodeId, walletAddress);
-            const rewards = await platinumContract.getAddressRewards(walletAddress);
-            const rewardsAfterTax = await helperContract.calculateRewardsPlatinumAfterTaxes(rewards);
             const nodeInfo = await platinumContract.getPlatinums(nodeId);
             const node = {
               id: parseInt(nodeId.toHexString(), 16),

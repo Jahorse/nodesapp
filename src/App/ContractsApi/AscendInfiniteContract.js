@@ -36,13 +36,11 @@ class AscendInfinite extends Ascend {
     for (const walletAddress of this.walletAddresses) {
       try {
         const nodeIds = await infiniteContract.getInfinitesOf(walletAddress);
-        // const rewards = parseInt((await infiniteContract.getAddressRewards(walletAddress)).toHexString(), 16) / 1e18;
+        const rewards = await infiniteContract.getAddressRewards(walletAddress);
+        const rewardsAfterTax = await helperContract.calculateRewardaInfiniteAfterTaxes(rewards);
 
         if (nodeIds.length > 0) {
           for (const nodeId of nodeIds) {
-            // const rewards = await infiniteContract.getRewardOf(nodeId, walletAddress);
-            const rewards = await infiniteContract.getAddressRewards(walletAddress);
-            const rewardsAfterTax = await helperContract.calculateRewardaInfiniteAfterTaxes(rewards);
             const nodeInfo = await infiniteContract.getInfinites(nodeId);
             const node = {
               id: parseInt(nodeId.toHexString(), 16),
