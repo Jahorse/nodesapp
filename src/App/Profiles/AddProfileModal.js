@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import { FaQuestionCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {

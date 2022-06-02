@@ -6,7 +6,7 @@ import {
   useCookies,
   withCookies,
 } from 'react-cookie';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import {
   Navigate,
   useMatch,
@@ -178,7 +178,7 @@ const Main = (props) => {
   } else if (onProtocolsPage) {
     pagePath = '/protocols';
   }
-  ReactGA.pageview(pagePath);
+  ReactGA.send({ hitType: 'pageview', page: pagePath, title: document.title });
 
   return (
     <Container>
