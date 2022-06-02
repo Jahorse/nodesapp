@@ -7,7 +7,7 @@ class ThorHeimdall extends Thor {
       walletAddresses,
       '0xba4400c4619cd15267c2fecd4dbc39d310cee3f1',
       'Heimdall',
-      156);
+    );
   }
 }
 

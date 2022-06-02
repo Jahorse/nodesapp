@@ -17,14 +17,13 @@ class Thor extends Contract {
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79#/',
   };
 
-  constructor(provider, walletAddresses, contractAddress, contractName, rotDays) {
+  constructor(provider, walletAddresses, contractAddress, contractName) {
     super(provider, walletAddresses, 'Avalanche');
 
     this.metadata.name = `Thor ${contractName}`;
 
     this.contractAddress = contractAddress;
     this.contractName = contractName;
-    this.rotDays = rotDays;
 
     this.initNodes();
   }
@@ -43,12 +42,6 @@ class Thor extends Contract {
     return null;
   }
 
-  calculateNextProcessingTime(creationTime) {
-    const nextProcessingTime = new Date(creationTime);
-    nextProcessingTime.setDate(nextProcessingTime.getDate() + this.rotDays);
-    return nextProcessingTime;
-  }
-
   async fetchNodes() {
     const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
 
@@ -65,14 +58,13 @@ class Thor extends Contract {
           const args = [ address, creationTimes[i] ];
           const reward = await contract._getNodeRewardAmountOf(...args);
           const creationTime = new Date(+creationTimes[i] * 1000);
-          const nextProcessingTime = this.calculateNextProcessingTime(creationTime);
 
           const node = {
             name: nodeNames[i],
             rewards: +reward / 1e18,
             creationTime,
             lastProcessingTime: +lastClaims[i] ? new Date(lastClaims[i]) : creationTime,
-            nextProcessingTime,
+            nextProcessingTime: Date.now(),
           };
 
           nodes.push(node);

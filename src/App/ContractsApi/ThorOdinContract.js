@@ -7,7 +7,6 @@ class ThorOdin extends Thor {
       walletAddresses,
       '0x9c0200f3e9673bcfe6d80076aa976f446d74758a',
       'Odin',
-      77,
     );
   }
 }
