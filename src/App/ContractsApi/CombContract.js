@@ -53,19 +53,22 @@ class Comb extends Contract {
     const nodes = [];
     for (const walletAddress of this.walletAddresses) {
       try {
-        const [ nodeNames, creationTimes ] = [
-          (await contract.getNodeNames(walletAddress)).split('#'),
-          // (await contract.getNodesMetadata(walletAddress)).split('#'),
-          (await contract.getNodesCreationTime(walletAddress)).split('#'),
-        ];
-        const rewards = await contract.getRewardAmountOf(walletAddress);
+        const count = await contract.getNodeNumberOf(walletAddress);
+        if (count > 0) {
+          const [ nodeNames, creationTimes ] = [
+            (await contract.getNodeNames(walletAddress)).split('#'),
+            // (await contract.getNodesMetadata(walletAddress)).split('#'),
+            (await contract.getNodesCreationTime(walletAddress)).split('#'),
+          ];
+          const rewards = await contract.getRewardAmountOf(walletAddress);
 
-        nodes.push({
-          name: nodeNames.join('#'),
-          creationTime: creationTimes.join('#'),
-          rewards: parseInt(rewards.toHexString(), 16) / 1e18,
-          nextProcessingTime: Date.now(),
-        });
+          nodes.push({
+            name: nodeNames.join('#'),
+            creationTime: creationTimes.join('#'),
+            rewards: parseInt(rewards.toHexString(), 16) / 1e18,
+            nextProcessingTime: Date.now(),
+          });
+        }
       } catch (e) {
         if (!e.reason.includes('No nodes')) {
           console.log('ERR', e);

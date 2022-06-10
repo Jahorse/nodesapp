@@ -4,13 +4,6 @@ import abi from './abi/power';
 import Contract from './Contract';
 import { getPriceCg } from '../Utils/pricing';
 
-const tiers = [
-  'FLATVERSAL',
-  'MICROSCOPIC',
-  'HUMAN',
-  'SUPERHUMAN',
-];
-
 class Power extends Contract {
   metadata = {
     name: 'Power',
