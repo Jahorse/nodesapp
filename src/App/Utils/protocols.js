@@ -20,8 +20,8 @@ import PowerHydro from '../ContractsApi/PowerHydroContract';
 import PowerWind from '../ContractsApi/PowerWindContract';
 import PowerNuclear from '../ContractsApi/PowerNuclearContract';
 import ProjectX from '../ContractsApi/ProjectXContract';
-import RndDistricts from '../ContractsApi/RndDistrictsContract';
-import RndMansions from '../ContractsApi/RndMansionsContract';
+// import RndDistricts from '../ContractsApi/RndDistrictsContract';
+// import RndMansions from '../ContractsApi/RndMansionsContract';
 import Samurai from '../ContractsApi/SamuraiContract';
 import StackOs from '../ContractsApi/StackOsContract';
 import StrongEth from '../ContractsApi/StrongEthContract';
@@ -57,8 +57,8 @@ export const avalancheProtocols = new Map([
   ['Phoenix', Phoenix],
   ['Polar', Polar],
   ['ProjectX', ProjectX],
-  ['RndMansions', RndMansions],
-  ['RndDistricts', RndDistricts],
+  // ['RndMansions', RndMansions],
+  // ['RndDistricts', RndDistricts],
   ['Tavern', Tavern],
   ['ThorHeimdall', ThorHeimdall],
   ['ThorFreya', ThorFreya],

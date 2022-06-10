@@ -29,7 +29,7 @@ const ProtocolsRoute = (props) => {
             <li><a href='https://app.nebulanodes.finance/'  className='link-dark'>Nebula</a></li>
             <li><a href='https://app.polar.financial/'  className='link-dark'>Polar</a></li>
             <li><a href='https://projectx.financial/#nodes'  className='link-dark'>Project X</a></li>
-            <li><a href='https://redlightnodes.app/'  className='link-dark'>Redlight Nodes District</a></li>
+            <li><a href='https://redlightnodes.app/'  className='link-dark'><s>Redlight Nodes District</s></a></li>
             <li><a href='https://dapp.tavern.money/'  className='link-dark'>Tavern</a></li>
             <li><a href='https://app.thor.financial/'  className='link-dark'>Thor</a></li>
             <li><s>Universe</s></li>
