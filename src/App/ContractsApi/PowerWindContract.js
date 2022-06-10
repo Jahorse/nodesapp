@@ -5,13 +5,9 @@ class PowerWind extends Power {
     super(
       provider,
       walletAddresses,
-      '0xFb717Be387F0FAB42A55772ef5CC55B4c324DabD',
       'Wind',
+      'FLATVERSAL',
     );
-  }
-
-  async claimAll() {
-    Power.prototype.claimAllTier.call(this, 'FLATVERSAL');
   }
 }
 

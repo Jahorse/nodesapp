@@ -5,13 +5,9 @@ class PowerNuclear extends Power {
     super(
       provider,
       walletAddresses,
-      '0xC8007751603bB3E45834A59af64190Bb618b4a83',
       'Nuclear',
+      'SUPERHUMAN',
     );
-  }
-
-  async claimAll() {
-    Power.prototype.claimAllTier.call(this, 'SUPERHUMAN');
   }
 }
 

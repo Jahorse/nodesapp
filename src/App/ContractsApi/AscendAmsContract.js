@@ -62,6 +62,7 @@ class AscendAms extends Ascend {
             name: `AMS ${nodeIds.length}`,
             rewards: parseInt(rewards.toHexString(), 16) / 1e18,
             rewardsAfterTax: parseInt(rewardsAfterTax.toHexString(), 16) / 1e18,
+            nextProcessingTime: Date.now(),
           })
         }
       } catch (e) {

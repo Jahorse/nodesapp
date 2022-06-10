@@ -5,13 +5,9 @@ class PowerSolar extends Power {
     super(
       provider,
       walletAddresses,
-      '0x0033FA9888028dD4BC5905241cbf312a8d0b21B3',
       'Solar',
+      'MICROSCOPIC'
     );
-  }
-
-  async claimAll() {
-    Power.prototype.claimAllTier.call(this, 'MICROSCOPIC');
   }
 }
 

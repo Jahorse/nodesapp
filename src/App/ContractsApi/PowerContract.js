@@ -1,8 +1,15 @@
 import { ethers } from 'ethers';
 
-import abi from './abi/thor';
+import abi from './abi/power';
 import Contract from './Contract';
 import { getPriceCg } from '../Utils/pricing';
+
+const tiers = [
+  'FLATVERSAL',
+  'MICROSCOPIC',
+  'HUMAN',
+  'SUPERHUMAN',
+];
 
 class Power extends Contract {
   metadata = {
@@ -10,23 +17,19 @@ class Power extends Contract {
     symbol: 'POWER',
     networkName: 'Fantom',
     decimals: 4,
-    claimSupport: false,
+    claimSupport: true,
     hasCompound: false,
     appLink: 'https://app.powernode.io/#',
     chartLink: 'https://dexscreener.com/fantom/0x8eae6aac525e6ec6a686f77e4751d3e8f96f6a83',
     swapLink: 'https://spookyswap.finance/swap?outputCurrency=0x131c7afb4e5f5c94a27611f7210dfec2215e85ae',
   };
-  nodeManagerContractAddress = '0xa51b7f5071868d8bdc3619d9e5dddd5fb8c1ab90';
-  tiersContractAddress = '0xf9F64b2c62210E6aCC266169da7026F209CeCd52';
-  tiersContractAbi = [
-    'function cashoutAll(string tierName)', // Claim
-  ];
+  contractAddress = '0x3FEbff662DAd22a54155Bd025F2F617720F8352c';
 
-  constructor(provider, walletAddresses, contractAddress, contractName) {
+  constructor(provider, walletAddresses, contractName, tierName) {
     super(provider, walletAddresses, 'Fantom');
-    this.contractAddress = contractAddress;
     this.contractName = contractName;
     this.metadata.name = `Power ${contractName}`;
+    this.tierName = tierName;
 
     this.initNodes();
   }
@@ -40,41 +43,35 @@ class Power extends Contract {
     return null;
   }
 
-  async claimAllTier(tier) {
+  async claimAll() {
     if (!this.signer) {
       console.error('Tried calling Power.claimAll() without a valid signer.');
       return null;
     }
-    const contract = new ethers.Contract(this.tiersContractAddress, this.tiersContractAbi, this.signer);
-    return contract.cashoutAll(tier);
+    const contract = new ethers.Contract(this.contractAddress, this.contractAbi, this.signer);
+    return contract.cashoutAll(this.tierName);
   }
 
   async fetchNodes() {
-
     const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
 
     const nodes = [];
-    for (const address of this.walletAddresses) {
+    for (const walletAddress of this.walletAddresses) {
       try {
-        const [nodeNames, lastClaims, creationTimes] = [
-          (await contract._getNodesNames(address)).split('#'),
-          (await contract._getNodesLastClaimTime(address)).split('#'),
-          (await contract._getNodesCreationTime(address)).split('#'),
-        ];
+        const tierCount = await contract.getNodeNumberOf(walletAddress, this.tierName);
 
-        for (const i in nodeNames) {
-          const args = [ address, parseInt(creationTimes[i]) ];
-          const reward = await contract._getNodeRewardAmountOf(...args);
-
-          const node = {
-            name: nodeNames[i],
-            rewards: parseInt(reward) / 1e18,
-            creationTime: new Date(+creationTimes[i] * 1000),
-            lastProcessingTime: +lastClaims[i] ? new Date(lastClaims[i]) : 'Never',
+        if (tierCount > 0) {
+          const names = await contract._getNodesNames(walletAddress, this.tierName);
+          const creationTimes = await contract._getNodesCreationTime(walletAddress, this.tierName);
+          const lastClaimTimes = await contract._getNodesLastClaimTime(walletAddress, this.tierName);
+          const reward = await contract.getRewardAmountOf(walletAddress, this.tierName);
+          nodes.push({
+            name: `${this.contractName}: ${names.join(',')}`,
+            creationTime: creationTimes.join(','),
+            lastProcessingTime: lastClaimTimes.join(','),
             nextProcessingTime: Date.now(),
-          };
-
-          nodes.push(node);
+            rewards: parseInt(reward.toHexString(), 16) / 1e18,
+          });
         }
       } catch (e) {
         if (!e.reason.includes('NO NODE OWNER')) {

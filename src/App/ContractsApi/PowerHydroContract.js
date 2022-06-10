@@ -5,13 +5,9 @@ class PowerHydro extends Power {
     super(
       provider,
       walletAddresses,
-      '0x928a833b65d967fb0b785ecdce6ccf1a867f3c28',
       'Hydro',
+      'HUMAN',
     );
-  }
-
-  async claimAll() {
-    Power.prototype.claimAllTier.call(this, 'HUMAN');
   }
 }
 
