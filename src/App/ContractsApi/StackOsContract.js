@@ -45,8 +45,9 @@ class StackOs extends Contract {
     let rewards = 0;
     for (const node of this.nodes) {
       rewards += node.rewards;
-      rewards += node.bonus;
+      rewards += node.unlockedBonus;
       rewards += node.royalties;
+      rewards += node.subscriptionBalance * (node.taxRate / 100);
     }
 
     return rewards;
@@ -109,13 +110,21 @@ class StackOs extends Contract {
             }
             royalties = 0;
           }
+          const deposits = await subscriptionContract.deposits(genId, tokenId);
+          const subscriptionBalance = (parseInt(deposits.balance.toString()) / 1e18);
+          const taxRate = (parseInt(deposits.tax.toString())) / 100;
+          const dueDate = new Date(parseInt(deposits.nextPayDate.toString()) * 1000);
           nodes.push({
             id: tokenId,
+            genId,
             name: nodeRaw.name,
-            nextProcessingTime: Date.now(),
             rewards,
-            bonus: parseInt(bonus.unlocked.toHexString(), 16) / 1e18,
+            unlockedBonus: parseInt(bonus.unlocked.toHexString(), 16) / 1e18,
+            lockedBonus: parseInt(bonus.locked.toHexString(), 16) / 1e18,
+            subscriptionBalance,
             royalties,
+            taxRate,
+            dueDate,
           });
         }
       } catch (e) {
