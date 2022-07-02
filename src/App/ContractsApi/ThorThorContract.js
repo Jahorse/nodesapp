@@ -5,7 +5,7 @@ class ThorThor extends Thor {
     super(
       provider,
       walletAddresses,
-      '0x37da69aa9b436d3bf6cc7530e11ef98a5a052441',
+      '0x349Cb36d6E3de4E9Ce7FbF9949c003974eb556CA',
       'Thor',
     );
   }

@@ -5,7 +5,7 @@ class ThorFreya extends Thor {
     super(
       provider,
       walletAddresses,
-      '0x79190a9c108f6cc1ce956ea8f7ba03cd4e3260b9',
+      '0x05e946Cc06Cd49b5957Ea2096cb57353313E3F0D',
       'Freya',
     );
   }

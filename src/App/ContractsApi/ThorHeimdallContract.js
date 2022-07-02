@@ -5,7 +5,7 @@ class ThorHeimdall extends Thor {
     super(
       provider,
       walletAddresses,
-      '0xba4400c4619cd15267c2fecd4dbc39d310cee3f1',
+      '0x7694D6b76D64bB89920b3Cb7156c7dE2b00b0c79',
       'Heimdall',
     );
   }

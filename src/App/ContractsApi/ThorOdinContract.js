@@ -5,7 +5,7 @@ class ThorOdin extends Thor {
     super(
       provider,
       walletAddresses,
-      '0x9c0200f3e9673bcfe6d80076aa976f446d74758a',
+      '0x769fc7a85437AdA05dE2C4bDa6220D18ce1F7549',
       'Odin',
     );
   }

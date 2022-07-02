@@ -1,8 +1,27 @@
 import { ethers } from 'ethers';
 
-import abi from './abi/thor';
+import { nodesAbi, feesAbi, taxesAbi } from './abi/thor';
 import Contract from './Contract';
 import { getPriceCg } from '../Utils/pricing';
+
+const cashoutFeeDue = [
+  604800,
+  1209600,
+  1814400,
+  2332800,
+];
+const cashoutFeeTax = [
+  50,
+  40,
+  30,
+  20,
+];
+const minTax = {
+  Heimdall: 1,
+  Freya: 5,
+  Thor: 8,
+  Odin: 10,
+}
 
 class Thor extends Contract {
   metadata = {
@@ -16,6 +35,9 @@ class Thor extends Contract {
     chartLink: 'https://dexscreener.com/avalanche/0x95189f25b4609120f72783e883640216e92732da',
     swapLink: 'https://traderjoexyz.com/trade?outputCurrency=0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79#/',
   };
+
+  feeContractAddress = '0x9aD4dF248019A36b29202aEC91a1b9aAA863341a';
+  taxContractAddress = '0xD5945eFe9003349f7A05aF6a66D718dE6F087729';
 
   constructor(provider, walletAddresses, contractAddress, contractName) {
     super(provider, walletAddresses, 'Avalanche');
@@ -43,31 +65,50 @@ class Thor extends Contract {
   }
 
   async fetchNodes() {
-    const contract = new ethers.Contract(this.contractAddress, abi, this.jsonRpcProvider);
+    const contract = new ethers.Contract(this.contractAddress, nodesAbi, this.jsonRpcProvider);
+    const feesContract = new ethers.Contract(this.feeContractAddress, feesAbi, this.jsonRpcProvider);
+    const taxesContract = new ethers.Contract(this.taxContractAddress, taxesAbi, this.jsonRpcProvider);
 
     const nodes = [];
-    for (const address of this.walletAddresses) {
+    for (const walletAddress of this.walletAddresses) {
       try {
-        const [ nodeNames, lastClaims, creationTimes ] = [
-          (await contract._getNodesNames(address)).split('#'),
-          (await contract._getNodesLastClaimTime(address)).split('#'),
-          (await contract._getNodesCreationTime(address)).split('#'),
-        ];
+        const tierCount = await contract._getNodeNumberOf(walletAddress);
 
-        for (const i in nodeNames) {
-          const args = [ address, creationTimes[i] ];
-          const reward = await contract._getNodeRewardAmountOf(...args);
-          const creationTime = new Date(+creationTimes[i] * 1000);
+        if (tierCount > 0) {
+          const indexes = (await contract._getNodesIndex(walletAddress));
+          const names = (await contract._getNodesNames(walletAddress)).split('#');
+          const creationTimes = (await contract._getNodesCreationTime(walletAddress)).split('#');
+          const lastClaimTimes = (await contract._getNodesLastClaimTime(walletAddress)).split('#');
+          for (const i in indexes) {
+            const nodeId = await contract.getNodeId(indexes[i]);
+            const creationTime = creationTimes[i];
+            const lastClaimTime = lastClaimTimes[i];
+            const lastClaimDelta = (Date.now() / 1000) - lastClaimTime;
 
-          const node = {
-            name: nodeNames[i],
-            rewards: +reward / 1e18,
-            creationTime,
-            lastProcessingTime: +lastClaims[i] ? new Date(lastClaims[i]) : creationTime,
-            nextProcessingTime: Date.now(),
-          };
+            const rewardRaw = await contract.getRewardAmountOf(indexes[i]);
+            const dueDate = await feesContract.getDueDate(nodeId);
+            const fee = await feesContract.getFee(nodeId, this.contractName.toUpperCase());
 
-          nodes.push(node);
+            const taxes = await taxesContract.getCashOutTaxFeeWithLastClaimTime(
+              lastClaimDelta.toFixed(0),
+              cashoutFeeDue,
+              cashoutFeeTax,
+              minTax[this.contractName],
+            );
+            const rewardAfterTaxes = parseInt(rewardRaw.toHexString(), 16) / 1e18;
+            const rewards = rewardAfterTaxes / (taxes / 100);
+            nodes.push({
+              id: nodeId,
+              tier: this.contractName,
+              name: names[i],
+              creationTime: new Date(creationTime * 1000),
+              lastClaim: new Date(lastClaimTime * 1000),
+              rewards,
+              rewardAfterTaxes,
+              dueDate: new Date(parseInt(dueDate.toString()) * 1000),
+              fee: parseInt(fee.toString()) / 1e18,
+            });
+          }
         }
       } catch (e) {
         if (!e.reason.includes('NO NODE OWNER')) {
