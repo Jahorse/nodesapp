@@ -8,7 +8,7 @@ import Atlas from '../ContractsApi/AtlasContract';
 import Comb from '../ContractsApi/CombContract';
 import Cronodes from '../ContractsApi/CronodesContract';
 import Dominium from '../ContractsApi/DominiumContract';
-import Etherstones from '../ContractsApi/EtherstonesContract';
+// import Etherstones from '../ContractsApi/EtherstonesContract';
 import Hive from '../ContractsApi/HiveContract';
 import Lava from '../ContractsApi/Lava';
 import Louverture from '../ContractsApi/LouvertureContract';
@@ -50,7 +50,7 @@ export const avalancheProtocols = new Map([
   ['AscendPlatinum', AscendPlatinum],
   ['AscendInfinite', AscendInfinite],
   ['AscendMeta', AscendMeta],
-  ['Etherstones', Etherstones],
+  // ['Etherstones', Etherstones],
   ['Lava', Lava],
   ['Louverture', Louverture],
   ['Nebula', Nebula],
