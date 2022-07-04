@@ -27,6 +27,20 @@ class Contract {
     return rewards;
   }
 
+  getDueDate() {
+    let dueDate = undefined;
+
+    for (const node of this.nodes) {
+      if (node.dueDate) {
+        if (!dueDate || node.dueDate < dueDate) {
+          dueDate = node.dueDate;
+        }
+      }
+
+    }
+    return dueDate;
+  }
+
   async getRewardsUsd() {
     return parseFloat(parseFloat(this.getTotalRewards() * (await this.getPriceUsd())).toFixed(2));
   }

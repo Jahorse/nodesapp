@@ -81,6 +81,7 @@ const tableColumnToContentMap = {
   claim: (props) => claimAll(props),
   compound: (props) => compoundAll(props),
   claimCompound: (props) => claimApp(props),
+  dueDate: (n, d) => <td key={`${n}-due-date`}>{d ? d.toLocaleDateString() : ''}</td>,
   tokenPrice: (n, p) => (
     <td key={`${n}-price`}>
       {p ? `$${p}` : ''}
@@ -126,6 +127,7 @@ const NetworkTableRowChild = (props) => {
   }, [contract]);
 
   const rewards = parseFloat(contract.getTotalRewards(props.nodeInfo, true));
+  const dueDate = contract.getDueDate();
   const timeUntilClaim = contract.timeUntilClaim();
 
   const columns = [];
@@ -139,6 +141,9 @@ const NetworkTableRowChild = (props) => {
         break;
       case 'compound':
         columns.push(tableColumnToContentMap.compound({timeUntilClaim, contract, contractName, isConnected: props.isConnected, signer: props.signer}));
+        break;
+      case 'dueDate':
+        columns.push(tableColumnToContentMap.dueDate(contractName, dueDate));
         break;
       case 'serviceName':
         const namePad = width > breakpoint ? 1 : 0.5;
