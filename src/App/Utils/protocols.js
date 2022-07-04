@@ -12,7 +12,7 @@ import Dominium from '../ContractsApi/DominiumContract';
 import Hive from '../ContractsApi/HiveContract';
 import Lava from '../ContractsApi/Lava';
 import Louverture from '../ContractsApi/LouvertureContract';
-import Nebula from '../ContractsApi/NebulaContract';
+// import Nebula from '../ContractsApi/NebulaContract';
 import Phoenix from '../ContractsApi/PhoenixContract';
 import Polar from '../ContractsApi/PolarContract';
 import PowerSolar from '../ContractsApi/PowerSolarContract';
@@ -53,7 +53,7 @@ export const avalancheProtocols = new Map([
   // ['Etherstones', Etherstones],
   ['Lava', Lava],
   ['Louverture', Louverture],
-  ['Nebula', Nebula],
+  // ['Nebula', Nebula],
   ['Phoenix', Phoenix],
   ['Polar', Polar],
   ['ProjectX', ProjectX],

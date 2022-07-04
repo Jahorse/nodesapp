@@ -54,15 +54,18 @@ class Dominium extends Contract {
           const inventory = await contract.inventory(nftId);
           const nextClaimTimestamp = parseInt(inventory.nextTimestamp.toHexString(), 16);
           const lastClaimTimestamp = nextClaimTimestamp - parseInt(inventory.claimLength.toHexString(), 16);
+          const dueDate = parseInt(inventory.feeExpiration.toHexString(), 16);
           const reward = await contract.claimableAmount(nftId);
           const type = parseInt((await contract.getTokenType(nftId)).toHexString(), 16);
 
           nodes.push({
+            id: nftId,
             name: `Dominium-${nftId}`,
             rewards: parseInt(reward.toHexString(), 16) / 1e9,
             creationTime: undefined,
             lastProcessingTime: new Date(lastClaimTimestamp * 1000),
             nextProcessingTime: new Date(nextClaimTimestamp * 1000),
+            dueDate: new Date(dueDate * 1000),
             type: type,
           });
         }
