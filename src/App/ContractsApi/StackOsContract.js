@@ -47,7 +47,7 @@ class StackOs extends Contract {
       rewards += node.rewards;
       rewards += node.unlockedBonus;
       rewards += node.royalties;
-      rewards += node.subscriptionBalance * (node.taxRate / 100);
+      rewards += node.subscriptionBalance * (1 - (node.taxRate / 100));
     }
 
     return rewards;
