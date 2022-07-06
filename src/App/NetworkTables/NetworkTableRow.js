@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaChartLine } from 'react-icons/fa';
 import { MdOutlineChangeCircle } from 'react-icons/md';
-import { Button } from 'reactstrap';
+import { Badge, Button } from 'reactstrap';
 
 import { breakpoint, useViewport } from '../Utils/Hooks';
 
@@ -77,11 +77,36 @@ const claimApp = (props) => {
   return (<td key={`${contractName}-claim-compound`}>{claimAll}</td>);
 }
 
+const dueDate = (props) => {
+  if (!props.dueDate) {
+    return (<td key={`${props.contractName}-due-date`}></td>);
+  }
+
+  const countdownSeconds =  (props.dueDate.valueOf() - Date.now()) / 1000;
+
+  let color;
+  if (countdownSeconds < 604800) {
+    color = 'danger';
+  } else if (countdownSeconds < 1209600) {
+    color = 'warning';
+  } else {
+    color = 'secondary';
+  }
+
+  return (
+    <td key={`${props.contractName}-due-date`}>
+      <h5>
+        <Badge color={color}>{props.dueDate.toLocaleDateString()}</Badge>
+      </h5>
+    </td>
+  );
+}
+
 const tableColumnToContentMap = {
   claim: (props) => claimAll(props),
   compound: (props) => compoundAll(props),
   claimCompound: (props) => claimApp(props),
-  dueDate: (n, d) => <td key={`${n}-due-date`}>{d ? d.toLocaleDateString() : ''}</td>,
+  dueDate: dueDate,
   tokenPrice: (n, p) => (
     <td key={`${n}-price`}>
       {p ? `$${p}` : ''}
@@ -143,7 +168,7 @@ const NetworkTableRowChild = (props) => {
         columns.push(tableColumnToContentMap.compound({timeUntilClaim, contract, contractName, isConnected: props.isConnected, signer: props.signer}));
         break;
       case 'dueDate':
-        columns.push(tableColumnToContentMap.dueDate(contractName, dueDate));
+        columns.push(tableColumnToContentMap.dueDate({contractName, dueDate}));
         break;
       case 'serviceName':
         const namePad = width > breakpoint ? 1 : 0.5;
