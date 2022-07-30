@@ -19,7 +19,7 @@ import PowerSolar from '../ContractsApi/PowerSolarContract';
 import PowerHydro from '../ContractsApi/PowerHydroContract';
 import PowerWind from '../ContractsApi/PowerWindContract';
 import PowerNuclear from '../ContractsApi/PowerNuclearContract';
-import ProjectX from '../ContractsApi/ProjectXContract';
+// import ProjectX from '../ContractsApi/ProjectXContract';
 // import RndDistricts from '../ContractsApi/RndDistrictsContract';
 // import RndMansions from '../ContractsApi/RndMansionsContract';
 import Samurai from '../ContractsApi/SamuraiContract';
@@ -56,7 +56,7 @@ export const avalancheProtocols = new Map([
   // ['Nebula', Nebula],
   ['Phoenix', Phoenix],
   ['Polar', Polar],
-  ['ProjectX', ProjectX],
+  // ['ProjectX', ProjectX],
   // ['RndMansions', RndMansions],
   // ['RndDistricts', RndDistricts],
   ['Tavern', Tavern],
