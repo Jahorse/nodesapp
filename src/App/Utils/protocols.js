@@ -1,9 +1,9 @@
 
 import Aleph from '../ContractsApi/Aleph';
-import AscendAms from '../ContractsApi/AscendAmsContract';
-import AscendPlatinum from '../ContractsApi/AscendPlatinumContract';
-import AscendInfinite from '../ContractsApi/AscendInfiniteContract';
-import AscendMeta from '../ContractsApi/AscendMetaContract';
+// import AscendAms from '../ContractsApi/AscendAmsContract';
+// import AscendPlatinum from '../ContractsApi/AscendPlatinumContract';
+// import AscendInfinite from '../ContractsApi/AscendInfiniteContract';
+// import AscendMeta from '../ContractsApi/AscendMetaContract';
 import Atlas from '../ContractsApi/AtlasContract';
 import Comb from '../ContractsApi/CombContract';
 import Cronodes from '../ContractsApi/CronodesContract';
@@ -46,10 +46,10 @@ export class ProtocolProvider {
 
 export const avalancheProtocols = new Map([
   ['Aleph', Aleph],
-  ['AscendAms', AscendAms],
-  ['AscendPlatinum', AscendPlatinum],
-  ['AscendInfinite', AscendInfinite],
-  ['AscendMeta', AscendMeta],
+  // ['AscendAms', AscendAms],
+  // ['AscendPlatinum', AscendPlatinum],
+  // ['AscendInfinite', AscendInfinite],
+  // ['AscendMeta', AscendMeta],
   // ['Etherstones', Etherstones],
   ['Lava', Lava],
   ['Louverture', Louverture],

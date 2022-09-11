@@ -21,7 +21,7 @@ const ProtocolsRoute = (props) => {
           <h4 className='ps-3'>Avalanche</h4>
           <ol className='ps-5'>
             <li><a href='https://app.aleph.finance/' className='link-dark'>Aleph</a></li>
-            <li><a href='https://dapp.ascendnodeclub.money/' className='link-dark'>Ascend</a></li>
+            <li><a href='https://dapp.ascendnodeclub.money/' className='link-dark'><s>Ascend</s></a></li>
             <li><s>Etherstones</s></li>
             <li><a href='https://thephoenix.finance/app/' className='link-dark'>Phoenix/Fire</a></li>
             <li><a href='https://app.lava.financial/'  className='link-dark'>Lava</a></li>
