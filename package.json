@@ -2,7 +2,7 @@
   "name": "nodesapp",
   "version": "0.1.0",
   "private": true,
-  "license": "Attribution-NonCommercial-NoDerivatives 4.0 International",
+  "license": "MIT",
   "main": "app.js",
   "scripts": {
     "build": "npm run clean && GENERATE_SOURCEMAP=false react-scripts build  && compress-cra",
